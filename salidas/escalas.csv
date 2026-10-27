@@ -1,0 +1,7 @@
+﻿mmsi;imo;nombre;tipo;eslora;calado;destino;terminal;t_fondeo;t_fin_fondeo;t_atraque;t_ultimo_atracado;espera_h;estancia_h;censurada;valida;cierre
+538010647;9700926;IVS KESTREL;70,0;180,0;10,4;ESVLC;Sin asignar;;;2026-10-27 19:03;2026-10-27 19:03;0,0;0,0;True;False;en curso
+305573000;9326990;ELBIA;70,0;134,0;6,3;ESVLC;;2026-10-27 19:03;2026-10-27 19:03;;;;;True;False;en curso
+228468600;9985966;ECO PONENTE;70,0;148,0;6,3;ESVLC-APM;;2026-10-27 19:04;2026-10-27 19:04;;;;;True;False;en curso
+209963000;9518971;MSM DON;70,0;105,0;3,8;ESVLC;;2026-10-27 19:04;2026-10-27 19:04;;;;;True;False;en curso
+374629000;9367944;TRADEWIND;79,0;145,0;7,0;TSPE;Sin asignar;;;2026-10-27 19:04;2026-10-27 19:04;0,0;0,0;True;False;en curso
+352965000;9143790;YAKOOT;70,0;101,0;6,0;DZSKI;Sin asignar;;;2026-10-27 19:06;2026-10-27 19:06;0,0;0,0;True;False;en curso

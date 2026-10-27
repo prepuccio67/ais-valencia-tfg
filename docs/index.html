@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Esperas Puerto València</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f4f4f2; --surface:#fcfcfb; --border:#e3e2de;
+  --text:#0b0b0b; --text2:#52514e; --muted:#8a8984;
+  --s1:#2a78d6; --s2:#eb6834; --grid:#ebeae6;
+  --warn:#b26a00;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111110; --surface:#1a1a19; --border:#2e2e2c;
+    --text:#f0efec; --text2:#c3c2b7; --muted:#8f8e88;
+    --s1:#3987e5; --s2:#d95926; --grid:#2a2a28; --warn:#e0a640;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111110; --surface:#1a1a19; --border:#2e2e2c;
+  --text:#f0efec; --text2:#c3c2b7; --muted:#8f8e88;
+  --s1:#3987e5; --s2:#d95926; --grid:#2a2a28; --warn:#e0a640;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 48px}
+header h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+header p{margin:0;color:var(--text2);font-size:.9rem}
+.aviso{margin:16px 0 0;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--warn);background:var(--surface);border-radius:8px;color:var(--text2);font-size:.85rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:20px 0}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.kpi .v{font-size:1.75rem;font-weight:650;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi .l{color:var(--text2);font-size:.82rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;min-width:0}
+.card h2{font-size:1rem;margin:0 0 2px}
+.card .sub{color:var(--muted);font-size:.8rem;margin:0 0 10px}
+.chart{position:relative;height:240px}
+.full{grid-column:1/-1}
+#mapa{height:420px;border-radius:8px}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--text2);margin-top:8px}
+.leyenda i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.tabla{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+th{color:var(--text2);font-weight:600}
+td.n{text-align:right}
+.tag{font-size:.75rem;color:var(--muted)}
+.vacio{color:var(--muted);font-size:.9rem;padding:40px 0;text-align:center}
+footer{margin-top:28px;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Tiempos de espera de buques · Puerto de València</h1>
+    <p id="periodo"></p>
+  </header>
+  <div class="aviso" id="aviso"></div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="grid">
+    <div class="card full">
+      <h2>Situación actual y puntos de atraque detectados</h2>
+      <p class="sub">Últimas posiciones (2 h) de buques de carga ≥ 100 m. Los puntos grises son posiciones de atraque acumuladas: sirven para dibujar las terminales.</p>
+      <div id="mapa"></div>
+      <div class="leyenda">
+        <span><i style="background:var(--s2)"></i>Fondeado</span>
+        <span><i style="background:var(--s1)"></i>Atracado</span>
+        <span><i style="background:var(--muted)"></i>Punto de atraque detectado</span>
+        <span><i style="background:transparent;border:2px dashed var(--text2)"></i>Recinto portuario</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Espera mediana por semana</h2>
+      <p class="sub">Horas desde la llegada al fondeo hasta el atraque. Semana de atraque.</p>
+      <div class="chart"><canvas id="cSemana"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Distribución de las esperas</h2>
+      <p class="sub">Número de escalas por tramo de espera.</p>
+      <div class="chart"><canvas id="cHisto"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Espera mediana por terminal</h2>
+      <p class="sub">“Sin asignar” hasta calibrar las terminales.</p>
+      <div class="chart"><canvas id="cTerminal"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Espera mediana por tamaño de buque</h2>
+      <p class="sub">Tramos de eslora.</p>
+      <div class="chart"><canvas id="cEslora"></canvas></div>
+    </div>
+    <div class="card full">
+      <h2>Cobertura de la captura</h2>
+      <p class="sub">Posiciones recibidas por día. Un día bajo indica un hueco de captura.</p>
+      <div class="chart" style="height:180px"><canvas id="cCobertura"></canvas></div>
+    </div>
+
+    <div class="card full">
+      <h2>Últimas escalas</h2>
+      <p class="sub">Horas en hora peninsular. Las escalas “no válidas” empezaron antes de un hueco de datos y no cuentan en las estadísticas.</p>
+      <div class="tabla"><table id="tabla"></table></div>
+    </div>
+  </section>
+
+  <footer>
+    Fuente: datos AIS de aisstream.io, captura propia. TFG Grado en Gestión del Transporte y la Logística (UPV).
+    Datos descargables: <a href="datos.json">datos.json</a>.
+  </footer>
+</div>
+
+<script>
+const D = {"actualizado": "2026-10-27 19:07", "inicio": "2026-10-27 19:00", "fin": "2026-10-27 19:07", "horas_con_datos": 1, "horas_totales": 1, "n_huecos": 0, "huecos": [], "n_buques": 32, "excluidos": {"otro tipo/eslora": 7, "sin ficha": 19}, "kpi": {"n": 0, "mediana": null, "media": null, "con_espera_pct": null, "p90": null, "fondeados_ahora": 3, "atracados_ahora": 3, "en_curso": 6, "total_detectadas": 6}, "por_semana": [], "por_terminal": [], "por_eslora": [], "histograma": [{"tramo": "Sin espera", "n": 0}, {"tramo": "0–6 h", "n": 0}, {"tramo": "6–12 h", "n": 0}, {"tramo": "12–24 h", "n": 0}, {"tramo": "24–48 h", "n": 0}, {"tramo": "> 48 h", "n": 0}], "cobertura_dia": [{"dia": "2026-10-27", "n": 36}], "ahora": [{"mmsi": "319017100", "nombre": "CORINTHIAN", "lat": 39.46019, "lon": -0.32799, "zona": "ATRACADO", "incluido": false, "eslora": 40.0}, {"mmsi": "225992776", "nombre": "EDETANIA", "lat": 39.44278, "lon": -0.31862, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "224322000", "nombre": "SUVER", "lat": 39.42383, "lon": -0.3245, "zona": "ATRACADO", "incluido": false, "eslora": 42.0}, {"mmsi": "645588000", "nombre": "LE SPHINX", "lat": 39.44558, "lon": -0.29134, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "256002778", "nombre": "O", "lat": 39.46039, "lon": -0.31584, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "224729000", "nombre": "CIUDAD DE SOLLER", "lat": 39.45698, "lon": -0.32234, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "645372000", "nombre": "DN38", "lat": 39.45587, "lon": -0.30848, "zona": "MANIOBRA", "incluido": false, "eslora": null}, {"mmsi": "224127820", "nombre": "BAHIA UNO", "lat": 39.45732, "lon": -0.32282, "zona": "ATRACADO", "incluido": false, "eslora": 70.0}, {"mmsi": "352898711", "nombre": "MSC LEVANTE F", "lat": 39.27817, "lon": -0.00647, "zona": "NAVEGANDO", "incluido": false, "eslora": null}, {"mmsi": "247286100", "nombre": "FORZA", "lat": 39.45015, "lon": -0.32107, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "319078200", "nombre": "VEGA", "lat": 39.4246, "lon": -0.32184, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "225437000", "nombre": "VB LLEVANT", "lat": 39.44198, "lon": -0.31759, "zona": "MANIOBRA", "incluido": false, "eslora": 31.0}, {"mmsi": "229390000", "nombre": "AVENTURA", "lat": 39.42619, "lon": -0.32889, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "538010647", "nombre": "IVS KESTREL", "lat": 39.44524, "lon": -0.32183, "zona": "ATRACADO", "incluido": true, "eslora": 180.0}, {"mmsi": "209695000", "nombre": "NORDMAAS", "lat": 39.36559, "lon": -0.01988, "zona": "NAVEGANDO", "incluido": false, "eslora": null}, {"mmsi": "224161160", "nombre": "VB FURIA", "lat": 39.43978, "lon": -0.31647, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "224101000", "nombre": "VB AMILCAR", "lat": 39.44265, "lon": -0.3171, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "211315100", "nombre": "ATRIA", "lat": 39.387, "lon": -0.186, "zona": "NAVEGANDO", "incluido": false, "eslora": null}, {"mmsi": "305573000", "nombre": "ELBIA", "lat": 39.38607, "lon": -0.27051, "zona": "FONDEO", "incluido": true, "eslora": 134.0}, {"mmsi": "248100000", "nombre": "POKROV", "lat": 39.42614, "lon": -0.32861, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "238670640", "nombre": "SEVEN", "lat": 39.46006, "lon": -0.33039, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "228468600", "nombre": "ECO PONENTE", "lat": 39.39992, "lon": -0.28057, "zona": "FONDEO", "incluido": true, "eslora": 148.0}, {"mmsi": "249957000", "nombre": "YM PLUTO", "lat": 39.44894, "lon": -0.30948, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "209963000", "nombre": "MSM DON", "lat": 39.39309, "lon": -0.28087, "zona": "FONDEO", "incluido": true, "eslora": 105.0}, {"mmsi": "374629000", "nombre": "TRADEWIND", "lat": 39.45152, "lon": -0.31837, "zona": "ATRACADO", "incluido": true, "eslora": 145.0}, {"mmsi": "209348000", "nombre": "HEDY LAMARR", "lat": 39.4494, "lon": -0.32345, "zona": "ATRACADO", "incluido": false, "eslora": 186.0}, {"mmsi": "224182450", "nombre": "VB SONADOR", "lat": 39.44174, "lon": -0.31756, "zona": "ATRACADO", "incluido": false, "eslora": 24.0}, {"mmsi": "241326000", "nombre": "NIKOS TRAVLOS", "lat": 39.39558, "lon": -0.26054, "zona": "FONDEO", "incluido": false, "eslora": null}, {"mmsi": "636024514", "nombre": "MSC VERONA", "lat": 39.43945, "lon": -0.32657, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "352004886", "nombre": "MEDKON ANA", "lat": 39.38606, "lon": -0.28169, "zona": "FONDEO", "incluido": false, "eslora": null}, {"mmsi": "225989762", "nombre": "ALTEA F", "lat": 39.44266, "lon": -0.31869, "zona": "ATRACADO", "incluido": false, "eslora": null}, {"mmsi": "352965000", "nombre": "YAKOOT", "lat": 39.43202, "lon": -0.32045, "zona": "ATRACADO", "incluido": true, "eslora": 101.0}], "calib": [[39.4452, -0.3218, 1], [39.4515, -0.3184, 1], [39.432, -0.3205, 1]], "zonas": {"recinto": [[39.41, -0.345], [39.47, -0.345], [39.47, -0.285], [39.41, -0.285]], "terminales": []}, "escalas": [{"nombre": "YAKOOT", "mmsi": "352965000", "eslora": 101.0, "terminal": "Sin asignar", "fondeo": "", "atraque": "2026-10-27 19:06", "espera_h": 0.0, "estancia_h": 0.0, "estado": "en curso", "valida": false}, {"nombre": "TRADEWIND", "mmsi": "374629000", "eslora": 145.0, "terminal": "Sin asignar", "fondeo": "", "atraque": "2026-10-27 19:04", "espera_h": 0.0, "estancia_h": 0.0, "estado": "en curso", "valida": false}, {"nombre": "MSM DON", "mmsi": "209963000", "eslora": 105.0, "terminal": "", "fondeo": "2026-10-27 19:04", "atraque": "", "espera_h": null, "estancia_h": null, "estado": "en curso", "valida": false}, {"nombre": "ECO PONENTE", "mmsi": "228468600", "eslora": 148.0, "terminal": "", "fondeo": "2026-10-27 19:04", "atraque": "", "espera_h": null, "estancia_h": null, "estado": "en curso", "valida": false}, {"nombre": "ELBIA", "mmsi": "305573000", "eslora": 134.0, "terminal": "", "fondeo": "2026-10-27 19:03", "atraque": "", "espera_h": null, "estancia_h": null, "estado": "en curso", "valida": false}, {"nombre": "IVS KESTREL", "mmsi": "538010647", "eslora": 180.0, "terminal": "Sin asignar", "fondeo": "", "atraque": "2026-10-27 19:03", "espera_h": 0.0, "estancia_h": 0.0, "estado": "en curso", "valida": false}]};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const nf = (v, d=1) => v==null ? "—" : v.toLocaleString("es-ES",{minimumFractionDigits:d,maximumFractionDigits:d});
+const loc = s => { if(!s) return "—"; const t = new Date(s.replace(" ","T")+":00Z");
+  return t.toLocaleString("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); };
+
+document.getElementById("periodo").textContent =
+  `Datos desde ${loc(D.inicio)} hasta ${loc(D.fin)} · actualizado ${loc(D.actualizado)} · ${D.n_buques} buques vistos en la zona`;
+const pct = D.horas_totales ? Math.round(100*D.horas_con_datos/D.horas_totales) : 0;
+document.getElementById("aviso").innerHTML =
+  `Cobertura: datos en ${D.horas_con_datos} de ${D.horas_totales} horas (${pct} %), ${D.n_huecos} hueco(s) de más de 2 h. ` +
+  `Precisión de los tiempos ≈ intervalo de captura (30 min en la nube). Zonas del puerto <b>provisionales</b> hasta calibrar.`;
+
+const k = D.kpi;
+const tiles = [
+  [k.n, "escalas válidas analizadas", 0],
+  [k.mediana, "horas · espera mediana", 1],
+  [k.media, "horas · espera media", 1],
+  [k.p90, "horas · percentil 90", 1],
+  [k.con_espera_pct, "% de escalas con espera", 0],
+  [k.fondeados_ahora, "buques fondeados ahora", 0],
+];
+document.getElementById("kpis").innerHTML = tiles.map(([v,l,d]) =>
+  `<div class="kpi"><div class="v">${nf(v,d)}</div><div class="l">${l}</div></div>`).join("");
+
+// ---- gráficos
+Chart.defaults.locale = "es-ES";
+Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+Chart.defaults.color = css("--text2");
+Chart.defaults.borderColor = css("--grid");
+function barras(id, etiquetas, valores, n, unidad, color){
+  const el = document.getElementById(id);
+  if(!valores.length){ el.parentElement.innerHTML = '<div class="vacio">Aún no hay escalas suficientes</div>'; return; }
+  new Chart(el, {type:"bar",
+    data:{labels:etiquetas, datasets:[{data:valores, backgroundColor:color||css("--s1"),
+      borderRadius:{topLeft:4,topRight:4}, borderSkipped:"bottom", maxBarThickness:40, categoryPercentage:.8}]},
+    options:{maintainAspectRatio:false, plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c => `${nf(c.raw, unidad==="escalas"?0:1)} ${unidad}` + (n ? ` · n = ${n[c.dataIndex]}` : "")}}},
+      scales:{x:{grid:{display:false}}, y:{beginAtZero:true, ticks:{precision:0}, title:{display:true,text:unidad}}}}});
+}
+const semFmt = s => { const t=new Date(s+"T00:00:00Z"); return "sem. " + t.toLocaleDateString("es-ES",{day:"2-digit",month:"2-digit",timeZone:"UTC"}); };
+barras("cSemana", D.por_semana.map(x=>semFmt(x.semana)), D.por_semana.map(x=>x.mediana), D.por_semana.map(x=>x.n), "h");
+barras("cHisto", D.histograma.map(x=>x.tramo), k.n ? D.histograma.map(x=>x.n) : [], null, "escalas");
+barras("cTerminal", D.por_terminal.map(x=>x.terminal), D.por_terminal.map(x=>x.mediana), D.por_terminal.map(x=>x.n), "h");
+barras("cEslora", D.por_eslora.map(x=>x.tramo), D.por_eslora.map(x=>x.mediana), D.por_eslora.map(x=>x.n), "h");
+barras("cCobertura", D.cobertura_dia.map(x=>x.dia.slice(5).split("-").reverse().join("/")), D.cobertura_dia.map(x=>x.n), null, "posiciones", css("--muted"));
+
+// ---- mapa
+const mapa = L.map("mapa", {scrollWheelZoom:false}).setView([39.44, -0.27], 11);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {maxZoom:17, attribution:"© OpenStreetMap"}).addTo(mapa);
+L.polygon(D.zonas.recinto, {color:css("--text2"), weight:1.5, dashArray:"6 6", fill:false}).addTo(mapa);
+D.zonas.terminales.forEach(t => L.polygon(t.poligono,{color:css("--s1"),weight:1.5,fillOpacity:.08}).bindTooltip(t.nombre).addTo(mapa));
+D.calib.forEach(([la,lo,n]) => L.circleMarker([la,lo],{radius:2,stroke:false,fillColor:css("--muted"),fillOpacity:.5}).addTo(mapa));
+D.ahora.filter(a => a.incluido && (a.zona==="FONDEO"||a.zona==="ATRACADO")).forEach(a => {
+  L.circleMarker([a.lat,a.lon],{radius:6,color:css("--surface"),weight:2,fillOpacity:1,
+    fillColor: a.zona==="FONDEO" ? css("--s2") : css("--s1")})
+   .bindTooltip(`${a.nombre||a.mmsi} · ${a.zona==="FONDEO"?"fondeado":"atracado"}${a.eslora?` · ${a.eslora} m`:""}`).addTo(mapa);
+});
+
+// ---- tabla
+const filas = D.escalas.slice(0,50);
+document.getElementById("tabla").innerHTML = filas.length ?
+  "<thead><tr><th>Buque</th><th>Eslora</th><th>Terminal</th><th>Llegada fondeo</th><th>Atraque</th><th>Espera (h)</th><th>Estancia (h)</th><th>Estado</th></tr></thead><tbody>" +
+  filas.map(e => `<tr><td>${e.nombre||e.mmsi}</td><td class="n">${e.eslora?nf(e.eslora,0)+" m":"—"}</td><td>${e.terminal||"—"}</td>
+    <td>${loc(e.fondeo)}</td><td>${loc(e.atraque)}</td><td class="n">${nf(e.espera_h)}</td><td class="n">${nf(e.estancia_h)}</td>
+    <td>${e.estado}${e.valida?"":' <span class="tag">(no válida)</span>'}</td></tr>`).join("") + "</tbody>"
+  : '<tr><td class="vacio">Aún no se han detectado escalas</td></tr>';
+</script>
+</body>
+</html>
