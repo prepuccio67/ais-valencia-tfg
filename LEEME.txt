@@ -1,0 +1,105 @@
+CAPTURA AIS + CUADRO DE MANDO - TFG TIEMPOS DE ESPERA (PUERTO DE VALENCIA)
+==========================================================================
+
+QUE HAY EN ESTA CARPETA
+  captura_ais.py         Escucha los buques (aisstream.io, gratis) y guarda CSV en "datos"
+  procesar.py            Convierte las posiciones en escalas y tiempos de espera,
+                         y genera el cuadro de mando (docs/index.html)
+  plantilla_cuadro.html  Diseno del cuadro de mando (no hace falta tocarlo)
+  zonas.json             Recinto portuario, terminales y parametros (PROVISIONAL)
+  .github/workflows/     Orden para que GitHub lo ejecute solo cada 30 minutos
+  clave_api.txt          Tu clave (solo para usarlo en tu PC; NUNCA se sube a GitHub)
+
+
+------------------------------------------------------------------
+OPCION RECOMENDADA: QUE SE EJECUTE SOLO EN LA NUBE (GITHUB, GRATIS)
+------------------------------------------------------------------
+Cada 30 minutos GitHub enciende un ordenador, escucha 7 minutos, guarda los
+datos, recalcula el cuadro de mando y lo publica en una pagina web. Tu PC
+puede estar apagado.
+
+PASO 1 - Clave de aisstream (5 min)
+  1. Entra en https://aisstream.io y pulsa "Sign in" (con tu cuenta de GitHub;
+     si no tienes, haz primero el paso 2.1).
+  2. Ve a "API Keys" y crea una clave. Copiala y guardala en un sitio seguro.
+
+PASO 2 - Crear el repositorio (10 min)
+  1. Crea una cuenta en https://github.com si no la tienes.
+  2. Arriba a la derecha: "+" > "New repository".
+       Repository name: ais-valencia-tfg
+       Marca "Public" (asi GitHub Actions es gratis e ilimitado)
+       NO marques "Add a README". Pulsa "Create repository".
+  3. En la pagina que aparece, pulsa el enlace "uploading an existing file".
+  4. Arrastra a la ventana TODO lo de esta carpeta EXCEPTO:
+       - clave_api.txt   (tu clave no debe ser publica)
+       - __pycache__     (si existe)
+     Asegurate de que se sube la carpeta ".github". Pulsa "Commit changes".
+     Si ".github" no se sube: "Add file" > "Create new file", escribe como
+     nombre  .github/workflows/captura.yml  , pega el contenido de ese
+     archivo y pulsa "Commit changes".
+
+PASO 3 - Guardar la clave en GitHub como secreto (2 min)
+  Settings (del repositorio) > Secrets and variables > Actions >
+  "New repository secret"
+       Name:   AISSTREAM_API_KEY
+       Secret: (pega tu clave)
+  Pulsa "Add secret". Nadie puede verla, ni siquiera en un repositorio publico.
+
+PASO 4 - Dar permiso para guardar datos (1 min)
+  Settings > Actions > General > abajo del todo, "Workflow permissions":
+  marca "Read and write permissions" > Save.
+
+PASO 5 - Primera prueba (10 min)
+  Pestana "Actions". Si sale un aviso, pulsa "I understand my workflows,
+  go ahead and enable them". Elige "Captura AIS" > "Run workflow" > "Run workflow".
+  Tarda unos 9 minutos. Si sale un circulo verde, ha ido bien: en la carpeta
+  "datos" del repositorio aparecera el primer CSV. Si sale una X roja, pulsa
+  encima, copia el error y pasamelo.
+
+PASO 6 - Publicar el cuadro de mando (2 min)
+  Settings > Pages > "Build and deployment" > Source: "Deploy from a branch"
+  Branch: main   Carpeta: /docs   > Save.
+  A los pocos minutos estara en:  https://TU-USUARIO.github.io/ais-valencia-tfg/
+  Se actualiza solo cada 30 minutos.
+
+A PARTIR DE AHI
+  - No hay que hacer nada. Mira el cuadro de mando de vez en cuando.
+  - Los CSV estan en la carpeta "datos" del repositorio; las escalas ya
+    calculadas, en "salidas/escalas.csv" (se abre con Excel).
+  - Revisa una vez por semana la pestana "Actions": si hay muchas X rojas,
+    algo falla.
+
+LIMITACIONES A TENER EN CUENTA (y a mencionar en la memoria)
+  - Precision de los tiempos: unos 30 min (una captura cada media hora).
+    Suficiente para esperas que se miden en horas.
+  - GitHub a veces retrasa o se salta alguna ejecucion programada. El
+    cuadro de mando muestra la cobertura para detectar huecos.
+  - GitHub desactiva las tareas programadas de repositorios sin actividad
+    durante 60 dias. Cada captura guarda datos (eso es actividad), pero si
+    alguna vez se para, se reactiva en la pestana "Actions" [VERIFICAR].
+  - zonas.json es PROVISIONAL: tras la primera semana se dibujan las
+    terminales con el mapa "puntos de atraque detectados".
+
+
+------------------------------------------------------------------
+OPCION ALTERNATIVA: EN TU PC (solo mientras esta encendido)
+------------------------------------------------------------------
+1. Instala Python desde https://www.python.org/downloads/
+   (marca la casilla "Add python.exe to PATH").
+2. Abre "Simbolo del sistema" (cmd) y escribe:   pip install websockets
+3. Pega tu clave en clave_api.txt (borrando PEGA_AQUI_TU_CLAVE) y guarda.
+4. Para capturar:
+       cd %USERPROFILE%\Desktop\TFG\captura_AIS
+       python captura_ais.py
+   Para parar: Ctrl + C. Si se apaga el PC, ese hueco se pierde.
+5. Para ver el cuadro de mando:   python procesar.py
+   y abre docs\index.html con el navegador.
+
+
+QUE GUARDA
+posiciones_*.csv : hora, MMSI, nombre, latitud, longitud, velocidad (nudos),
+                   rumbo, proa y estado de navegacion (1 = fondeado, 5 = amarrado).
+estaticos_*.csv  : MMSI, IMO, nombre, tipo de buque (70-79 = carga), eslora,
+                   manga, calado y destino.
+salidas/escalas.csv : una fila por escala con hora de llegada al fondeo,
+                   atraque, ultima hora atracado, espera (h) y estancia (h).

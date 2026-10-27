@@ -1,0 +1,14 @@
+{
+  "_nota": "Poligonos [latitud, longitud]. VERSION PROVISIONAL: el recinto portuario es un rectangulo amplio y las terminales estan vacias. Se calibran con la primera semana de datos (mapa 'Puntos de atraque detectados' del cuadro de mando).",
+  "recinto_portuario": [[39.410, -0.345], [39.470, -0.345], [39.470, -0.285], [39.410, -0.285]],
+  "terminales": [],
+  "_ejemplo_terminal": {"nombre": "Terminal X", "poligono": [[39.44, -0.32], [39.45, -0.32], [39.45, -0.31], [39.44, -0.31]]},
+  "parametros": {
+    "velocidad_max_atracado_nudos": 0.5,
+    "velocidad_max_fondeo_nudos": 1.0,
+    "tipos_buque_incluidos": [70, 79],
+    "eslora_minima_m": 100,
+    "hueco_max_horas": 12,
+    "dias_max_fondeo_sin_atraque": 10
+  }
+}

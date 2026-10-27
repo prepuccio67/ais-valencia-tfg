@@ -1,0 +1,46 @@
+# Captura AIS automatica cada 30 minutos (gratis en repositorios publicos de GitHub).
+# Cada tanda escucha 7 minutos, guarda los datos, recalcula el cuadro de mando y lo publica.
+name: Captura AIS
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"     # minutos 7 y 37 de cada hora (UTC)
+  workflow_dispatch:            # boton "Run workflow" para lanzarlo a mano
+
+permissions:
+  contents: write
+
+concurrency:
+  group: captura-ais
+  cancel-in-progress: false
+
+jobs:
+  captura:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install websockets
+
+      - name: Capturar 7 minutos
+        env:
+          AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
+        run: python captura_ais.py --minutos 7 --cada-segundos 180
+
+      - name: Procesar escalas y cuadro de mando
+        run: python procesar.py
+
+      - name: Guardar en el repositorio
+        run: |
+          git config user.name "captura-ais-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A -- datos salidas docs 2>/dev/null || git add -A -- salidas docs
+          git diff --cached --quiet && echo "Sin cambios" && exit 0
+          git commit -m "Captura AIS $(date -u +'%Y-%m-%d %H:%M') UTC"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
