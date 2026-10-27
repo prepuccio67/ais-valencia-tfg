@@ -1,5 +1,5 @@
 # Captura AIS automatica cada 30 minutos (gratis en repositorios publicos de GitHub).
-# Cada tanda escucha 7 minutos, guarda los datos, recalcula el cuadro de mando y lo publica.
+# Cada tanda escucha 12 minutos, guarda los datos, recalcula el cuadro de mando y lo publica.
 name: Captura AIS
 
 on:
@@ -17,21 +17,21 @@ concurrency:
 jobs:
   captura:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Instalar dependencias
         run: pip install websockets
 
-      - name: Capturar 7 minutos
+      - name: Capturar 12 minutos
         env:
           AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
-        run: python captura_ais.py --minutos 7 --cada-segundos 180
+        run: python captura_ais.py --minutos 12 --cada-segundos 180
 
       - name: Procesar escalas y cuadro de mando
         run: python procesar.py

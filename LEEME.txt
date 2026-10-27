@@ -7,14 +7,15 @@ QUE HAY EN ESTA CARPETA
                          y genera el cuadro de mando (docs/index.html)
   plantilla_cuadro.html  Diseno del cuadro de mando (no hace falta tocarlo)
   zonas.json             Recinto portuario, terminales y parametros (PROVISIONAL)
-  .github/workflows/     Orden para que GitHub lo ejecute solo cada 30 minutos
+  workflow_captura.yml   Orden para que GitHub lo ejecute solo cada 30 minutos
+                         (se crea a mano en GitHub, ver PASO 2.5)
   clave_api.txt          Tu clave (solo para usarlo en tu PC; NUNCA se sube a GitHub)
 
 
 ------------------------------------------------------------------
 OPCION RECOMENDADA: QUE SE EJECUTE SOLO EN LA NUBE (GITHUB, GRATIS)
 ------------------------------------------------------------------
-Cada 30 minutos GitHub enciende un ordenador, escucha 7 minutos, guarda los
+Cada 30 minutos GitHub enciende un ordenador, escucha 12 minutos, guarda los
 datos, recalcula el cuadro de mando y lo publica en una pagina web. Tu PC
 puede estar apagado.
 
@@ -33,10 +34,12 @@ PASO 2 - Crear el repositorio (10 min)
   4. Arrastra a la ventana TODO lo de esta carpeta EXCEPTO:
        - clave_api.txt   (tu clave no debe ser publica)
        - __pycache__     (si existe)
-     Asegurate de que se sube la carpeta ".github". Pulsa "Commit changes".
-     Si ".github" no se sube: "Add file" > "Create new file", escribe como
-     nombre  .github/workflows/captura.yml  , pega el contenido de ese
-     archivo y pulsa "Commit changes".
+     Pulsa "Commit changes".
+  5. Ahora la orden automatica: en el repositorio, "Add file" > "Create new file".
+     Como nombre escribe exactamente (las barras crean las carpetas solas):
+            .github/workflows/captura.yml
+     Abre workflow_captura.yml con el Bloc de notas, copia TODO su contenido,
+     pegalo en el recuadro grande y pulsa "Commit changes".
 
 PASO 3 - Guardar la clave en GitHub como secreto (2 min)
   Settings (del repositorio) > Secrets and variables > Actions >
@@ -52,7 +55,7 @@ PASO 4 - Dar permiso para guardar datos (1 min)
 PASO 5 - Primera prueba (10 min)
   Pestana "Actions". Si sale un aviso, pulsa "I understand my workflows,
   go ahead and enable them". Elige "Captura AIS" > "Run workflow" > "Run workflow".
-  Tarda unos 9 minutos. Si sale un circulo verde, ha ido bien: en la carpeta
+  Tarda unos 14 minutos. Si sale un circulo verde, ha ido bien: en la carpeta
   "datos" del repositorio aparecera el primer CSV. Si sale una X roja, pulsa
   encima, copia el error y pasamelo.
 

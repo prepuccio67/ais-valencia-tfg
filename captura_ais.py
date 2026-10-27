@@ -80,6 +80,7 @@ class Estado:
         self.pos = 0
         self.est = 0
         self.ultima_pos = {}      # mmsi -> instante (s) de la ultima posicion guardada
+        self.fichas_pos = 0       # posiciones obtenidas de las fichas (sin velocidad)
         self.firma_est = {}       # mmsi -> (dia, datos) de la ultima ficha guardada
         self._cargar_fichas_de_hoy()
 
@@ -128,6 +129,7 @@ def procesar(msg, st):
             campo(cuerpo, "NavigationalStatus")])
         st.pos += 1
     elif tipo == "ShipStaticData":
+        posicion_de_ficha(msg, st, mmsi, nombre, ahora)
         dim = campo(cuerpo, "Dimension") or {}
         a, b, c, d = (campo(dim, x) for x in "ABCD")
         eslora = (a or 0) + (b or 0) if (a or b) else None
@@ -143,6 +145,26 @@ def procesar(msg, st):
         st.firma_est[mmsi] = firma
         escribir("estaticos", COLS_EST, [ahora, mmsi] + datos)
         st.est += 1
+
+
+def posicion_de_ficha(msg, st, mmsi, nombre, ahora):
+    """La fuente no retransmite todas las posiciones, pero cada ficha trae la ultima
+    posicion conocida del buque. Se guarda SIN velocidad (marcada como 'ficha') si no
+    hay una posicion real reciente de ese buque. procesar.py la trata aparte."""
+    meta = msg.get("MetaData", {}) or {}
+    lat, lon = campo(meta, "latitude"), campo(meta, "longitude")
+    try:
+        lat, lon = float(lat), float(lon)
+    except (TypeError, ValueError):
+        return
+    (la1, lo1), (la2, lo2) = ZONA
+    if not (min(la1, la2) <= lat <= max(la1, la2) and min(lo1, lo2) <= lon <= max(lo1, lo2)):
+        return
+    if time.time() - st.ultima_pos.get(mmsi, 0) < st.cada:
+        return
+    escribir("posiciones", COLS_POS, [ahora, "ficha " + str(campo(meta, "time_utc") or ""),
+                                      mmsi, nombre, lat, lon, "", "", "", ""])
+    st.fichas_pos += 1
 
 
 async def capturar(minutos=None, cada=SEGUNDOS_ENTRE_POSICIONES):
@@ -181,7 +203,8 @@ async def capturar(minutos=None, cada=SEGUNDOS_ENTRE_POSICIONES):
                 break
             await asyncio.sleep(espera)
             espera = min(espera * 2, 300)
-    print(f"Fin de la tanda: {st.pos} posiciones y {st.est} fichas guardadas.", flush=True)
+    print(f"Fin de la tanda: {st.pos} posiciones, {st.fichas_pos} posiciones de ficha "
+          f"y {st.est} fichas guardadas.", flush=True)
     return st
 
 

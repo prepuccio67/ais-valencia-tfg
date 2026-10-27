@@ -24,7 +24,7 @@ fuera del recinto.
   Tiempo de estancia = ultima hora atracado - hora de atraque
 La precision depende de la frecuencia de captura (en la nube, ~30 min).
 """
-import csv, glob, json, os, statistics
+import csv, glob, json, math, os, statistics
 from collections import defaultdict, Counter
 from datetime import datetime, timedelta, timezone
 
@@ -61,6 +61,13 @@ def dentro(lat, lon, poligono):
             if lon < x_corte:
                 res = not res
     return res
+
+
+def millas(a, b):
+    """Distancia en millas nauticas entre dos puntos (formula del haversine)."""
+    la1, lo1, la2, lo2 = map(math.radians, (a["lat"], a["lon"], b["lat"], b["lon"]))
+    h = math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2
+    return 2 * 3440.065 * math.asin(math.sqrt(h))
 
 
 def fmt(t):
@@ -106,7 +113,24 @@ def leer_posiciones():
                     "nombre": (r.get("nombre") or "").strip()})
     for m in pos:
         pos[m].sort(key=lambda p: p["t"])
+        estimar_velocidad(pos[m])
     return pos
+
+
+def estimar_velocidad(puntos):
+    """Las posiciones sacadas de las fichas no traen velocidad. Se estima con el
+    desplazamiento respecto a la posicion anterior del mismo buque (distancia / tiempo),
+    solo si entre ambas hay entre 3 minutos y 3 horas. Si no se puede, queda sin
+    velocidad y ese punto solo sirve para saber que el buque sigue en la zona."""
+    for i, p in enumerate(puntos):
+        p["estimada"] = False
+        if p["sog"] is not None or i == 0:
+            continue
+        ant = puntos[i - 1]
+        horas = (p["t"] - ant["t"]).total_seconds() / 3600
+        if 0.05 <= horas <= 3:
+            p["sog"] = round(millas(ant, p) / horas, 2)
+            p["estimada"] = True
 
 
 # ---------------------------------------------------------------- clasificacion
@@ -156,8 +180,15 @@ def detectar_escalas(mmsi, puntos, zonas, inicio_datos, huecos, fin_datos=None):
         actual = None
 
     for p in puntos:
-        zona, terminal = clasificar(p, zonas)
         t = p["t"]
+        if p["sog"] is None and p["nav"] is None:
+            # punto sin velocidad: solo confirma que el buque sigue aqui
+            if actual and previo and t - previo <= hueco_max:
+                if actual["t_atraque"] and dentro(p["lat"], p["lon"], zonas["recinto_portuario"]):
+                    actual["t_ultimo_atracado"] = t
+                previo = t
+            continue
+        zona, terminal = clasificar(p, zonas)
         # hueco largo sin datos de este buque -> la escala se da por cerrada
         if actual and previo and t - previo > hueco_max:
             cerrar("hueco de datos" if not actual["t_atraque"] else "salida")
