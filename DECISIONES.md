@@ -1,0 +1,86 @@
+# Registro de decisiones
+
+Cada entrada recoge: fecha, decisión, alternativas consideradas y motivo. Las
+fuentes de la Fase 0 se consultaron el 28/10/2026.
+
+---
+
+## D-01 · 27/10/2026 · Abandonar GitHub Actions como capturador principal
+- **Decisión:** migrar la captura a un servidor encendido 24/7.
+- **Alternativas:** seguir con GitHub Actions cada 30 min; usar el PC personal.
+- **Motivo:** el primer día GitHub ejecutó muy pocas de las tareas programadas.
+  Hubo unos 70 min de datos en 21 h, con huecos de hasta 7 h. El PC no está
+  siempre encendido. GitHub Actions sigue funcionando hasta que el servidor
+  capture, porque algunos datos son mejor que ninguno.
+
+## D-02 · 28/10/2026 · Fuente doble: OpenSeaFeed + aisstream.io a la vez
+- **Decisión:** capturar de las dos fuentes al mismo tiempo, guardando de qué
+  fuente procede cada posición.
+- **Alternativas:** solo OpenSeaFeed (la del tutor); solo aisstream; una
+  principal y otra de reserva.
+- **Motivo:**
+  - Las dos son gratuitas y usan el mismo formato de mensajes, así que el coste
+    extra es mínimo.
+  - OpenSeaFeed se declara «early development», no tiene garantía de servicio y
+    no sabemos qué receptor cubre València.
+  - aisstream tampoco ofrece garantía de servicio.
+  - Con las dos a la vez, la caída de una no deja hueco, y se puede comparar su
+    cobertura para la memoria.
+- **Fuentes:** [openseafeed.com](https://www.openseafeed.com/),
+  [API OpenSeaFeed](https://openseafeed.com/docs.html),
+  [README OpenSeaFeed](https://github.com/BetterInc/openseafeed) (datos CC BY 4.0),
+  [documentación aisstream](https://aisstream.io/documentation).
+
+## D-03 · 28/10/2026 · Oracle Cloud con cuenta de pago por uso
+- **Decisión:** usar Oracle Cloud y pasar la cuenta a pago por uso (Pay As You
+  Go), con alerta de presupuesto y cuotas. Decidido por Marcos.
+- **Alternativas:** cuenta solo Always Free (gratuita); otro proveedor de pago
+  (unos 4–5 €/mes); una Raspberry Pi en casa.
+- **Motivo:**
+  - Oracle puede recuperar las máquinas Always Free «inactivas»: menos del 20 %
+    de CPU (percentil 95) y de red durante 7 días, y en A1 también de memoria.
+    Un capturador AIS cumple ese perfil.
+  - Oracle comunicó que la recuperación afecta a clientes «Always Free only»;
+    lo hemos visto citado en su foro, no en la documentación [VERIFICAR].
+  - Lo Always Free sigue siendo gratis tras pasar a pago por uso.
+  - Los presupuestos solo avisan (se revisan cada 24 h) y no bloquean el gasto,
+    de ahí las cuotas.
+- **Fuentes:** [Always Free Resources](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm),
+  [Budgets](https://docs.oracle.com/en-us/iaas/Content/Billing/Concepts/budgetsoverview.htm),
+  [FAQ Free Tier](https://www.oracle.com/cloud/free/faq/),
+  [foro Oracle](https://community.oracle.com/customerconnect/discussion/672339).
+
+## D-04 · 28/10/2026 · Python + aiohttp + SQLite + Leaflet (propuesta)
+- **Decisión:** el Collector y la API en Python 3.12 con `aiohttp`, una SQLite
+  por zona y un visor web con Leaflet.
+- **Alternativas:** C#/.NET como el tutor; FastAPI; PostgreSQL/PostGIS.
+- **Motivo:**
+  - Ya hay código en Python y el servidor es Linux.
+  - `aiohttp` cubre a la vez el cliente WebSocket con compresión y el servidor
+    HTTP, con una sola dependencia.
+  - SQLite reproduce el diseño del tutor (un archivo por zona y periodo) sin
+    servidor de base de datos, que en 1 GB de RAM sería una carga.
+
+## D-05 · 28/10/2026 · Muestreo en lugar de guardar todos los mensajes (propuesta)
+- **Decisión:**
+  - 1 posición por minuto si el buque se mueve y 1 cada 10 min si está parado;
+  - siempre al cambiar el estado de navegación o al pasar de parado a en marcha
+    (o al revés).
+- **Alternativas:** guardar todo (unas 10 veces más volumen); intervalo fijo
+  para todos.
+- **Motivo:** los tiempos de espera se miden en horas, así que con precisión de
+  minutos basta. Las reglas por evento conservan las horas exactas de atraque y
+  salida. Volumen estimado: unos 6 MB/día.
+
+## D-06 · 28/10/2026 · Acceso al visor por túnel SSH (propuesta)
+- **Decisión:** la API solo escucha dentro del servidor y se accede mediante un
+  túnel SSH. Además, el token es obligatorio.
+- **Alternativas:** HTTPS público con token.
+- **Motivo:** solo hay que abrir un puerto (22). No hace falta dominio ni
+  certificado. La API no queda expuesta a Internet.
+
+## D-07 · 28/10/2026 · Datos en un disco separado del sistema (propuesta)
+- **Decisión:** un block volume de 100 GB montado en `/srv/ais`.
+- **Alternativas:** todo en el disco de arranque.
+- **Motivo:** si hubiera que recrear la máquina, los datos se conectan a la
+  nueva sin copiarlos. Además facilita mover segmentos (fase 6).
