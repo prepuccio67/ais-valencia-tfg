@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "zone_id": "VALENCIA",
+  "name": "Puerto de València",
+  "description": "Puerto y zona de fondeo. Rectángulo heredado de la versión de GitHub Actions.",
+  "created_utc": "2026-10-28T00:00:00Z",
+  "active": true,
+  "geometry_type": "Rectangle",
+  "bbox": { "north": 39.60, "south": 39.25, "east": 0.00, "west": -0.36 },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [[[-0.36, 39.25], [0.00, 39.25], [0.00, 39.60], [-0.36, 39.60], [-0.36, 39.25]]]
+  },
+  "database": {
+    "current": "current.db",
+    "archive_dir": "archive",
+    "catalog": "archive-catalog.json",
+    "analysis": "analysis.db"
+  },
+  "archive_policy": {
+    "period": "yearly",
+    "max_segment_mb": null,
+    "compress_after_days": 365,
+    "compression": "zstd"
+  },
+  "sources": ["openseafeed", "aisstream"],
+  "sampling": {
+    "moving_interval_s": 60,
+    "stopped_interval_s": 600,
+    "stopped_speed_kn": 0.3,
+    "moving_speed_kn": 0.5,
+    "max_age_s": 900,
+    "min_event_gap_s": 10
+  },
+  "silence_alert_min": 10
+}
