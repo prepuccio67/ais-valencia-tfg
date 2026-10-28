@@ -84,3 +84,31 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
 - **Alternativas:** todo en el disco de arranque.
 - **Motivo:** si hubiera que recrear la máquina, los datos se conectan a la
   nueva sin copiarlos. Además facilita mover segmentos (fase 6).
+
+## D-08 · 28/10/2026 · Histéresis de velocidad 0,3 / 0,5 kn en el muestreo
+- **Decisión:**
+  - un buque parado pasa a «en movimiento» con ≥ 0,5 kn;
+  - uno en movimiento pasa a «parado» con < 0,3 kn.
+  - El cambio de estado se guarda siempre, aunque llegue a menos de 10 s del guardado anterior: queda pendiente y se guarda con el mensaje siguiente.
+- **Alternativas:** un único umbral de 0,5 kn; una histéresis de 0,5 / 1,0 kn (primera versión).
+- **Motivo:**
+  - Con un único umbral, un buque atracado cuya velocidad «tiembla» alrededor de 0,5 kn dispararía un guardado en cada mensaje.
+  - Con 0,5 / 1,0 kn, un desatraque lento (0,5–1,0 kn, con remolcadores) no se registraba como evento y la hora de salida quedaba sesgada hacia tarde.
+  - 0,5 kn coincide con el umbral de «atracado» del análisis de escalas.
+
+## D-09 · 28/10/2026 · Revisión adversarial del código antes de desplegar
+- **Decisión:** antes de dejar el Collector capturando 24/7, revisarlo con varios revisores automáticos independientes. Cada uno se centró en un aspecto: captura, robustez, base de datos, API y calidad del dato. Después, un verificador escéptico intentó refutar cada hallazgo ejecutando pruebas.
+- **Resultado:**
+  - 1.ª ronda: 25 hallazgos, de los que se confirmaron 22 (1 de gravedad alta: conexión que podía quedarse colgada sin capturar) y se refutaron 3.
+  - 2.ª ronda, de verificación de las correcciones: 13 resueltas del todo, 6 parciales y 11 problemas nuevos (2 de gravedad alta en el reintento de escrituras).
+  - Todo quedó corregido y cubierto por tests automáticos: 56 en total.
+- **Alternativas:** solo tests escritos por el autor.
+- **Motivo:** cada dato perdido es irrecuperable. Los fallos de robustez (cortes de red, base bloqueada, disco lleno) no aparecen en una prueba corta, pero sí en 6 meses de funcionamiento.
+
+## D-10 · 28/10/2026 · Las posiciones sin hora de la fuente se descartan
+- **Decisión:**
+  - Se guarda la hora AIS que da la fuente y, aparte, la hora de recepción.
+  - Las posiciones sin hora, con más de 15 min de antigüedad o más de 2 min en el futuro se descartan y se cuentan en el registro de sucesos.
+  - Esas posiciones tampoco cuentan como cobertura.
+- **Alternativas:** usar la hora de recepción cuando falte la de la fuente.
+- **Motivo:** OpenSeaFeed reenvía las últimas posiciones conocidas al conectar. Sin la hora original, una posición antigua pasaría por actual y falsearía las horas de llegada y salida.

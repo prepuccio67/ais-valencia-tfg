@@ -248,6 +248,14 @@ CREATE INDEX ix_event_ts ON collector_event (ts);
 Un hueco de **una** fuente no es un hueco de la zona si la otra seguía
 recibiendo. La API calcula los huecos de zona cruzando los de todas las fuentes.
 
+**Inicio y cierre de un hueco:**
+- Un hueco por caída de conexión empieza **cuando se detecta la caída**. Hasta
+  entonces la conexión estaba viva; si estaba viva pero muda, lo cubre
+  `source_silence`, que empieza en el último mensaje recibido.
+- El hueco se cierra con el siguiente mensaje **fresco** de esa fuente para la
+  zona. Las posiciones antiguas que OpenSeaFeed reenvía al conectar no cierran
+  huecos ni cuentan en `coverage_minute`.
+
 ### 3.3 Base derivada (`analysis.db`, una por zona)
 
 Guarda cálculos que se pueden **rehacer** a partir de las posiciones; por eso
@@ -307,10 +315,19 @@ posición nueva si se cumple **alguna** de estas condiciones:
 | Regla | Valor por defecto | Para qué |
 |---|---|---|
 | Primera posición del buque (o tras reiniciar) | — | Saber que está |
-| Se mueve (SOG ≥ 0,5 kn) y han pasado ≥ 60 s desde la última guardada | 60 s | Trayectorias para el visor |
-| Está parado (SOG < 0,5 kn) y han pasado ≥ 600 s | 10 min | Saber que sigue ahí |
-| Cambia el estado de navegación AIS (p. ej. 1 fondeado → 0 navegando) | siempre | Precisión en llegadas y salidas |
-| Pasa de parado a en marcha o al revés | siempre | Hora exacta de atraque y desatraque |
+| Se mueve y han pasado ≥ 60 s desde la última guardada | 60 s | Trayectorias para el visor |
+| Está parado y han pasado ≥ 600 s | 10 min | Saber que sigue ahí |
+| Cambia el estado de navegación AIS (p. ej. 1 fondeado → 0 navegando) | siempre (≥ 10 s desde la anterior) | Precisión en llegadas y salidas |
+| Pasa de parado a en marcha o al revés | siempre (≥ 10 s desde la anterior) | Hora exacta de atraque y desatraque |
+
+**«Parado» y «en movimiento» con histéresis** (como un termostato):
+- un buque parado pasa a «en movimiento» cuando su SOG llega a **≥ 0,5 kn**, el mismo
+  umbral con el que el análisis de escalas considera «atracado»;
+- un buque en movimiento pasa a «parado» cuando baja de **0,3 kn**.
+
+Así, un buque atracado cuya velocidad «tiembla» entre 0,1 y 0,45 kn no dispara
+un guardado en cada mensaje. Si un evento llega menos de 10 s después del
+último guardado, no se pierde: se guarda con el siguiente mensaje.
 
 Además:
 - **Se descarta** cualquier posición con hora igual o anterior a la última
@@ -359,8 +376,10 @@ Además:
   "sampling": {
     "moving_interval_s": 60,
     "stopped_interval_s": 600,
-    "stopped_speed_kn": 0.5,
-    "max_age_s": 900
+    "stopped_speed_kn": 0.3,
+    "moving_speed_kn": 0.5,
+    "max_age_s": 900,
+    "min_event_gap_s": 10
   },
   "silence_alert_min": 10
 }

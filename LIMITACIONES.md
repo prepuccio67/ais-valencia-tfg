@@ -15,6 +15,17 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   Podría haber buques fondeados lejos que se oigan peor.
 - **Licencias:** los datos de OpenSeaFeed son CC BY 4.0 (hay que citarlos).
   aisstream no publica condiciones de uso [VERIFICAR con aisstream].
+- **Las dos fuentes no ven lo mismo.** En la prueba de 30 min del 28/10/2026:
+  - aisstream: 1.093 mensajes con hora válida, unos 31 buques por minuto y un
+    retraso medio de unos 6,5 s;
+  - OpenSeaFeed: 656 mensajes, unos 21 buques por minuto y un retraso medio de
+    unos 3,4 s.
+  - Se guarda la primera fuente que trae cada dato. La columna `source_id` dice
+    de cuál viene, así que se puede medir la aportación de cada una.
+- **Repeticiones al conectar.** OpenSeaFeed reenvía las últimas posiciones
+  conocidas al suscribirse. Se aceptan las de menos de 15 min, que llevan su
+  hora original; las demás se descartan (unas 100 por conexión) y se anotan en
+  el registro de sucesos.
 
 ## Huecos
 - **Huecos ya registrados en la versión 0 (GitHub Actions):** unos 70 min de
@@ -25,9 +36,13 @@ tribunal. Cada una indica cómo se mide o se mitiga.
 
 ## Precisión
 - **Muestreo:** como mucho 1 posición por minuto en movimiento y 1 cada 10 min
-  parado, más todos los cambios de estado. Las horas de atraque y salida tienen
-  una precisión de alrededor de 1 minuto, siempre que la fuente reciba los
-  mensajes.
+  parado, más todos los cambios de estado. Un buque parado pasa a «en
+  movimiento» con 0,5 kn y vuelve a «parado» por debajo de 0,3 kn. Las horas de
+  atraque y salida tienen una precisión de alrededor de 1 minuto, siempre que
+  la fuente reciba los mensajes.
+- **Un cambio de estado muy rápido** (menos de 10 s después del último
+  guardado) se guarda con el mensaje siguiente. Si el buque deja de emitir
+  justo entonces, ese evento se pierde: es un caso raro.
 - **Hora del mensaje:** la hora que da la fuente es la de recepción en su red;
   el AIS solo transmite el segundo dentro del minuto. Se guarda también nuestra
   hora de recepción para medir el retraso, que fue de unos 3 s de mediana en la
