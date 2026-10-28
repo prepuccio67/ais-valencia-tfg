@@ -22,10 +22,12 @@ Todo se pega en **PowerShell**, dentro de la carpeta del proyecto:
 cd C:\Users\marco\Desktop\TFG\captura_AIS
 ```
 
-### 1. Solo la primera vez
+### 1. Solo la primera vez (en el PC de Marcos ya está hecho)
+
+Requiere Python 3.12 (`winget install Python.Python.3.12 --scope user`).
 
 ```powershell
-py -3.12 -m venv .venv
+& "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe" -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 copy .env.example .env
 ```
