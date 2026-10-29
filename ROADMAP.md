@@ -1,6 +1,6 @@
 # Hoja de ruta
 
-Última actualización: 28/10/2026
+Última actualización: 29/10/2026
 
 ## ✅ Hecho
 - **Versión 0 (GitHub Actions):**
@@ -22,18 +22,32 @@
   - revisión adversarial en dos rondas;
   - prueba local de 30 min sin errores: 445 posiciones de 184 buques.
 
+- **Fase 3. Despliegue en Oracle** (29/10/2026):
+  - Collector `VALENCIA-01` **capturando 24/7 desde las 19:33 UTC**, en una
+    máquina Ampere A1 en Madrid;
+  - datos en un disco de 100 GB aparte; servicio systemd; SSH solo con llave;
+    cortafuegos con solo el puerto 22;
+  - copias de seguridad diarias verificadas;
+  - pruebas superadas: reinicio de la máquina, corte de red y restauración de
+    una copia.
+
 ## 🔄 En curso
-- **Alta de la cuenta de Oracle** con pago por uso (la hace Marcos).
+- **Copias fuera de la máquina:** falta crear el bucket y el enlace de
+  escritura en Oracle (lo hace Marcos). Mientras tanto, las copias se
+  descargan al PC con `deploy/descargar_copias.ps1`.
+- **Solapamiento con GitHub Actions** hasta el 30/10/2026; después se retira y
+  el código antiguo pasa a `legacy/`.
+- **Revisiones pendientes:**
+  - comprobar en *Cost Analysis* que el gasto de Oracle es 0 €;
+  - comprobar el 08/11/2026 que el banco ha liberado la retención de 93 €.
 
 ## ⏳ Pendiente
 | Fase | Contenido |
 |---|---|
-| 3 | Despliegue en Oracle: máquina, disco de datos, servicio systemd, cortafuegos, token, copias de seguridad y prueba de restauración. **Captura 24/7** |
 | 4 | Viewer web: mapa, lista de buques, línea temporal, aviso de huecos, selector de zona y reproducción de rutas |
 | 5 | Zonas configurables: varias zonas, editor (coordenadas, polígono o GeoJSON, ratón), activar y desactivar |
 | 6 | Archivo: cierre de segmentos, catálogo, consultas entre segmentos, compresión .zst y movimiento verificado |
 | 7 | Análisis TFG: subzonas, escalas y tiempos de espera, exportación CSV/Excel, gráficos. Usar «atracado» con SOG < 0,5 kn para coincidir con el muestreo |
 | 8 | (Opcional) Reparación de huecos entre dos Collectors de la misma zona |
 
-Tras la Fase 3 se retira la captura por GitHub Actions y el código antiguo pasa
-a `legacy/`.
+

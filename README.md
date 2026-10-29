@@ -68,7 +68,32 @@ DATA_DIR/
 En la base, las vistas `v_position`, `v_gap` y `v_event` muestran las horas
 como texto legible (UTC).
 
-## En el servidor (Fase 3)
+## En el servidor (Oracle Cloud, Collector `VALENCIA-01`)
 
-Se documentará al desplegar: servicio `systemd` con arranque y reinicio
-automáticos, cortafuegos, copias de seguridad y acceso por túnel SSH.
+Máquina Ubuntu 24.04 (Ampere A1, Madrid) capturando 24/7 desde el 29/10/2026.
+El PC de Marcos tiene el alias SSH `ais-oracle` (en `%USERPROFILE%\.ssh\config`).
+
+| Qué | Comando (PowerShell del PC) |
+|---|---|
+| ¿Está funcionando? | `ssh ais-oracle "systemctl is-active ais-collector"` → `active` |
+| Ver el registro en directo | `ssh ais-oracle "sudo journalctl -u ais-collector -f"` (Ctrl+C para salir) |
+| Abrir la API en el navegador | `.\deploy\abrir_visor.ps1` |
+| Descargar las copias al PC | `.\deploy\descargar_copias.ps1` |
+| Reiniciar el Collector | `ssh ais-oracle "sudo systemctl restart ais-collector"` |
+| Parar el Collector | `ssh ais-oracle "sudo systemctl stop ais-collector"` (queda registrado como hueco `maintenance`) |
+| Actualizar el código | `ssh ais-oracle "cd /opt/ais && sudo git pull && sudo systemctl restart ais-collector"` |
+
+Cómo está montado (DISEÑO.md §7):
+- **Código** en `/opt/ais`; **datos** en `/srv/ais`, un disco aparte de 100 GB
+  que se monta solo al arrancar. Si ese disco no está, el Collector no arranca,
+  para no escribir en el disco equivocado.
+- **Servicio `ais-collector`:** arranca con la máquina y se relanza a los 10 s
+  si se cae.
+- **Copia de seguridad:** `ais-backup.timer` la lanza a las 03:30 UTC. La copia
+  se verifica antes de darla por buena y se sube a Object Storage.
+- **Cortafuegos:** solo está abierto el puerto 22 (SSH, solo con llave). La
+  API escucha únicamente dentro de la máquina.
+- **Pruebas superadas el 29/10/2026:** reinicio completo de la máquina
+  (recuperación en unos 30 s, con su hueco registrado) y corte de red de
+  aisstream (detectado, registrado y reconectado solo, sin hueco de zona porque
+  OpenSeaFeed siguió recibiendo).
