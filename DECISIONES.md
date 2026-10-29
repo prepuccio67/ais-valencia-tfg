@@ -112,3 +112,16 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   - Esas posiciones tampoco cuentan como cobertura.
 - **Alternativas:** usar la hora de recepción cuando falte la de la fuente.
 - **Motivo:** OpenSeaFeed reenvía las últimas posiciones conocidas al conectar. Sin la hora original, una posición antigua pasaría por actual y falsearía las horas de llegada y salida.
+
+## D-11 · 29/10/2026 · Máquina Ampere A1 (ARM) en lugar de E2.1.Micro
+- **Decisión:**
+  - Máquina VM.Standard.A1.Flex con 1 OCPU, 6 GB de RAM y Ubuntu 24.04 Minimal (aarch64), en Oracle Madrid (eu-madrid-1).
+  - Cuenta pasada a pago por uso, con alerta de presupuesto de 1 €.
+  - Collector `VALENCIA-01` capturando desde el 29/10/2026 a las 19:33 UTC.
+- **Alternativas:** VM.Standard.E2.1.Micro (1 GB de RAM); esperar a que haya capacidad.
+- **Motivo:**
+  - Al crear la E2.1.Micro, Oracle respondió «Out of capacity», y Madrid solo tiene una zona de disponibilidad.
+  - La A1 también es Always Free (hasta 2 OCPU y 12 GB en total) y tenía capacidad.
+  - El código es Python puro y funciona igual en ARM: los 56 tests pasan en el servidor.
+  - Con 1 OCPU y 6 GB se usa la mitad de lo gratuito y queda margen para un segundo Collector.
+- **Nota:** al pasar a pago por uso, Oracle retiene temporalmente 100 USD (unos 93 €) en la tarjeta para verificarla y los libera después ([documentación oficial](https://docs.oracle.com/iaas/Content/Billing/Tasks/changingpaymentmethod.htm)).
