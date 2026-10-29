@@ -44,6 +44,14 @@
     temporal» (estelas). Se harán junto con la Fase 7, cuando existan las
     subzonas.
 
+- **Fase 5. Zonas configurables** (29/10/2026):
+  - varias zonas en el mismo Collector;
+  - editor en el visor (rectángulo, lista de puntos, GeoJSON y dibujo con
+    ratón, con vértices arrastrables);
+  - activar y desactivar conservando el histórico;
+  - recarga ordenada en caliente y cambios registrados;
+  - 75 tests; desplegado en el servidor.
+
 ## 🔄 En curso
 - **Solapamiento con GitHub Actions** hasta el 30/10/2026; después se retira y
   el código antiguo pasa a `legacy/`.
@@ -55,7 +63,6 @@
 ## ⏳ Pendiente
 | Fase | Contenido |
 |---|---|
-| 5 | Zonas configurables: varias zonas, editor (coordenadas, polígono o GeoJSON, ratón), activar y desactivar |
 | 6 | Archivo: cierre de segmentos, catálogo, consultas entre segmentos, compresión .zst y movimiento verificado |
 | 7 | Análisis TFG: subzonas, escalas y tiempos de espera, exportación CSV/Excel, gráficos. Usar «atracado» con SOG < 0,5 kn para coincidir con el muestreo |
 | 8 | (Opcional) Reparación de huecos entre dos Collectors de la misma zona |

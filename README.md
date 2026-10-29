@@ -95,6 +95,30 @@ abierta) y el navegador en `http://127.0.0.1:5081/`. Qué se puede hacer:
 - **Aviso de huecos** arriba a la derecha (púlsalo para ver la lista), estado
   de cada fuente y contadores.
 
+### Zonas (botón «✎ Zonas»)
+
+- **Crear** una zona nueva: identificador (no se puede cambiar después),
+  nombre, fuentes AIS y geometría, que se puede definir de cuatro maneras:
+  1. **Rectángulo:** norte, sur, este y oeste en grados decimales.
+  2. **Lista de puntos:** una línea por vértice, «latitud, longitud», como en
+     Google Maps.
+  3. **GeoJSON:** pegarlo o elegir un archivo `.geojson` (Polygon, Feature o
+     FeatureCollection).
+  4. **Dibujar con el ratón:** rectángulo con dos clics o polígono clic a clic
+     (doble clic para cerrar). Después se pueden **arrastrar los vértices**; con
+     clic derecho se borra uno.
+- **Editar** una zona: nombre, descripción, fuentes o geometría. Lo ya
+  capturado no cambia, y el cambio de geometría queda registrado (con la
+  versión anterior y la nueva).
+- **Desactivar o activar:** una zona desactivada deja de capturar pero
+  **conserva todo su histórico**, que se puede seguir consultando. El periodo
+  inactivo queda registrado como hueco `zone_disabled`.
+- Al guardar, el Collector **se recarga solo** en 1–2 s para aplicar el cambio.
+  La pausa queda registrada.
+- Límites de seguridad: rectángulo envolvente de 25 grados² como máximo
+  (València mide 0,13), 200 vértices y ningún polígono que se cruce consigo
+  mismo.
+
 Todas las horas están en **UTC**. La página no lleva datos: los pide a la API
 con el token, que se guarda solo mientras la pestaña está abierta.
 

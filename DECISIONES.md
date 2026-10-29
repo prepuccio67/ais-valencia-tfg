@@ -142,3 +142,26 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
     defender.
   - Al no usar una CDN (un servidor externo que reparte librerías), el visor no
     depende de terceros, salvo para las teselas del mapa de OpenStreetMap.
+
+## D-13 · 29/10/2026 · Cambios de zona aplicados con recarga ordenada en caliente
+- **Decisión:**
+  - Al crear, editar, activar o desactivar una zona, se valida y se escribe su
+    `zone.json`. Después el Collector se para de forma ordenada (guardando todo)
+    y vuelve a arrancar dentro del mismo proceso, en 1–2 s.
+  - La pausa queda registrada como hueco `maintenance` y el cambio de geometría
+    como suceso `zone_config_changed`, con la versión anterior y la nueva.
+  - Los cambios solo se aceptan con el token en la cabecera HTTP, no en la
+    dirección web.
+- **Alternativas:** cambiar cada pieza en marcha (suscripciones, trabajadores,
+  bases) sin parar; obligar a reiniciar el servicio a mano.
+- **Motivo:**
+  - La recarga reutiliza el arranque y la parada, que ya están probados
+    (reinicio de la máquina, cortes de red), en lugar de añadir lógica nueva y
+    delicada.
+  - Una pausa de 1–2 s, registrada, es aceptable para cambios que se hacen muy
+    pocas veces.
+  - Exigir el token en la cabecera impide que otra página abierta en el
+    navegador pueda modificar las zonas.
+- **Límites:** rectángulo envolvente de 25 grados² como máximo, 200 vértices y
+  ningún polígono que se cruce consigo mismo. Una zona enorme saturaría la
+  máquina, y un polígono «en lazo» no delimita un área con sentido.
