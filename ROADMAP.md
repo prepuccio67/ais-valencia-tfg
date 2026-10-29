@@ -33,6 +33,17 @@
   - pruebas superadas: reinicio de la máquina, corte de red y restauración de
     una copia.
 
+- **Fase 4. Visor web** (29/10/2026):
+  - mapa OpenStreetMap con iconos orientados y coloreados por velocidad;
+  - lista con buscador y filtro de carga ≥ 100 m, ficha del buque y contadores;
+  - línea temporal con cobertura y huecos, aviso de huecos y estado de las
+    fuentes;
+  - rutas de 24 h, 3 días o 7 días con reproducción;
+  - desplegado en el servidor y probado por el túnel SSH con datos reales.
+  - Pendiente de la hoja de ruta del tutor: «permanencias» y «fundido
+    temporal» (estelas). Se harán junto con la Fase 7, cuando existan las
+    subzonas.
+
 ## 🔄 En curso
 - **Solapamiento con GitHub Actions** hasta el 30/10/2026; después se retira y
   el código antiguo pasa a `legacy/`.
@@ -44,7 +55,6 @@
 ## ⏳ Pendiente
 | Fase | Contenido |
 |---|---|
-| 4 | Viewer web: mapa, lista de buques, línea temporal, aviso de huecos, selector de zona y reproducción de rutas |
 | 5 | Zonas configurables: varias zonas, editor (coordenadas, polígono o GeoJSON, ratón), activar y desactivar |
 | 6 | Archivo: cierre de segmentos, catálogo, consultas entre segmentos, compresión .zst y movimiento verificado |
 | 7 | Análisis TFG: subzonas, escalas y tiempos de espera, exportación CSV/Excel, gráficos. Usar «atracado» con SOG < 0,5 kn para coincidir con el muestreo |

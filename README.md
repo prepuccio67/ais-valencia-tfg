@@ -5,7 +5,7 @@ las terminales de contenedores del Puerto de València.
 
 - **Collector:** programa sin pantalla que escucha dos fuentes AIS (OpenSeaFeed
   y aisstream.io), guarda una muestra de posiciones en SQLite y ofrece una API.
-- **Viewer:** visor web con mapa (llegará en la Fase 4).
+- **Viewer:** visor web con mapa que sirve el propio Collector (ver «El visor»).
 
 Documentación: [DISEÑO.md](DISEÑO.md) · [ROADMAP.md](ROADMAP.md) ·
 [DECISIONES.md](DECISIONES.md) · [LIMITACIONES.md](LIMITACIONES.md).
@@ -67,6 +67,36 @@ DATA_DIR/
 
 En la base, las vistas `v_position`, `v_gap` y `v_event` muestran las horas
 como texto legible (UTC).
+
+## El visor
+
+En **PowerShell**, dentro de la carpeta del proyecto:
+
+```powershell
+cd C:\Users\marco\Desktop\TFG\captura_AIS
+.\deploy\abrir_visor.ps1
+```
+
+El script abre un túnel SSH al servidor (una ventana negra que hay que dejar
+abierta) y el navegador en `http://127.0.0.1:5081/`. Qué se puede hacer:
+
+- **Mapa** (OpenStreetMap) con cada buque como un triángulo orientado según su
+  proa o rumbo, de color según la velocidad. Los de carga de 100 m o más se ven
+  más grandes; las posiciones de hace más de 15 min, atenuadas.
+- **Lista lateral** con buscador por nombre o MMSI y filtro «solo carga ≥ 100 m».
+- **Ficha del buque** al pulsarlo: IMO, tipo, eslora, destino, calado, ETA,
+  estado AIS…
+- **Ruta de 24 h, 3 días o 7 días**, con un botón **Reproducir** a x60, x600 o
+  x3600.
+- **Línea temporal:** la barra de abajo permite ver el puerto en cualquier
+  momento desde que empezó la captura. La franja azul son los mensajes
+  recibidos por hora y la roja, los **huecos**. El botón «● En directo» vuelve
+  al momento actual (se actualiza cada 30 s).
+- **Aviso de huecos** arriba a la derecha (púlsalo para ver la lista), estado
+  de cada fuente y contadores.
+
+Todas las horas están en **UTC**. La página no lleva datos: los pide a la API
+con el token, que se guarda solo mientras la pestaña está abierta.
 
 ## En el servidor (Oracle Cloud, Collector `VALENCIA-01`)
 

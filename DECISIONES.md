@@ -125,3 +125,20 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   - El código es Python puro y funciona igual en ARM: los 56 tests pasan en el servidor.
   - Con 1 OCPU y 6 GB se usa la mitad de lo gratuito y queda margen para un segundo Collector.
 - **Nota:** al pasar a pago por uso, Oracle retiene temporalmente 100 USD (unos 93 €) en la tarjeta para verificarla y los libera después ([documentación oficial](https://docs.oracle.com/iaas/Content/Billing/Tasks/changingpaymentmethod.htm)).
+
+## D-12 · 29/10/2026 · Visor web servido por el propio Collector
+- **Decisión:**
+  - El visor es una página web (HTML + JavaScript + Leaflet 1.9.4) que sirve el
+    Collector en `/`. Se abre por el túnel SSH con `deploy/abrir_visor.ps1`.
+  - La página no contiene datos: los pide a la API con el token.
+  - Leaflet se incluye dentro del proyecto (`viewer/vendor`), comprobado con su
+    huella SHA-256 oficial, en lugar de cargarlo desde una CDN.
+- **Alternativas:** aplicación de escritorio como la del tutor (WPF); una web
+  aparte en GitHub Pages; frameworks como React.
+- **Motivo:**
+  - No hay que instalar nada: sirve cualquier navegador.
+  - Los datos nunca salen a Internet: solo viajan por el túnel cifrado.
+  - Con JavaScript sencillo, sin frameworks, el código se puede leer y
+    defender.
+  - Al no usar una CDN (un servidor externo que reparte librerías), el visor no
+    depende de terceros, salvo para las teselas del mapa de OpenStreetMap.
