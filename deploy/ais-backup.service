@@ -4,6 +4,8 @@
 Description=Copia de seguridad AIS (diaria incremental + mensual completa)
 After=network-online.target
 Wants=network-online.target
+# No arrancar si el disco de datos no está montado (evita escribir en el disco equivocado)
+RequiresMountsFor=/srv/ais
 
 [Service]
 Type=oneshot

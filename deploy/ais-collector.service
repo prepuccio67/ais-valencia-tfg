@@ -6,6 +6,8 @@
 Description=Collector AIS (TFG Puerto de Valencia)
 After=network-online.target
 Wants=network-online.target
+# No arrancar si el disco de datos no está montado (evita escribir en el disco equivocado)
+RequiresMountsFor=/srv/ais
 # No dejar nunca de reintentar, por muchas veces que falle seguidas
 StartLimitIntervalSec=0
 
