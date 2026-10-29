@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visor AIS · Puerto de València</title>
+  <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Visor AIS <span class="sub">Puerto de València · TFG</span></h1>
+    <label class="zone">Zona <select id="zone"></select></label>
+    <div id="counters" class="counters"></div>
+    <div id="sources" class="sources"></div>
+    <button id="gapsBadge" class="gaps hidden" title="Huecos de datos registrados"></button>
+  </header>
+
+  <main>
+    <aside>
+      <div id="vesselPanel" class="panel hidden"></div>
+      <div class="filters">
+        <input id="search" type="search" placeholder="Buscar por nombre o MMSI">
+        <label><input id="onlyCargo" type="checkbox"> Solo carga (tipos 70–79) ≥ 100 m</label>
+      </div>
+      <ul id="list" class="list"></ul>
+    </aside>
+    <div id="map"></div>
+    <div id="gapsPanel" class="gaps-panel hidden"></div>
+  </main>
+
+  <footer>
+    <div class="timeline-row">
+      <button id="back" title="Retroceder 1 hora">◀ 1 h</button>
+      <div class="timeline">
+        <canvas id="coverage" height="22"></canvas>
+        <input id="slider" type="range" min="0" max="1" step="60" value="1">
+      </div>
+      <button id="fwd" title="Avanzar 1 hora">1 h ▶</button>
+      <button id="live" class="live on" title="Volver al momento actual y actualizar cada 30 s">● En directo</button>
+      <span id="timeLabel" class="time-label"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:#6b7280"></i>parado (&lt; 0,5 kn)</span>
+      <span><i style="background:#f59e0b"></i>0,5–5 kn</span>
+      <span><i style="background:#10b981"></i>5–12 kn</span>
+      <span><i style="background:#3b82f6"></i>&gt; 12 kn</span>
+      <span class="muted">Barra superior: mensajes recibidos por hora · rojo: huecos de datos · horas en UTC</span>
+    </div>
+  </footer>
+
+  <script src="/static/vendor/leaflet/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

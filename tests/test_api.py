@@ -10,6 +10,7 @@ from collector.main import State
 from collector.messages import parse_frame
 from collector.storage import ZoneStore
 from collector.zone_worker import ZoneWorker
+from collector.storage import iso
 from tests.helpers import make_data_dir, pos_frame, settings, valencia
 
 TOKEN = "x" * 32
@@ -101,3 +102,53 @@ class TestApi(AioHTTPTestCase):
             f"/api/coverage?zone=VALENCIA&from={self.t - 60}&bucket=hour", headers=H)).json()
         total = sum(s["msgs"] for row in data["rows"] for s in row["sources"].values())
         self.assertEqual(total, 8)
+
+
+class TestViewerApi(TestApi):
+    """Endpoints del visor (Fase 4). Reutiliza los mismos datos de prueba."""
+
+    async def test_snapshot_latest_position_per_vessel(self):
+        at = self.t + 250
+        data = await (await self.client.get(f"/api/vessels?zone=VALENCIA&at={at}&window=1200", headers=H)).json()
+        by = {v["mmsi"]: v for v in data["vessels"]}
+        self.assertEqual(set(by), {224000001, 224000002})          # el 3 aún no había aparecido
+        self.assertEqual(by[224000001]["ts"], iso(self.t + 240))   # la última antes de 'at'
+        self.assertEqual(by[224000001]["age_s"], 10)
+        self.assertEqual(by[224000001]["name"], "PRUEBA")          # nombre de la pista de MetaData
+        later = await (await self.client.get(f"/api/vessels?zone=VALENCIA&at={self.t + 1600}&window=600",
+                                             headers=H)).json()
+        self.assertEqual([v["mmsi"] for v in later["vessels"]], [224000003])   # ventana: solo recientes
+
+    async def test_snapshot_bad_window(self):
+        r = await self.client.get("/api/vessels?zone=VALENCIA&window=5", headers=H)
+        self.assertEqual(r.status, 400)
+
+    async def test_track_and_vessel(self):
+        tr = await (await self.client.get(
+            f"/api/track/224000001?zone=VALENCIA&from={self.t - 10}&to={self.t + 4000}", headers=H)).json()
+        self.assertEqual(tr["count"], 5)
+        self.assertEqual([p[0] for p in tr["points"]], [self.t + 60 * i for i in range(5)])
+        self.assertEqual(tr["fields"][:3], ["ts", "lat", "lon"])
+        info = await (await self.client.get("/api/vessel/224000001?zone=VALENCIA", headers=H)).json()
+        self.assertEqual((info["mmsi"], info["positions"]), (224000001, 5))
+        r = await self.client.get("/api/vessel/999999999?zone=VALENCIA", headers=H)
+        self.assertEqual(r.status, 404)
+        r = await self.client.get("/api/track/abc?zone=VALENCIA", headers=H)
+        self.assertEqual(r.status, 400)
+        r = await self.client.get(f"/api/track/224000001?zone=VALENCIA&from=0&to={self.t}", headers=H)
+        self.assertEqual(r.status, 400)                              # más de 31 días
+
+    async def test_bounds(self):
+        b = await (await self.client.get("/api/bounds?zone=VALENCIA", headers=H)).json()
+        self.assertEqual((b["first"], b["last"]), (self.t, self.t + 1500))
+
+    async def test_viewer_page_needs_no_token_but_api_does(self):
+        r = await self.client.get("/")
+        self.assertEqual(r.status, 200)
+        self.assertIn("Visor AIS", await r.text())
+        r = await self.client.get("/static/app.js")
+        self.assertEqual(r.status, 200)
+        r = await self.client.get("/static/../.env")              # no se puede salir de la carpeta del visor
+        self.assertIn(r.status, (403, 404))
+        r = await self.client.get("/api/vessels")
+        self.assertEqual(r.status, 401)

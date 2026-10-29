@@ -63,7 +63,9 @@ def segments_for(zone, t_from, t_to):
     for seg in segs:
         a, b = _seg_bounds(seg)
         a -= margin
-        if (b is not None and b <= t_from) or a >= t_to:
+        # El segmento activo (sin fin) se consulta siempre: abrirlo de más no cuesta nada y
+        # así nunca se pierden datos aunque su fecha de inicio no fuera exacta.
+        if b is not None and (b <= t_from or a >= t_to):
             continue
         path = Path(zone.zone_dir) / seg["path"]
         if seg.get("status") == "ONLINE" and path.exists():

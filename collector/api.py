@@ -16,9 +16,12 @@ from aiohttp import web
 
 from . import VERSION
 from . import queries as q
+from . import viewer_queries as vq
+from .config import REPO_ROOT
 from .storage import iso
 
 DAY = 86400
+VIEWER_DIR = REPO_ROOT / "viewer"
 
 
 @web.middleware
@@ -159,11 +162,47 @@ async def coverage(request):
     return web.json_response(data)
 
 
+def _mmsi(request):
+    try:
+        mmsi = int(request.match_info["mmsi"])
+    except ValueError:
+        raise ValueError("el MMSI debe ser un número")
+    if not 1 <= mmsi <= 999999999:
+        raise ValueError("el MMSI debe tener como máximo 9 dígitos")
+    return mmsi
+
+
+async def vessels(request):
+    """Foto del puerto: última posición de cada buque en el instante 'at' (por defecto, ahora)."""
+    z = _zone(request)
+    at = q.parse_when(request.query.get("at"), "at")
+    if at is None:
+        at = int(time.time())
+    window = _int_param(request, "window", 1200, 60, 7200)
+    return web.json_response(await asyncio.to_thread(vq.snapshot, z, at, window))
+
+
+async def vessel(request):
+    z = _zone(request)
+    info = await asyncio.to_thread(vq.vessel_info, z, _mmsi(request))
+    if info is None:
+        return web.json_response({"error": "buque no encontrado en esta zona"}, status=404)
+    return web.json_response(info)
+
+
+async def track(request):
+    z = _zone(request)
+    t_from, t_to = _range(request)
+    return web.json_response(await asyncio.to_thread(vq.track, z, _mmsi(request), t_from, t_to))
+
+
+async def bounds(request):
+    return web.json_response(await asyncio.to_thread(vq.bounds, _zone(request)))
+
+
 async def index(request):
-    return web.Response(content_type="text/html", text=(
-        "<!doctype html><meta charset='utf-8'><title>Collector AIS</title>"
-        "<h1>Collector AIS</h1><p>El visor con mapa llegará en la Fase 4.</p>"
-        "<p>Prueba: <code>/api/health?token=TU_TOKEN</code></p>"))
+    """Página del visor. No lleva datos: los pide a /api/ con el token."""
+    return web.FileResponse(VIEWER_DIR / "index.html", headers={"Cache-Control": "no-cache"})
 
 
 STATE = web.AppKey("state", object)
@@ -181,4 +220,9 @@ def create_app(state):
     app.router.add_get("/api/archive/range", archive_range)
     app.router.add_get("/api/gaps", gaps)
     app.router.add_get("/api/coverage", coverage)
+    app.router.add_get("/api/vessels", vessels)
+    app.router.add_get("/api/vessel/{mmsi}", vessel)
+    app.router.add_get("/api/track/{mmsi}", track)
+    app.router.add_get("/api/bounds", bounds)
+    app.router.add_static("/static/", VIEWER_DIR, show_index=False)
     return app

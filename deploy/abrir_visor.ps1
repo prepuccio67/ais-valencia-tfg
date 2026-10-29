@@ -1,4 +1,4 @@
-# Abre un túnel SSH al servidor y el navegador con la API (y el visor, desde la Fase 4).
+# Abre un túnel SSH al servidor y el visor con mapa en el navegador.
 # Uso (PowerShell, en la carpeta captura_AIS):   .\deploy\abrir_visor.ps1
 # Para cerrar el túnel: cierra la ventana negra de SSH que se abre.
 # Requiere el alias "ais-oracle" en %USERPROFILE%\.ssh\config (lo crea la Fase 3).
@@ -11,7 +11,6 @@ if (-not $token) { Write-Host "No se pudo leer el token. ¿Está encendido el se
 Write-Host "Abriendo el túnel SSH (ventana aparte)..."
 Start-Process ssh -ArgumentList "-N -L ${puertoLocal}:127.0.0.1:5080 ais-oracle"
 Start-Sleep -Seconds 3
-Start-Process "http://127.0.0.1:${puertoLocal}/api/health?token=$token"
-Write-Host "Listo. Otras direcciones útiles (añade &token=... si el navegador lo pide):"
-Write-Host "  http://127.0.0.1:${puertoLocal}/api/zone?zone=VALENCIA"
-Write-Host "  http://127.0.0.1:${puertoLocal}/api/gaps?zone=VALENCIA"
+Start-Process "http://127.0.0.1:${puertoLocal}/?token=$token"
+Write-Host "Listo: visor abierto en el navegador (http://127.0.0.1:${puertoLocal}/)."
+Write-Host "Mientras uses el visor, no cierres la ventana negra de SSH."
