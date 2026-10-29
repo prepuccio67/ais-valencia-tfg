@@ -1,0 +1,32 @@
+# Servicio systemd del Collector AIS (DISEÑO.md §7.3).
+# systemd lo arranca al encender la máquina y lo vuelve a lanzar si se cae.
+# Instalación: deploy/install.sh   Estado: systemctl status ais-collector
+# Registro:    journalctl -u ais-collector -f   (y /srv/ais/logs/collector.log)
+[Unit]
+Description=Collector AIS (TFG Puerto de Valencia)
+After=network-online.target
+Wants=network-online.target
+# No dejar nunca de reintentar, por muchas veces que falle seguidas
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=ais
+Group=ais
+WorkingDirectory=/opt/ais
+EnvironmentFile=/opt/ais/.env
+ExecStart=/opt/ais/venv/bin/python -m collector.main
+Restart=always
+RestartSec=10
+# Parada ordenada: SIGTERM y hasta 60 s para guardar lo pendiente
+KillSignal=SIGTERM
+TimeoutStopSec=60
+# Protecciones: el programa solo puede escribir en la carpeta de datos
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/srv/ais
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+# Lanza la copia de seguridad cada día a las 03:30 UTC.
+# Persistent=true: si la máquina estaba apagada a esa hora, la copia se hace al arrancar.
+[Unit]
+Description=Copia de seguridad AIS diaria
+
+[Timer]
+OnCalendar=*-*-* 03:30:00 UTC
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,21 @@
+# Copia de seguridad diaria (la lanza ais-backup.timer). DISEÑO.md §7.4.
+# Manual: sudo systemctl start ais-backup   Registro: journalctl -u ais-backup
+[Unit]
+Description=Copia de seguridad AIS (diaria incremental + mensual completa)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ais
+Group=ais
+WorkingDirectory=/opt/ais
+EnvironmentFile=/opt/ais/.env
+ExecStart=/opt/ais/venv/bin/python deploy/backup.py
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/srv/ais
