@@ -44,6 +44,15 @@ class State:
         self.queue = None
         self.started_ts = int(time.time())
         self.exit_code = 0
+        self.stop_event = None
+        self.reload = False
+
+    def request_reload(self, why=""):
+        """Parada ordenada seguida de un nuevo arranque con la configuración de zonas actual."""
+        log.info("Recarga solicitada: %s", why)
+        self.reload = True
+        if self.stop_event:
+            self.stop_event.set()
 
 
 def setup_logging(data_dir):
@@ -149,6 +158,7 @@ async def run(settings, minutes=None):
         log.error("No hay ninguna zona activa: solo se sirve la API")
 
     stop_event = asyncio.Event()
+    state.stop_event = stop_event
     loop = asyncio.get_running_loop()
     for sig in (signal.SIGTERM, signal.SIGINT):
         try:
@@ -161,7 +171,20 @@ async def run(settings, minutes=None):
     runner = web.AppRunner(create_app(state), access_log=None)
     await runner.setup()
     site = web.TCPSite(runner, settings.api_host, settings.api_port)
-    await site.start()
+    for attempt in range(10):     # tras una recarga, el sistema puede tardar un instante en liberar el puerto
+        try:
+            await site.start()
+            break
+        except OSError as e:
+            if attempt == 9:
+                log.critical("No se puede abrir la API en %s:%d (%s). ¿Hay otro Collector en marcha?",
+                             settings.api_host, settings.api_port, e)
+                await runner.cleanup()
+                for w in workers:
+                    w.close(int(time.time()))     # cierre ordenado: el hueco queda bien registrado
+                raise
+            log.warning("Puerto %d ocupado; reintento en 1 s (%s)", settings.api_port, e)
+            await asyncio.sleep(1)
     log.info("Collector %s v%s en marcha. API en http://%s:%d  Zonas activas: %s  Fuentes: %s",
              settings.collector_id, VERSION, settings.api_host, settings.api_port,
              [w.zone_id for w in workers], list(state.sources))
@@ -196,8 +219,9 @@ async def run(settings, minutes=None):
                 w.close(now)
             except Exception:
                 log.exception("[%s] error en el cierre", w.zone_id)
-        log.info("Collector parado (código de salida %d)", state.exit_code)
-    return state.exit_code
+        log.info("Collector parado (código de salida %d)%s", state.exit_code,
+                 " - se vuelve a arrancar con la configuración nueva" if state.reload else "")
+    return state.exit_code, state.reload
 
 
 def main(argv=None):
@@ -212,7 +236,10 @@ def main(argv=None):
         return 2
     setup_logging(settings.data_dir)
     try:
-        return asyncio.run(run(settings, args.minutes))
+        while True:      # una recarga de zonas vuelve a arrancar dentro del mismo proceso
+            code, reload = asyncio.run(run(settings, args.minutes))
+            if not reload or code:
+                return code
     except KeyboardInterrupt:
         pass
     except ConfigError as e:

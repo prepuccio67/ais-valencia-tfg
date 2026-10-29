@@ -76,3 +76,27 @@ footer { background: var(--panel); border-top: 1px solid var(--line); padding: 6
   main { flex-direction: column; }
   .time-label { min-width: 0; }
 }
+
+/* ---- editor de zonas (Fase 5) ---- */
+.zones-btn { background: rgba(255,255,255,.15); color: #fff; border-color: rgba(255,255,255,.3); }
+.zone-panel { position: absolute; right: 12px; top: 12px; bottom: 12px; z-index: 1000; width: 420px;
+  overflow-y: auto; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18); font-size: 13px; }
+.zone-panel h3 { margin: 0 0 8px; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+.zone-panel table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+.zone-panel td { padding: 4px 2px; border-bottom: 1px solid #eef0f3; vertical-align: middle; }
+.zone-panel .badge { font-size: 11px; padding: 1px 8px; border-radius: 10px; color: #fff; }
+.zone-panel .badge.on { background: var(--ok); }
+.zone-panel .badge.off { background: var(--muted); }
+.zone-panel label.f { display: block; margin: 6px 0 2px; color: var(--muted); font-size: 12px; }
+.zone-panel input[type=text], .zone-panel input[type=number], .zone-panel textarea {
+  width: 100%; padding: 5px 7px; border: 1px solid var(--line); border-radius: 6px; font: inherit; }
+.zone-panel textarea { min-height: 110px; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+.zone-panel .grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.zone-panel .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+.zone-panel .tabs button.sel { background: var(--accent); color: #fff; border-color: var(--accent); }
+.zone-panel .row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.zone-panel .msg { margin-top: 8px; padding: 6px 8px; border-radius: 6px; background: #f0f5fb; }
+.zone-panel .msg.err { background: #fdecea; color: var(--danger); }
+.zone-panel .hint { color: var(--muted); font-size: 12px; margin: 4px 0; }
+.vertex-icon { background: #fff; border: 2px solid #e67e22; border-radius: 2px; }

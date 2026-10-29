@@ -360,14 +360,31 @@ async function loadHealth() {
   } catch (e) { console.error(e); }
 }
 
-async function loadZones() {
+async function loadZones(preferred) {
   const data = await api('/api/zones');
   const sel = $('zone');
   sel.replaceChildren(...data.zones.map((z) => el('option', { value: z.zone_id,
     text: z.name + (z.active ? '' : ' (inactiva)') })));
+  S.zones = {};
   for (const z of data.zones) S.zones[z.zone_id] = z;
-  S.zone = data.zones[0] && data.zones[0].zone_id;
+  const keep = preferred || S.zone;
+  S.zone = keep && S.zones[keep] ? keep : (data.zones[0] && data.zones[0].zone_id);
+  sel.value = S.zone;
   drawZone();
+}
+
+// Tras guardar una zona: espera a que el Collector se recargue y refresca todo el visor.
+async function reloadAfterZoneChange(preferred) {
+  const before = (await api('/api/health').catch(() => null))?.uptime_s ?? 1e9;
+  for (let i = 0; i < 40; i++) {
+    await new Promise((r) => setTimeout(r, 1000));
+    const h = await api('/api/health').catch(() => null);
+    if (h && h.uptime_s < before) break;          // el contador de tiempo encendido se ha reiniciado
+  }
+  closePanel();
+  await loadZones(preferred);
+  await Promise.all([loadTimeline(), loadHealth()]);
+  await loadSnapshot();
 }
 
 function drawZone() {

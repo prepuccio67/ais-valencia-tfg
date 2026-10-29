@@ -17,7 +17,8 @@ from aiohttp import web
 from . import VERSION
 from . import queries as q
 from . import viewer_queries as vq
-from .config import REPO_ROOT
+from . import zones_admin
+from .config import REPO_ROOT, ConfigError
 from .storage import iso
 
 DAY = 86400
@@ -29,12 +30,16 @@ async def auth_middleware(request, handler):
     if request.path.startswith("/api/"):
         token = request.app[TOKEN]
         header = request.headers.get("Authorization", "")
-        given = header[7:].strip() if header.startswith("Bearer ") else request.query.get("token", "")
+        given = header[7:].strip() if header.startswith("Bearer ") else ""
+        # Las consultas (GET) también aceptan ?token= por comodidad; los cambios (POST/PUT) solo
+        # con la cabecera, para que otra página web abierta en el navegador no pueda hacerlos.
+        if not given and request.method == "GET":
+            given = request.query.get("token", "")
         if not given or not hmac.compare_digest(given.encode(), token.encode()):
             return web.json_response({"error": "token ausente o incorrecto"}, status=401)
     try:
         return await handler(request)
-    except (ValueError, OverflowError) as e:   # parámetros mal escritos -> 400 con explicación
+    except (ValueError, OverflowError, ConfigError) as e:   # datos mal escritos -> 400 con explicación
         return web.json_response({"error": str(e)}, status=400)
 
 
@@ -200,6 +205,59 @@ async def bounds(request):
     return web.json_response(await asyncio.to_thread(vq.bounds, _zone(request)))
 
 
+# ------------------------------------------------------------ edición de zonas (Fase 5)
+RELOAD_DELAY_S = 1.0
+
+
+async def _payload(request):
+    try:
+        data = await request.json()
+    except Exception:
+        raise ValueError("el cuerpo de la petición debe ser JSON")
+    if not isinstance(data, dict):
+        raise ValueError("el cuerpo de la petición debe ser un objeto JSON")
+    return data
+
+
+def _schedule_reload(request, why):
+    """Responde primero y recarga el Collector un momento después (guardando todo antes)."""
+    state = request.app[STATE]
+    asyncio.get_running_loop().call_later(RELOAD_DELAY_S, state.request_reload, why)
+    return {"ok": True, "reload_in_s": RELOAD_DELAY_S,
+            "note": "El Collector se recarga para aplicar el cambio (1-2 s, queda registrado)."}
+
+
+def _existing_zone(request):
+    zid = request.match_info["zone_id"].upper()
+    zones = request.app[STATE].zones
+    if zid not in zones:
+        raise web.HTTPNotFound(text=f'{{"error": "zona {zid} no existe"}}', content_type="application/json")
+    return zones[zid]
+
+
+async def zone_create(request):
+    raw = zones_admin.create_zone(request.app[STATE].settings.data_dir, await _payload(request))
+    return web.json_response({**_schedule_reload(request, f"zona {raw['zone_id']} creada"),
+                              "zone": raw}, status=201)
+
+
+async def zone_update(request):
+    raw = zones_admin.update_zone(_existing_zone(request), await _payload(request))
+    return web.json_response({**_schedule_reload(request, f"zona {raw['zone_id']} editada"), "zone": raw})
+
+
+async def zone_activate(request):
+    z = _existing_zone(request)
+    zones_admin.set_active(z, True)
+    return web.json_response(_schedule_reload(request, f"zona {z.zone_id} activada"))
+
+
+async def zone_deactivate(request):
+    z = _existing_zone(request)
+    zones_admin.set_active(z, False)
+    return web.json_response(_schedule_reload(request, f"zona {z.zone_id} desactivada"))
+
+
 async def index(request):
     """Página del visor. No lleva datos: los pide a /api/ con el token."""
     return web.FileResponse(VIEWER_DIR / "index.html", headers={"Cache-Control": "no-cache"})
@@ -224,5 +282,9 @@ def create_app(state):
     app.router.add_get("/api/vessel/{mmsi}", vessel)
     app.router.add_get("/api/track/{mmsi}", track)
     app.router.add_get("/api/bounds", bounds)
+    app.router.add_post("/api/zones", zone_create)
+    app.router.add_put("/api/zones/{zone_id}", zone_update)
+    app.router.add_post("/api/zones/{zone_id}/activate", zone_activate)
+    app.router.add_post("/api/zones/{zone_id}/deactivate", zone_deactivate)
     app.router.add_static("/static/", VIEWER_DIR, show_index=False)
     return app

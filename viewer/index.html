@@ -11,6 +11,7 @@
   <header>
     <h1>Visor AIS <span class="sub">Puerto de València · TFG</span></h1>
     <label class="zone">Zona <select id="zone"></select></label>
+    <button id="zonesBtn" class="zones-btn" title="Crear, editar, activar o desactivar zonas">✎ Zonas</button>
     <div id="counters" class="counters"></div>
     <div id="sources" class="sources"></div>
     <button id="gapsBadge" class="gaps hidden" title="Huecos de datos registrados"></button>
@@ -27,6 +28,7 @@
     </aside>
     <div id="map"></div>
     <div id="gapsPanel" class="gaps-panel hidden"></div>
+    <div id="zonePanel" class="zone-panel hidden"></div>
   </main>
 
   <footer>
@@ -51,5 +53,6 @@
 
   <script src="/static/vendor/leaflet/leaflet.js"></script>
   <script src="/static/app.js"></script>
+  <script src="/static/zones.js"></script>
 </body>
 </html>
