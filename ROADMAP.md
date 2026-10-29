@@ -27,19 +27,19 @@
     máquina Ampere A1 en Madrid;
   - datos en un disco de 100 GB aparte; servicio systemd; SSH solo con llave;
     cortafuegos con solo el puerto 22;
-  - copias de seguridad diarias verificadas;
+  - copias de seguridad diarias verificadas, subidas a Oracle Object Storage
+    (bucket privado `ais-backups`, con un enlace de solo escritura) y
+    descargables al PC;
   - pruebas superadas: reinicio de la máquina, corte de red y restauración de
     una copia.
 
 ## 🔄 En curso
-- **Copias fuera de la máquina:** falta crear el bucket y el enlace de
-  escritura en Oracle (lo hace Marcos). Mientras tanto, las copias se
-  descargan al PC con `deploy/descargar_copias.ps1`.
 - **Solapamiento con GitHub Actions** hasta el 30/10/2026; después se retira y
   el código antiguo pasa a `legacy/`.
 - **Revisiones pendientes:**
   - comprobar en *Cost Analysis* que el gasto de Oracle es 0 €;
-  - comprobar el 08/11/2026 que el banco ha liberado la retención de 93 €.
+  - comprobar el 08/11/2026 que el banco ha liberado la retención de 93 €;
+  - el enlace de las copias caduca el 31/12/2027: renovarlo si el proyecto sigue.
 
 ## ⏳ Pendiente
 | Fase | Contenido |
