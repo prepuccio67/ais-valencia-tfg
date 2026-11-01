@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Escalas AIS · Puerto de València</title>
+  <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/escalas.css">
+</head>
+<body class="dash">
+  <header>
+    <h1>Escalas y tiempos de espera <span class="sub">Puerto de València · TFG</span></h1>
+    <label class="zone">Zona <select id="zone"></select></label>
+    <div class="range" id="range">
+      <button data-days="7">7 días</button>
+      <button data-days="30" class="on">30 días</button>
+      <button data-days="400">Todo</button>
+    </div>
+    <a id="csv" class="hbtn" href="#" title="Descargar todas las escalas del periodo para Excel">⬇ CSV</a>
+    <a class="hbtn" href="/" title="Volver al mapa">🗺 Visor</a>
+    <span id="computed" class="computed"></span>
+  </header>
+
+  <div class="dash-body">
+    <div id="notice" class="notice hidden"></div>
+    <section class="kpis" id="kpis"></section>
+
+    <section class="card wide">
+      <h2>Cola en el fondeadero <span class="hint">buques de carga ≥ 100 m esperando fuera del puerto, al principio de cada hora</span></h2>
+      <div id="queue" class="chart"></div>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <h2>Espera por terminal <span class="hint">mediana y percentil 90, solo escalas OK</span></h2>
+        <div id="byTerminal" class="chart"></div>
+        <table class="stats" id="statsTable"></table>
+      </section>
+      <section class="card">
+        <h2>Ahora mismo</h2>
+        <h3>Esperando fuera</h3>
+        <ul id="waitingNow" class="nowlist"></ul>
+        <h3>Atracados</h3>
+        <ul id="berthedNow" class="nowlist"></ul>
+      </section>
+    </div>
+
+    <div class="grid2">
+      <section class="card">
+        <h2>Reparto de las esperas <span class="hint">número de escalas OK según lo que esperaron</span></h2>
+        <div id="hist" class="chart"></div>
+      </section>
+      <section class="card">
+        <h2>Atraques por día <span class="hint">día UTC del atraque, sin las excluidas</span></h2>
+        <div id="daily" class="chart"></div>
+      </section>
+    </div>
+
+    <section class="card wide">
+      <h2>Dónde atracaron <span class="hint">subzonas del análisis y punto de atraque de cada escala; sirve para revisar las terminales [VERIFICAR]</span></h2>
+      <div id="map" class="dash-map"></div>
+    </section>
+
+    <section class="card wide">
+      <h2>Escalas
+        <select id="qualityFilter">
+          <option value="">todas</option><option value="OK" selected>OK</option><option value="DUDOSA">dudosas</option>
+          <option value="EN CURSO">en curso</option><option value="EXCLUIDA">excluidas</option>
+        </select>
+        <span class="hint" id="tableCount"></span>
+      </h2>
+      <div class="table-wrap"><table class="calls" id="calls"></table></div>
+      <p class="method" id="method"></p>
+    </section>
+  </div>
+  <div id="tip" class="tip hidden"></div>
+
+  <script src="/static/vendor/leaflet/leaflet.js"></script>
+  <script src="/static/charts.js"></script>
+  <script src="/static/escalas.js"></script>
+</body>
+</html>

@@ -114,6 +114,25 @@ class TestCatalogApi(TestApi):
         self.assertEqual((await self.client.get("/api/catalog?zone=VALENCIA")).status, 401)
 
 
+class TestPortCallsApi(TestApi):
+    """Escalas y cuadro de mando (Fase 7). Los datos de prueba no tienen buques de carga: 0 escalas."""
+
+    async def test_port_calls_json_csv_and_subzones(self):
+        data = await (await self.client.get("/api/port_calls?zone=VALENCIA", headers=H)).json()
+        self.assertEqual((data["calls"], data["method"]["version"]), ([], "escalas-v1"))
+        self.assertEqual([t["terminal_id"] for t in data["summary"]["terminals"]], ["T-MSC", "T-CSP", "T-APM", "OTRO"])
+        r = await self.client.get("/api/port_calls?zone=VALENCIA&format=csv", headers=H)
+        self.assertEqual(r.content_type, "text/csv")
+        self.assertIn("attachment", r.headers["Content-Disposition"])
+        self.assertTrue((await r.text()).startswith("﻿buque;"))
+        sub = await (await self.client.get("/api/subzones?zone=VALENCIA", headers=H)).json()
+        self.assertEqual({f["properties"]["kind"] for f in sub["features"]}, {"PORT_AREA", "TERMINAL", "ANCHORAGE"})
+        bad = await self.client.get(f"/api/port_calls?zone=VALENCIA&from={self.t}&to={self.t - 10}", headers=H)
+        self.assertEqual(bad.status, 400)
+        self.assertEqual((await self.client.get("/api/port_calls?zone=VALENCIA")).status, 401)
+        self.assertEqual((await self.client.get("/escalas")).status, 200)
+
+
 class TestViewerApi(TestApi):
     """Endpoints del visor (Fase 4). Reutiliza los mismos datos de prueba."""
 

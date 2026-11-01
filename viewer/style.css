@@ -100,3 +100,8 @@ footer { background: var(--panel); border-top: 1px solid var(--line); padding: 6
 .zone-panel .msg.err { background: #fdecea; color: var(--danger); }
 .zone-panel .hint { color: var(--muted); font-size: 12px; margin: 4px 0; }
 .vertex-icon { background: #fff; border: 2px solid #e67e22; border-radius: 2px; }
+
+/* enlace con aspecto de botón en la cabecera (visor <-> escalas) */
+.hbtn { color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.3); border-radius: 6px;
+  padding: 3px 10px; font-size: 13px; }
+.hbtn:hover { background: rgba(255,255,255,.12); }

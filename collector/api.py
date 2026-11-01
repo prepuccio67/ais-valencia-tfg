@@ -14,7 +14,8 @@ import time
 
 from aiohttp import web
 
-from . import VERSION, archive
+from . import VERSION, analysis, archive
+from . import port_calls as pc
 from . import queries as q
 from . import viewer_queries as vq
 from . import zones_admin
@@ -38,9 +39,14 @@ async def auth_middleware(request, handler):
         if not given or not hmac.compare_digest(given.encode(), token.encode()):
             return web.json_response({"error": "token ausente o incorrecto"}, status=401)
     try:
-        return await handler(request)
+        response = await handler(request)
     except (ValueError, OverflowError, ConfigError) as e:   # datos mal escritos -> 400 con explicación
         return web.json_response({"error": str(e)}, status=400)
+    if request.path.startswith("/static/"):
+        # el navegador pregunta siempre si ha cambiado (respuesta corta si no): tras actualizar el
+        # código nadie se queda con una versión vieja del visor
+        response.headers["Cache-Control"] = "no-cache"
+    return response
 
 
 def _zone(request):
@@ -264,6 +270,50 @@ async def catalog(request):
     return web.json_response(await asyncio.to_thread(archive.catalog_status, z))
 
 
+MAX_CALLS_RANGE_DAYS = 400
+
+
+def _calls_data(z, t_from, t_to, now):
+    cfg = analysis.ensure_fresh(z, now)
+    calls, meta = analysis.read_calls(z, t_from, t_to)
+    return cfg, calls, meta
+
+
+async def port_calls(request):
+    """Escalas y tiempos de espera (Fase 7). &format=csv descarga el CSV para Excel."""
+    z = _zone(request)
+    t_from, t_to = _range(request, default_days=30)
+    if t_to <= t_from or t_to - t_from > MAX_CALLS_RANGE_DAYS * DAY:
+        raise ValueError(f"el intervalo debe ser positivo y de {MAX_CALLS_RANGE_DAYS} días como máximo")
+    now = int(time.time())
+    cfg, calls, meta = await asyncio.to_thread(_calls_data, z, t_from, t_to, now)
+    if request.query.get("format") == "csv":
+        name = f"escalas_{z.zone_id}_{iso(t_from)[:10]}_{iso(t_to)[:10]}.csv"
+        return web.Response(body=analysis.to_csv(calls).encode("utf-8"), content_type="text/csv",
+                            charset="utf-8", headers={"Content-Disposition": f'attachment; filename="{name}"'})
+    return web.json_response({
+        "zone": z.zone_id, "from": iso(t_from), "to": iso(t_to),
+        "computed_utc": iso(int(meta["computed_ts"])), "method": cfg["method"],
+        "data_from": iso(int(meta["data_first_ts"])) if meta.get("data_first_ts") else None,
+        # la cola se dibuja desde el primer dato, no desde el principio del periodo pedido
+        "summary": analysis.summary(calls, cfg, max(t_from, int(meta.get("data_first_ts") or t_from)), t_to, now),
+        "calls": [analysis.to_json(c) for c in calls]})
+
+
+async def subzones(request):
+    """Subzonas del análisis (recinto, terminales, fondeadero) en GeoJSON, con los parámetros del método."""
+    z = _zone(request)
+    cfg = await asyncio.to_thread(pc.load_config, z)
+    return web.json_response({"type": "FeatureCollection", "method": cfg["method"], "features": [
+        {"type": "Feature", "properties": {k: s[k] for k in ("subzone_id", "kind", "name", "notes")},
+         "geometry": {"type": "Polygon", "coordinates": [s["ring"]]}} for s in cfg["subzones"]]})
+
+
+async def dashboard(request):
+    """Cuadro de mando de escalas y tiempos de espera. Como el visor, pide los datos a /api/ con el token."""
+    return web.FileResponse(VIEWER_DIR / "escalas.html", headers={"Cache-Control": "no-cache"})
+
+
 async def index(request):
     """Página del visor. No lleva datos: los pide a /api/ con el token."""
     return web.FileResponse(VIEWER_DIR / "index.html", headers={"Cache-Control": "no-cache"})
@@ -278,6 +328,7 @@ def create_app(state):
     app[STATE] = state
     app[TOKEN] = state.settings.api_token
     app.router.add_get("/", index)
+    app.router.add_get("/escalas", dashboard)
     app.router.add_get("/api/health", health)
     app.router.add_get("/api/zones", zones)
     app.router.add_get("/api/zone", zone)
@@ -289,6 +340,8 @@ def create_app(state):
     app.router.add_get("/api/track/{mmsi}", track)
     app.router.add_get("/api/bounds", bounds)
     app.router.add_get("/api/catalog", catalog)
+    app.router.add_get("/api/port_calls", port_calls)
+    app.router.add_get("/api/subzones", subzones)
     app.router.add_post("/api/zones", zone_create)
     app.router.add_put("/api/zones/{zone_id}", zone_update)
     app.router.add_post("/api/zones/{zone_id}/activate", zone_activate)

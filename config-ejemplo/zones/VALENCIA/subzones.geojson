@@ -1,0 +1,62 @@
+{
+  "type": "FeatureCollection",
+  "_nota": "Subzonas para el análisis de escalas (Fase 7). GeoJSON: [longitud, latitud]. Dibujadas el 01/11/2026 a partir de dónde se pararon de verdad los buques de carga >= 100 m entre el 29/10 y el 01/11/2026; los nombres de las terminales, según los rótulos de OpenStreetMap y las navieras que atracan en cada una. Se pueden abrir y corregir en https://geojson.io",
+  "method": {
+    "version": "escalas-v1",
+    "ship_types": [70, 79],
+    "min_length_m": 100,
+    "berth_max_kn": 0.5,
+    "anchor_max_kn": 1.0,
+    "max_gap_h": 12,
+    "max_wait_days": 10,
+    "min_stay_h": 2
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "PUERTO", "kind": "PORT_AREA", "name": "Recinto portuario (aguas interiores)",
+        "notes": "Rectángulo que cubre las dársenas y la bocana. Un buque parado aquí está atracado (o maniobrando)."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[
+        [-0.3360, 39.4230], [-0.2950, 39.4230], [-0.2950, 39.4620], [-0.3360, 39.4620], [-0.3360, 39.4230]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "T-MSC", "kind": "TERMINAL", "name": "MSC Terminal Valencia",
+        "notes": "Lado norte de la dársena sur y su extremo oeste. Del 29/10 al 01/11 solo atracaron buques de MSC (MSC LENI, MSC SARA ELENA, MSC UBERTY VIII...) y feeders. [VERIFICAR] los límites con el plano de la Autoridad Portuaria."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[
+        [-0.3310, 39.4335], [-0.3265, 39.4335], [-0.3265, 39.4368], [-0.3190, 39.4368],
+        [-0.3190, 39.4410], [-0.3310, 39.4410], [-0.3310, 39.4335]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "T-CSP", "kind": "TERMINAL", "name": "CSP Iberian Valencia Terminal",
+        "notes": "Lado sur de la dársena sur. Atracaron CMA CGM, Evergreen, ZIM y feeders (Contship, Boluda, Medkon). [VERIFICAR] los límites con el plano de la Autoridad Portuaria."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[
+        [-0.3265, 39.4300], [-0.3115, 39.4300], [-0.3115, 39.4330], [-0.3265, 39.4352], [-0.3265, 39.4300]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "T-APM", "kind": "TERMINAL", "name": "APM Terminals Valencia",
+        "notes": "[VERIFICAR] Dibujada solo alrededor del muelle donde atracaron MAERSK CALABAR y NICARAGUA EXPRESS (Hapag-Lloyd). La dársena norte también tiene graneleros y ro-ro, y MAERSK NORFOLK atracó en su extremo norte (39,4537 N; 0,3200 W): hay que confirmar con el plano qué muelles son de APM."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[
+        [-0.3150, 39.4455], [-0.3100, 39.4455], [-0.3100, 39.4500], [-0.3150, 39.4500], [-0.3150, 39.4455]]]}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "FONDEO", "kind": "ANCHORAGE", "name": "Fondeadero (sureste del puerto)",
+        "notes": "Zona donde se concentraron los buques parados fuera del puerto (3-12 km al sureste). [VERIFICAR] con la carta náutica o Capitanía Marítima. Los buques parados fuera del puerto pero fuera de este polígono también cuentan como espera ('a la deriva')."
+      },
+      "geometry": {"type": "Polygon", "coordinates": [[
+        [-0.2900, 39.3750], [-0.1400, 39.3750], [-0.1400, 39.4250], [-0.2900, 39.4250], [-0.2900, 39.3750]]]}
+    }
+  ]
+}

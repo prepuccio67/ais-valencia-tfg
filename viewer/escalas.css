@@ -1,0 +1,58 @@
+/* Cuadro de mando de escalas (Fase 7). Usa los colores y botones de style.css. */
+body.dash { display: block; height: auto; overflow-y: auto; }
+.dash header { position: sticky; top: 0; z-index: 1100; }
+.range { display: flex; gap: 4px; }
+.range button { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.25); }
+.range button.on { background: #fff; color: #10263d; font-weight: 600; }
+.computed { margin-left: auto; font-size: 12px; opacity: .75; }
+
+.dash-body { max-width: 1280px; margin: 0 auto; padding: 14px 16px 40px; display: grid; gap: 14px; }
+.notice { background: #fff8e6; border: 1px solid #f0d58a; border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+.kpi .v { font-size: 26px; font-weight: 700; line-height: 1.15; }
+.kpi .l { font-size: 12.5px; color: var(--muted); }
+.kpi .s { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.card h2 { font-size: 15px; margin: 0 0 8px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.card h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); font-weight: 600; }
+.hint { font-size: 12px; font-weight: 400; color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+
+.chart { width: 100%; min-height: 60px; }
+.chart svg { display: block; max-width: 100%; overflow: visible; }
+.chart .axis text, .chart .lbl { font-size: 11px; fill: var(--muted); }
+.chart .grid { stroke: #e7e9ee; stroke-width: 1; }
+.chart .base { stroke: #b8bec8; stroke-width: 1; }
+.chart .val { font-size: 11.5px; fill: var(--text); }
+.chart .hit { fill: transparent; cursor: default; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); margin: 2px 0 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.empty { color: var(--muted); font-size: 13px; padding: 14px 0; }
+
+.stats { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 8px; }
+.stats th, .stats td { padding: 3px 6px; text-align: right; border-bottom: 1px solid #eef0f3; }
+.stats th:first-child, .stats td:first-child { text-align: left; }
+.stats th { color: var(--muted); font-weight: 600; }
+
+.nowlist { list-style: none; margin: 0; padding: 0; max-height: 210px; overflow-y: auto; font-size: 12.5px; }
+.nowlist li { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: center;
+  padding: 3px 0; border-bottom: 1px solid #f0f2f5; }
+.nowlist .sw { width: 10px; height: 10px; border-radius: 2px; }
+.nowlist .t { color: var(--muted); white-space: nowrap; }
+
+.dash-map { height: 420px; border-radius: 8px; }
+.table-wrap { overflow-x: auto; max-height: 520px; overflow-y: auto; }
+.calls { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.calls th { position: sticky; top: 0; background: #f3f5f8; text-align: left; padding: 5px 6px; white-space: nowrap;
+  font-weight: 600; color: var(--muted); }
+.calls td { padding: 4px 6px; border-bottom: 1px solid #eef0f3; white-space: nowrap; }
+.calls td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.calls td.q { white-space: normal; color: var(--muted); max-width: 260px; }
+.method { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+
+.tip { position: fixed; z-index: 2000; pointer-events: none; background: #10263d; color: #fff; font-size: 12px;
+  padding: 6px 9px; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,.25); max-width: 280px; }
+.tip b { font-weight: 600; }
