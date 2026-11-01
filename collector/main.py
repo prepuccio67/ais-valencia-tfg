@@ -19,7 +19,7 @@ from pathlib import Path
 
 from aiohttp import web
 
-from . import VERSION
+from . import VERSION, archive
 from .api import create_app
 from .config import ConfigError, ensure_example_zone, load_settings, load_zones
 from .sources import SOURCE_CLASSES
@@ -129,6 +129,13 @@ async def ticker(workers, stop_event, state):
                     log.critical("[%s] demasiadas filas sin poder guardar: se detiene el Collector", w.zone_id)
                     state.exit_code = 1
                     stop_event.set()
+        for w in workers:
+            try:
+                if not state.reload and archive.due_now(w.zone, w.store, now):
+                    # el segmento se cierra con todo parado: parada ordenada y nuevo arranque en 1-2 s
+                    state.request_reload(f"[{w.zone_id}] fin del periodo del segmento activo")
+            except Exception:
+                log.exception("[%s] no se pudo comprobar el periodo del segmento", w.zone_id)
         if time.time() - last_report >= 300:         # resumen cada 5 minutos en el registro
             last_report = time.time()
             for w in workers:
@@ -145,6 +152,7 @@ async def run(settings, minutes=None):
     stores = []
     start = int(time.time())
     for z in zones:
+        archive.prepare(z, settings.collector_id, start)    # cierra el segmento si ha acabado su periodo
         store = ZoneStore(z, settings.collector_id).open()
         store.startup(start)
         stores.append(store)

@@ -14,7 +14,7 @@ import time
 
 from aiohttp import web
 
-from . import VERSION
+from . import VERSION, archive
 from . import queries as q
 from . import viewer_queries as vq
 from . import zones_admin
@@ -258,6 +258,12 @@ async def zone_deactivate(request):
     return web.json_response(_schedule_reload(request, f"zona {z.zone_id} desactivada"))
 
 
+async def catalog(request):
+    """Segmentos de la zona (activo, archivados, comprimidos o movidos) y si están disponibles."""
+    z = _zone(request)
+    return web.json_response(await asyncio.to_thread(archive.catalog_status, z))
+
+
 async def index(request):
     """Página del visor. No lleva datos: los pide a /api/ con el token."""
     return web.FileResponse(VIEWER_DIR / "index.html", headers={"Cache-Control": "no-cache"})
@@ -282,6 +288,7 @@ def create_app(state):
     app.router.add_get("/api/vessel/{mmsi}", vessel)
     app.router.add_get("/api/track/{mmsi}", track)
     app.router.add_get("/api/bounds", bounds)
+    app.router.add_get("/api/catalog", catalog)
     app.router.add_post("/api/zones", zone_create)
     app.router.add_put("/api/zones/{zone_id}", zone_update)
     app.router.add_post("/api/zones/{zone_id}/activate", zone_activate)

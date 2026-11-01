@@ -88,8 +88,10 @@ say "9/9 Servicios systemd"
 install -m 644 "$APP/deploy/ais-collector.service" /etc/systemd/system/
 install -m 644 "$APP/deploy/ais-backup.service" /etc/systemd/system/
 install -m 644 "$APP/deploy/ais-backup.timer" /etc/systemd/system/
+install -m 644 "$APP/deploy/ais-archive.service" /etc/systemd/system/
+install -m 644 "$APP/deploy/ais-archive.timer" /etc/systemd/system/
 systemctl daemon-reload
-systemctl enable --now ais-backup.timer
+systemctl enable --now ais-backup.timer ais-archive.timer
 systemctl enable ais-collector
 systemctl restart ais-collector
 sleep 5

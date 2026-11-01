@@ -1,0 +1,11 @@
+# Lanza el mantenimiento del archivo cada día a las 04:30 UTC (después de la copia de las 03:30).
+[Unit]
+Description=Mantenimiento diario del archivo de segmentos AIS
+
+[Timer]
+OnCalendar=*-*-* 04:30:00 UTC
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

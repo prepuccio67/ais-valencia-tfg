@@ -12,7 +12,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import DEFAULT_SAMPLING, KNOWN_SOURCES, ConfigError, parse_zone, zones_root
+from .config import (DEFAULT_ARCHIVE_POLICY, DEFAULT_SAMPLING, KNOWN_SOURCES, ConfigError, parse_zone,
+                     zones_root)
 from .geo import ring_self_intersects
 from .storage import write_json_atomic
 
@@ -23,8 +24,7 @@ DEFAULT_RAW = {
     "schema_version": 1,
     "database": {"current": "current.db", "archive_dir": "archive",
                  "catalog": "archive-catalog.json", "analysis": "analysis.db"},
-    "archive_policy": {"period": "yearly", "max_segment_mb": None,
-                       "compress_after_days": 365, "compression": "zstd"},
+    "archive_policy": dict(DEFAULT_ARCHIVE_POLICY),
     "sources": list(KNOWN_SOURCES),
     "sampling": dict(DEFAULT_SAMPLING),
     "silence_alert_min": 10,

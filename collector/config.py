@@ -26,6 +26,12 @@ DEFAULT_SAMPLING = {
 }
 
 
+# Cómo se cierran los segmentos (DISEÑO.md §5 y §6)
+ARCHIVE_PERIODS = ("yearly", "quarterly", "monthly", "size")
+DEFAULT_ARCHIVE_POLICY = {"period": "yearly", "max_segment_mb": None,
+                          "compress_after_days": 365, "compression": "zstd"}
+
+
 class ConfigError(Exception):
     """Error de configuración explicado en lenguaje sencillo."""
 
@@ -172,6 +178,16 @@ def parse_zone(raw, zone_dir):
     sampling.update(raw.get("sampling") or {})
     if sampling["moving_speed_kn"] < sampling["stopped_speed_kn"]:
         raise ConfigError(f"{zid}: moving_speed_kn no puede ser menor que stopped_speed_kn.")
+    policy = dict(DEFAULT_ARCHIVE_POLICY)
+    policy.update(raw.get("archive_policy") or {})
+    if policy["period"] not in ARCHIVE_PERIODS:
+        raise ConfigError(f"{zid}: archive_policy.period debe ser uno de {list(ARCHIVE_PERIODS)}.")
+    mb = policy.get("max_segment_mb")
+    if policy["period"] == "size" and (isinstance(mb, bool) or not isinstance(mb, (int, float)) or mb < 1):
+        raise ConfigError(f"{zid}: con period 'size' hay que indicar max_segment_mb (1 o más).")
+    days = policy.get("compress_after_days")
+    if days is not None and (isinstance(days, bool) or not isinstance(days, int) or days < 0):
+        raise ConfigError(f"{zid}: compress_after_days debe ser un número entero de días (o null: no comprimir).")
     database = {"current": "current.db", "archive_dir": "archive",
                 "catalog": "archive-catalog.json", "analysis": "analysis.db"}
     database.update(raw.get("database") or {})
@@ -185,7 +201,7 @@ def parse_zone(raw, zone_dir):
         bbox=bbox,
         ring=ring,
         database=database,
-        archive_policy=dict(raw.get("archive_policy") or {"period": "yearly"}),
+        archive_policy=policy,
         sources=sources,
         sampling=sampling,
         silence_alert_min=float(raw.get("silence_alert_min", 10)),

@@ -7,11 +7,11 @@ cubren el intervalo pedido, consulta cada uno en solo lectura y une los
 resultados por orden de hora. Estas funciones son síncronas; la API las lanza
 en un hilo aparte para no frenar la captura.
 """
-import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .archive import QUERYABLE, query_path, read_catalog
 from .storage import connect, iso
 
 MAX_LIMIT = 50000
@@ -39,14 +39,6 @@ def parse_when(value, name):
     return ts
 
 
-def read_catalog(zone):
-    path = Path(zone.zone_dir) / zone.database["catalog"]
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        return {"zone_id": zone.zone_id, "segments": []}
-
-
 def _seg_bounds(seg):
     a = parse_when(seg.get("from_utc"), "from_utc") or 0
     b = parse_when(seg.get("to_utc"), "to_utc") if seg.get("to_utc") else None
@@ -57,21 +49,25 @@ def segments_for(zone, t_from, t_to):
     """Segmentos del catálogo que se solapan con [t_from, t_to). Devuelve (consultables, no disponibles)."""
     usable, unavailable = [], []
     # Un segmento puede contener posiciones algo anteriores a su inicio (se aceptan mensajes
-    # con hasta max_age_s de antigüedad), así que se amplía su comienzo por ese margen.
+    # con hasta max_age_s de antigüedad) o, por la tolerancia de reloj, algo posteriores a su
+    # fin, así que se amplían los dos extremos por ese margen.
     margin = int(zone.sampling.get("max_age_s", 900))
     segs = sorted(read_catalog(zone)["segments"], key=lambda s: _seg_bounds(s)[0])
     for seg in segs:
         a, b = _seg_bounds(seg)
         a -= margin
+        b = None if b is None else b + margin
         # El segmento activo (sin fin) se consulta siempre: abrirlo de más no cuesta nada y
         # así nunca se pierden datos aunque su fecha de inicio no fuera exacta.
         if b is not None and (b <= t_from or a >= t_to):
             continue
-        path = Path(zone.zone_dir) / seg["path"]
-        if seg.get("status") == "ONLINE" and path.exists():
+        # los comprimidos se descomprimen en la caché; los de un disco no montado no están
+        path = query_path(zone, seg) if seg.get("status") in QUERYABLE else None
+        if path is not None:
             usable.append(path)
         else:
-            unavailable.append({"segment_id": seg.get("segment_id"), "status": seg.get("status"),
+            status = seg.get("status") if seg.get("status") not in QUERYABLE else "OFFLINE"
+            unavailable.append({"segment_id": seg.get("segment_id"), "status": status,
                                 "from_utc": seg.get("from_utc"), "to_utc": seg.get("to_utc")})
     return usable, unavailable
 

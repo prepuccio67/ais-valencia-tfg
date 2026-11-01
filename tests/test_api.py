@@ -104,6 +104,16 @@ class TestApi(AioHTTPTestCase):
         self.assertEqual(total, 8)
 
 
+class TestCatalogApi(TestApi):
+    """Catálogo de segmentos (Fase 6)."""
+
+    async def test_catalog(self):
+        data = await (await self.client.get("/api/catalog?zone=VALENCIA", headers=H)).json()
+        self.assertEqual([(s["segment_id"], s["status"], s["available"]) for s in data["segments"]],
+                         [("CURRENT", "ONLINE", True)])
+        self.assertEqual((await self.client.get("/api/catalog?zone=VALENCIA")).status, 401)
+
+
 class TestViewerApi(TestApi):
     """Endpoints del visor (Fase 4). Reutiliza los mismos datos de prueba."""
 

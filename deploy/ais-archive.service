@@ -1,0 +1,21 @@
+# Mantenimiento diario del archivo de segmentos (lo lanza ais-archive.timer). DISEÑO.md §6.
+# Verifica la huella de cada segmento cerrado, comprime los que ya toca y limpia la caché.
+# Manual: sudo systemctl start ais-archive   Registro: journalctl -u ais-archive
+[Unit]
+Description=Mantenimiento del archivo de segmentos AIS (verificar y comprimir)
+RequiresMountsFor=/srv/ais
+
+[Service]
+Type=oneshot
+User=ais
+Group=ais
+WorkingDirectory=/opt/ais
+EnvironmentFile=/opt/ais/.env
+ExecStart=/opt/ais/venv/bin/python -m collector.archive_tools mantener
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/srv/ais
