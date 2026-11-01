@@ -66,6 +66,17 @@
   - El primer cierre real será el **01/01/2027 a las 00:00 UTC**: revisarlo
     ese día con `archive_tools estado`.
 
+- **Fase 7. Escalas y tiempos de espera** (01/11/2026, primera versión):
+  - subzonas dibujadas con los datos reales: recinto portuario, terminales MSC,
+    CSP y APM, y fondeadero;
+  - método `escalas-v1`: escalas con fondeo, atraque directo, cambio de muelle
+    y calidad de cada escala;
+  - `analysis.db` recalculable, `/api/port_calls` (JSON o CSV para Excel) y
+    `/api/subzones`;
+  - cuadro de mando `/escalas`, enlazado desde el visor;
+  - 115 tests; desplegado: 53 escalas calculadas con los datos del 29/10 al
+    01/11/2026.
+
 ## 🔄 En curso
 - **Revisiones pendientes:**
   - comprobar en *Cost Analysis* que el gasto de Oracle es 0 €;
@@ -75,7 +86,7 @@
 ## ⏳ Pendiente
 | Fase | Contenido |
 |---|---|
-| 7 | Análisis TFG: subzonas, escalas y tiempos de espera, exportación CSV/Excel, gráficos. Usar «atracado» con SOG < 0,5 kn para coincidir con el muestreo |
+| 7b | **Pendientes del análisis:** revisar los recintos de las terminales (sobre todo APM) con el plano de la Autoridad Portuaria; tabla de navieras (`operator`); con varias semanas de datos, tratar las esperas sin terminar con un análisis de supervivencia (Kaplan-Meier); «permanencias» y «fundido temporal» del visor |
 | 8 | (Opcional) Reparación de huecos entre dos Collectors de la misma zona |
 
 

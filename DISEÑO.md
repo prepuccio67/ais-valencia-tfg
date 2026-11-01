@@ -301,6 +301,15 @@ CREATE TABLE operator (
 );
 ```
 
+*Implementado en la Fase 7* (`collector/port_calls.py` y `collector/analysis.py`, D-15 y D-16):
+- Las subzonas se editan en `Zones/<ZONA>/subzones.geojson` y se copian a la
+  tabla `subzone` con su historial.
+- `port_call` lleva además `name`, `ship_type`, `length_m`, `wait_location`,
+  `t_start`, `t_last_seen`, `berth_lat`/`berth_lon`, `gap_overlap_min` y
+  `max_track_gap_h`.
+- `analysis.db` se rehace entera cada 10 min, a demanda (tarda menos de 0,1 s
+  con 3 días de datos).
+
 Los parámetros del método de escalas (atracado ≤ 0,5 kn, fondeo ≤ 1,0 kn, tipos
 70–79, eslora ≥ 100 m, hueco máximo 12 h, fondeo máximo sin atraque 10 días) se
 heredan de `zonas.json` y se aplican **al analizar**, no al capturar. Se guarda
@@ -648,7 +657,9 @@ OPENSEAFEED_API_KEY=          # opcional: sin clave se usa el nivel libre
 | `GET /api/track/{mmsi}?zone=&from=&to=` | Trayectoria para reproducir la ruta | 4 |
 | `POST /api/zones` · `PUT /api/zones/{id}` · `POST /api/zones/{id}/activate` · `…/deactivate` | Crear, editar, activar y desactivar zonas | 5 |
 | `GET /api/catalog?zone=` | Catálogo de segmentos | 6 |
-| `GET /api/port_calls?zone=&from=&to=[&format=csv]` | Escalas calculadas (también en CSV para Excel) | 7 |
+| `GET /api/port_calls?zone=&from=&to=[&format=csv]` | Escalas calculadas y resumen del cuadro de mando (también en CSV para Excel) | 7 ✅ |
+| `GET /api/subzones?zone=` | Recinto, terminales y fondeadero (GeoJSON) y parámetros del método | 7 ✅ |
+| `GET /escalas` | Cuadro de mando de escalas y tiempos de espera | 7 ✅ |
 | `GET /api/export?zone=&from=&to=` · `POST /api/import` | Intercambio de datos entre Collectors de la misma zona | 8 |
 
 Ejemplo de `GET /api/health`:

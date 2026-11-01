@@ -78,3 +78,29 @@ tribunal. Cada una indica cómo se mide o se mitiga.
 - **Segmentos comprimidos:** la primera consulta que los necesita tarda un poco
   más, porque los descomprime en `archive/cache/`. Esa copia se borra si pasan
   7 días sin usarla.
+
+## Escalas y tiempos de espera (Fase 7)
+- **Esperas sin terminar (censura).** Mientras un buque sigue esperando, su
+  escala está «EN CURSO» y no entra en las medianas. Con pocos días de datos,
+  las esperas largas aún no han acabado y **las medianas salen más bajas de lo
+  real**. *Medida:* el cuadro de mando avisa y muestra aparte quién espera
+  ahora. Con más datos se puede usar un análisis de supervivencia
+  (Kaplan-Meier), que sí aprovecha las esperas sin terminar.
+- **Llegada o salida no vistas.** Si el buque aparece ya parado (al empezar la
+  captura, tras un hueco o porque se le oye mal a la deriva lejos de la costa),
+  no se sabe cuándo llegó: la escala se marca DUDOSA y no entra en las
+  estadísticas.
+- **Recintos de las terminales dibujados con los datos** de los primeros 3 días
+  y con los rótulos de OpenStreetMap. MSC y CSP son claros (cada una solo recibe
+  a sus navieras), pero **APM está pendiente de comprobar** [VERIFICAR]: la
+  dársena norte mezcla portacontenedores con graneleros y ro-ro.
+- **El tipo AIS 70–79 («carga») no distingue portacontenedores** de graneleros,
+  ro-ro o carga general. Por eso las estadísticas «de contenedores» se basan en
+  la terminal donde atraca el buque, no en su tipo.
+- **«Esperando» incluye la deriva:** muchos buques no fondean, sino que esperan
+  parados o a la deriva mar adentro. Cuentan como espera, con su lugar anotado
+  (`FONDEO` o `DERIVA`). No se distingue una espera por congestión de una por
+  otros motivos (órdenes de la naviera, *slow steaming*, avería…).
+- **La hora de inicio de la espera** tiene una precisión de unos 10 minutos (un
+  buque parado se guarda cada 10 min). Las horas de atraque y desatraque, de
+  alrededor de 1 minuto, porque el cambio de movimiento se registra al momento.

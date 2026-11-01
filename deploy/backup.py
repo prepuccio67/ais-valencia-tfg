@@ -247,7 +247,8 @@ def run(settings, do_upload, now=None):
         if datetime.fromtimestamp(now, tz=timezone.utc).day == 1 or not fulls:
             try:
                 make_full(src_db, zdir / "full", zone.zone_id, now)
-                for extra in (zone.zone_dir / "zone.json", zone.zone_dir / zone.database["catalog"]):
+                for extra in (zone.zone_dir / "zone.json", zone.zone_dir / zone.database["catalog"],
+                              zone.zone_dir / "subzones.geojson"):
                     if extra.exists():
                         shutil.copyfile(extra, zdir / "full" / f"{day_str(now)}_{extra.name}")
             except Exception:

@@ -97,6 +97,40 @@ abierta) y el navegador en `http://127.0.0.1:5081/`. Qué se puede hacer:
 - **Aviso de huecos** arriba a la derecha (púlsalo para ver la lista), estado
   de cada fuente y contadores.
 
+### Escalas y tiempos de espera (botón «📊 Escalas», Fase 7)
+
+Cuadro de mando en `http://127.0.0.1:5081/escalas`, con el mismo túnel y el
+mismo token que el visor. Se recalcula solo cada 10 min. Muestra:
+
+- **Cifras clave:**
+  - buques esperando fuera y atracados ahora mismo;
+  - escalas completas;
+  - espera y estancia medianas en las terminales de contenedores.
+- **Cola en el fondeadero:** buques esperando fuera, hora a hora.
+- **Espera por terminal** (MSC, CSP, APM y otros muelles): mediana y
+  percentil 90, con una tabla con las cifras.
+- **Reparto de las esperas** y **atraques por día** y terminal.
+- **Mapa de comprobación:** recintos de las terminales, fondeadero y punto de
+  atraque de cada escala.
+- **Tabla de escalas**, filtrable por calidad, y botón **⬇ CSV**. El archivo se
+  abre directamente en Excel: separador `;`, coma decimal y horas en UTC.
+
+**Método** (D-15):
+- **Atracado** = dentro del recinto portuario y a 0,5 kn o menos.
+- **Esperando** = fuera del recinto y a 1 kn o menos.
+- **Espera** = tiempo fondeado (o a la deriva) hasta que el buque arranca hacia
+  el puerto. **Estancia** = del atraque al desatraque.
+- **Buques incluidos:** solo los de carga (tipos AIS 70–79) de 100 m o más.
+- **Estadísticas:** usan solo las escalas **OK** (vistas de principio a fin).
+  - DUDOSA: llegada o salida no vistas, hueco de datos o estancia muy corta.
+  - EXCLUIDA: se fue sin atracar.
+  - EN CURSO: todavía no ha terminado.
+
+Las subzonas están en `Zones/VALENCIA/subzones.geojson` (en el servidor,
+`/srv/ais/Zones/VALENCIA/`). Se pueden corregir con https://geojson.io, y el
+cálculo se rehace solo con los recintos nuevos. Desde la línea de órdenes:
+`sudo -u ais /opt/ais/venv/bin/python -m collector.analysis --csv /tmp/escalas.csv`.
+
 ### Zonas (botón «✎ Zonas»)
 
 - **Crear** una zona nueva: identificador (no se puede cambiar después),

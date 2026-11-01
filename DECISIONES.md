@@ -195,3 +195,61 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
 - **Seguridad de los datos:** nada se borra sin comprobar antes que la copia es
   idéntica (misma huella SHA-256). Un archivo que no coincide con el catálogo
   nunca se borra solo: se avisa en el registro para revisarlo a mano.
+
+## D-15 · 01/11/2026 · Método de escalas «escalas-v1»
+- **Decisión:**
+  - Cada posición de un buque de carga ≥ 100 m se clasifica en tres estados:
+    - **atracado:** dentro del recinto portuario y SOG ≤ 0,5 kn;
+    - **esperando:** fuera del recinto y SOG ≤ 1 kn;
+    - **navegando:** el resto.
+  - **La escala:**
+    - empieza en la primera espera, o en el atraque si el buque entra directo;
+    - termina al salir del recinto;
+    - un cambio de muelle no la corta.
+  - **Los tiempos:**
+    - espera = tiempo parado fuera hasta arrancar hacia el puerto;
+    - estancia = del atraque al desatraque;
+    - terminal = la del recinto donde pasó más tiempo atracado.
+  - **La calidad de cada escala:**
+    - DUDOSA si no se vio la llegada o la salida (sin un punto en movimiento a
+      menos de 1 h), si los huecos de zona suman 15 min o más, si el buque pasó
+      más de 2 h sin señal o si estuvo menos de 2 h atracado;
+    - EXCLUIDA si no atracó o esperó más de 10 días;
+    - EN CURSO si aún no ha terminado.
+  - Las estadísticas usan solo las OK.
+- **Alternativas:**
+  - usar el estado AIS («fondeado», «amarrado»), que lo escribe la
+    tripulación y a menudo está mal;
+  - contar como espera desde la entrada en la zona;
+  - incluir las escalas dudosas.
+- **Motivo:**
+  - La velocidad la mide el GPS y no depende de nadie.
+  - 0,5 kn coincide con el umbral del muestreo (D-08), así que el cambio a
+    «atracado» queda registrado al momento.
+  - Separar OK, DUDOSA y EN CURSO permite decir con honestidad qué se sabe y
+    qué no.
+  - Un hueco de segundos (un reinicio) no cambia ninguna hora, porque un buque
+    parado se guarda cada 10 min.
+- **Parámetros** editables en `subzones.geojson` (`method`). Cada escala guarda
+  la versión del método con la que se calculó.
+
+## D-16 · 01/11/2026 · Subzonas dibujadas a partir de los datos
+- **Decisión:**
+  - Los recintos de las terminales y el fondeadero se dibujan donde se pararon
+    de verdad los buques de carga entre el 29/10 y el 01/11/2026.
+  - El nombre de cada terminal sale de los rótulos de OpenStreetMap y de las
+    navieras que atracan en ella:
+    - MSC en MSC Terminal;
+    - CMA CGM, Evergreen y ZIM en CSP (COSCO);
+    - Maersk y Hapag-Lloyd en APM.
+  - Se guardan en un GeoJSON editable. Si se redibujan, `analysis.db` conserva
+    la versión anterior con su fecha de fin.
+- **Alternativas:**
+  - copiar polígonos de OpenStreetMap (Overpass no respondía el 01/11/2026 y
+    sus polígonos son de tierra, no de la línea de atraque);
+  - dibujarlos a mano sobre el plano del puerto.
+- **Motivo:**
+  - Lo que importa es dónde paran los barcos, y eso lo dicen los propios datos.
+  - Que cada naviera atraque en «su» terminal confirma a la vez los datos y las
+    etiquetas.
+  - APM queda marcada [VERIFICAR] hasta contrastarla con el plano oficial.
