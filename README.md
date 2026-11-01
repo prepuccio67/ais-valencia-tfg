@@ -60,8 +60,9 @@ Con el Collector en marcha, abre en el navegador (sustituye `TU_TOKEN` por el de
 ```
 DATA_DIR/
 ├── Zones/VALENCIA/zone.json          definición de la zona
-├── Zones/VALENCIA/current.db         base de datos SQLite (se abre con "DB Browser for SQLite")
-├── Zones/VALENCIA/archive-catalog.json
+├── Zones/VALENCIA/current.db         base de datos SQLite del periodo actual (se abre con "DB Browser for SQLite")
+├── Zones/VALENCIA/archive/           segmentos cerrados: VALENCIA_2026.db, más tarde VALENCIA_2026.db.zst
+├── Zones/VALENCIA/archive-catalog.json  catálogo: qué segmento cubre qué fechas
 └── logs/collector.log                registro (conexiones, caídas, huecos)
 ```
 
@@ -137,6 +138,37 @@ El PC de Marcos tiene el alias SSH `ais-oracle` (en `%USERPROFILE%\.ssh\config`)
 | Parar el Collector | `ssh ais-oracle "sudo systemctl stop ais-collector"` (queda registrado como hueco `maintenance`) |
 | Actualizar el código | `ssh ais-oracle "cd /opt/ais && sudo git pull && sudo systemctl restart ais-collector"` |
 
+### Archivo de segmentos (Fase 6)
+
+Cada zona guarda un archivo por periodo (por defecto, un año):
+- **El 1 de enero a las 00:00 UTC**, el Collector se recarga solo (pausa de 1–2 s,
+  registrada) y `current.db` pasa a `archive/VALENCIA_2026.db`. Antes de darlo por
+  bueno, lo comprueba, calcula su huella SHA-256 y lo anota en el catálogo. Después
+  sigue en un `current.db` nuevo, que conserva las fichas de los buques.
+- **Al año de cerrarse**, el segmento se comprime (`.db.zst`, unas 3 veces más
+  pequeño).
+- **Las consultas y el visor** leen todos los segmentos sin que se note. Un segmento
+  comprimido se descomprime solo, en `archive/cache/`.
+- **La copia de seguridad** sube cada segmento cerrado una vez, a la carpeta
+  `archive/` del bucket.
+
+| Qué (en el servidor) | Comando |
+|---|---|
+| Ver los segmentos | `sudo -u ais /opt/ais/venv/bin/python -m collector.archive_tools estado` |
+| Verificar y comprimir lo que toca (lo hace `ais-archive.timer` a las 04:30 UTC) | `sudo systemctl start ais-archive` |
+| Comprimir ya un segmento | `sudo -u ais /opt/ais/venv/bin/python -m collector.archive_tools comprimir VALENCIA_2026` |
+| Mover un segmento a otro disco | `sudo -u ais /opt/ais/venv/bin/python -m collector.archive_tools mover VALENCIA_2026 /mnt/disco2/ais` |
+| Catálogo por la API | `/api/catalog?zone=VALENCIA` |
+
+Comprimir y mover siguen siempre el mismo orden:
+1. copiar;
+2. comprobar que la copia es idéntica a la de origen;
+3. anotar el cambio en el catálogo;
+4. **solo entonces** borrar el original.
+
+Si un disco con segmentos no está montado, las consultas devuelven lo demás y
+avisan de qué fechas faltan (`segments_unavailable`).
+
 Cómo está montado (DISEÑO.md §7):
 - **Código** en `/opt/ais`; **datos** en `/srv/ais`, un disco aparte de 100 GB
   que se monta solo al arrancar. Si ese disco no está, el Collector no arranca,
@@ -145,6 +177,8 @@ Cómo está montado (DISEÑO.md §7):
   si se cae.
 - **Copia de seguridad:** `ais-backup.timer` la lanza a las 03:30 UTC. La copia
   se verifica antes de darla por buena y se sube a Object Storage.
+- **Mantenimiento del archivo:** `ais-archive.timer`, a las 04:30 UTC.
+  Comprueba la huella de cada segmento cerrado y comprime los que ya toca.
 - **Cortafuegos:** solo está abierto el puerto 22 (SSH, solo con llave). La
   API escucha únicamente dentro de la máquina.
 - **Pruebas superadas el 29/10/2026:** reinicio completo de la máquina

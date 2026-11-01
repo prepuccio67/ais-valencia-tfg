@@ -66,3 +66,15 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   que la asignación de terminal depende de esa calibración.
 - Una escala que empezó antes de tener datos, o que no ha terminado, se marca
   como censurada y no entra en las estadísticas de espera.
+
+## Archivo de segmentos
+- **Frontera entre segmentos.** El cierre se hace unos segundos después de las
+  00:00 UTC del 1 de enero. Una posición recibida con retraso (hasta 15 min)
+  puede quedar en el segmento siguiente al de su hora. Las consultas abren por
+  eso los dos segmentos vecinos, así que no se pierde nada. Basta con tenerlo en
+  cuenta si se abre un archivo `.db` a mano con DB Browser.
+- **Zonas desactivadas:** no cierran su segmento hasta el siguiente arranque o
+  recarga del Collector, porque no tienen nada que escribir.
+- **Segmentos comprimidos:** la primera consulta que los necesita tarda un poco
+  más, porque los descomprime en `archive/cache/`. Esa copia se borra si pasan
+  7 días sin usarla.

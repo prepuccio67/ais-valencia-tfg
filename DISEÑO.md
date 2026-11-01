@@ -1,6 +1,7 @@
 # DISEÑO del sistema AIS – Puerto de València
 
-> Versión 1 · 28/10/2026 · Estado: **propuesta, pendiente de visto bueno**
+> Versión 1.1 · 01/11/2026 · Estado: **aprobado el 28/10/2026**; §6 y §9
+> actualizados con lo implementado y medido en la Fase 6.
 > Todas las horas del sistema están en **UTC**.
 
 Este documento fija las decisiones que serían caras de cambiar con meses de
@@ -456,10 +457,34 @@ se renombra, para que nunca quede a medias:
 
 | Estado | Significado |
 |---|---|
-| `ONLINE` | `.db` listo para consultar |
+| `ONLINE` | Segmento activo (`current.db`), en el que se escribe |
 | `ARCHIVED` | Cerrado y verificado, sin comprimir |
 | `COMPRESSED` | Guardado como `.zst`; se descomprime temporalmente si una consulta lo necesita |
 | `OFFLINE` | Movido a otro disco que no está montado; la API avisa de que esas fechas no están disponibles |
+
+*Implementado en la Fase 6 (`collector/archive.py` y `collector/archive_tools.py`):*
+- `OFFLINE` no se escribe en el catálogo. La API lo calcula en cada consulta:
+  si el archivo no está, ese segmento se da como `OFFLINE`.
+- **Cuándo se cierra el segmento:**
+  - El Collector comprueba cada 5 s si ha terminado el periodo. Si es así, pide
+    una recarga ordenada (D-14) y el cierre se hace con todo parado.
+  - Al arrancar, primero se termina cualquier cierre que se cortara a mitad:
+    - un `.db` del archivo que no está en el catálogo se anota;
+    - si falta `current.db`, se crea.
+- **Qué hereda el `current.db` nuevo:**
+  - las fichas de los buques;
+  - el latido del segmento anterior (así se registra el hueco de la pausa);
+  - un hueco `zone_disabled` abierto, si la zona estaba desactivada.
+- **El catálogo** solo lo cambia un proceso a la vez (bloqueo de archivo
+  `.catalog.lock`).
+- **Fechas de cada segmento:**
+  - `from_utc`/`to_utc` son la hora real del cierre (unos segundos después de
+    las 00:00).
+  - Las consultas amplían cada segmento 15 min por los dos lados, porque se
+    aceptan posiciones con hasta 15 min de retraso.
+- **Las copias de seguridad** se adaptan a los segmentos:
+  - la diaria lee todos los segmentos que cubren el día;
+  - cada segmento cerrado se sube una sola vez a `archive/` en Object Storage.
 
 **Consultas que cruzan segmentos.** La API mira en el catálogo qué segmentos
 cubren el intervalo pedido, los abre en **solo lectura**, consulta cada uno y
@@ -672,7 +697,12 @@ amarrados en la marina) y el 20 % en movimiento.
 **≈ 6 MB/día ≈ 2,2 GB/año**, con un margen razonable de 3–8 MB/día
 (1–3 GB/año).
 - Hasta abril de 2027 (unos 6 meses) serían unos 1,1 GB.
-- Un segmento anual comprimido con zstd ocuparía unos 0,4–0,6 GB (compresión
+- **Medido en el servidor (29/10–01/11/2026):** unas **13.000–15.000
+  posiciones al día** y **≈ 1,1 MB/día**, es decir, unos **0,4 GB/año**.
+  Es unas 4 veces menos de lo estimado: hay menos buques en movimiento a la
+  vez. Comprimido con zstd (nivel 10), el archivo queda **3,2 veces** más
+  pequeño (3,0 MB → 0,94 MB con 35.581 posiciones).
+- Estimación original: un segmento anual comprimido con zstd ocuparía unos 0,4–0,6 GB (compresión
   de 4–5 veces, a confirmar).
 - Sin muestreo, guardando todos los mensajes, serían unos 10 veces más.
 

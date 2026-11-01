@@ -1,6 +1,6 @@
 # Hoja de ruta
 
-Última actualización: 29/10/2026
+Última actualización: 01/11/2026
 
 ## ✅ Hecho
 - **Versión 0 (GitHub Actions):**
@@ -52,6 +52,19 @@
   - recarga ordenada en caliente y cambios registrados;
   - 75 tests; desplegado en el servidor.
 
+- **Fase 6. Archivo de segmentos** (01/11/2026):
+  - cierre automático del segmento al cambiar de periodo (por defecto, el
+    1 de enero), verificado con SHA-256 y recuperable si se corta a mitad;
+  - catálogo, consultas que cruzan segmentos y `/api/catalog`;
+  - compresión `.zst` (×3,2 con datos reales) y movimiento a otro disco, con
+    el original borrado solo después de comprobar la copia;
+  - mantenimiento diario (`ais-archive.timer`) y copia de seguridad adaptada
+    a los segmentos;
+  - 96 tests; ensayo del cierre de 2026 con una copia de los datos reales;
+    desplegado en el servidor.
+  - El primer cierre real será el **01/01/2027 a las 00:00 UTC**: revisarlo
+    ese día con `archive_tools estado`.
+
 ## 🔄 En curso
 - **Solapamiento con GitHub Actions** hasta el 30/10/2026; después se retira y
   el código antiguo pasa a `legacy/`.
@@ -63,7 +76,6 @@
 ## ⏳ Pendiente
 | Fase | Contenido |
 |---|---|
-| 6 | Archivo: cierre de segmentos, catálogo, consultas entre segmentos, compresión .zst y movimiento verificado |
 | 7 | Análisis TFG: subzonas, escalas y tiempos de espera, exportación CSV/Excel, gráficos. Usar «atracado» con SOG < 0,5 kn para coincidir con el muestreo |
 | 8 | (Opcional) Reparación de huecos entre dos Collectors de la misma zona |
 

@@ -165,3 +165,33 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
 - **Límites:** rectángulo envolvente de 25 grados² como máximo, 200 vértices y
   ningún polígono que se cruce consigo mismo. Una zona enorme saturaría la
   máquina, y un polígono «en lazo» no delimita un área con sentido.
+
+## D-14 · 01/11/2026 · Cierre de segmentos con el Collector parado (recarga ordenada)
+- **Decisión:**
+  - Al acabar el periodo, el Collector pide una recarga como la de las zonas
+    (D-13).
+  - Con todo parado y ningún archivo abierto:
+    1. cierra `current.db` (huecos cerrados, sin diario WAL);
+    2. lo renombra a `archive/`;
+    3. lo comprueba y calcula su huella SHA-256;
+    4. lo anota en el catálogo;
+    5. crea un `current.db` nuevo.
+  - Si el proceso se corta a mitad, el siguiente arranque termina lo que falte.
+  - La compresión y el movimiento los hace una herramienta aparte
+    (`archive_tools`), nunca el Collector.
+- **Alternativas:**
+  - cambiar de archivo en marcha, con conexiones abiertas;
+  - copiar `current.db` en lugar de renombrarlo;
+  - comprimir dentro del Collector.
+- **Motivo:**
+  - Renombrar dentro del mismo disco es instantáneo y no deja nunca dos copias
+    a medias.
+  - Hacerlo con el Collector parado reutiliza el arranque y la parada, que ya
+    están probados.
+  - Comprimir 0,5 GB lleva segundos de CPU: es mejor no hacerlo en el programa
+    que captura.
+  - Medido el 01/11/2026 con datos reales: el cierre tarda 0,08 s y la
+    compresión reduce el tamaño unas 3,2 veces.
+- **Seguridad de los datos:** nada se borra sin comprobar antes que la copia es
+  idéntica (misma huella SHA-256). Un archivo que no coincide con el catálogo
+  nunca se borra solo: se avisa en el registro para revisarlo a mano.
