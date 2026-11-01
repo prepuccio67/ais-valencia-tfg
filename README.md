@@ -9,8 +9,9 @@ las terminales de contenedores del Puerto de València.
 
 Documentación: [DISEÑO.md](DISEÑO.md) · [ROADMAP.md](ROADMAP.md) ·
 [DECISIONES.md](DECISIONES.md) · [LIMITACIONES.md](LIMITACIONES.md).
-La versión anterior (GitHub Actions + CSV) sigue en `captura_ais.py` y
-`procesar.py` hasta que el servidor esté capturando.
+La versión anterior (GitHub Actions + CSV, del 27/10 al 01/11/2026) está
+retirada y guardada en `legacy/`, con sus datos (`legacy/datos/`). Su cuadro de
+mando sigue publicado en GitHub Pages (`docs/`), congelado en su último estado.
 
 ---
 

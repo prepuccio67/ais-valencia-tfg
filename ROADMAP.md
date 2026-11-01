@@ -7,7 +7,8 @@
   - captura en CSV cada 30 min;
   - cálculo provisional de escalas;
   - cuadro de mando en GitHub Pages.
-  - Sigue en marcha hasta que funcione el servidor.
+  - **Retirada el 01/11/2026**: workflow desactivado en GitHub y código y
+    CSV movidos a `legacy/`. La web de GitHub Pages se mantiene congelada.
 - **Fase 0. Verificación** (28/10/2026):
   - OpenSeaFeed: gratis, WebSocket compatible con aisstream, datos con licencia
     CC BY 4.0 y cobertura en València comprobada en directo.
@@ -66,8 +67,6 @@
     ese día con `archive_tools estado`.
 
 ## 🔄 En curso
-- **Solapamiento con GitHub Actions** hasta el 30/10/2026; después se retira y
-  el código antiguo pasa a `legacy/`.
 - **Revisiones pendientes:**
   - comprobar en *Cost Analysis* que el gasto de Oracle es 0 €;
   - comprobar el 08/11/2026 que el banco ha liberado la retención de 93 €;
