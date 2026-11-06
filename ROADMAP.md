@@ -78,6 +78,12 @@
     01/11/2026.
 
 ## 🔄 En curso
+- **Fase 7c. Núcleo del TFG** (método en METODO.md; cada módulo se aprueba antes
+  de programarlo):
+  - 7c.1, precisión de la ETA declarada (`eta-v1`): método propuesto el
+    04/11/2026, pendiente de aprobación;
+  - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
+  - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente.
 - **Revisiones pendientes:**
   - comprobar en *Cost Analysis* que el gasto de Oracle es 0 €;
   - comprobar el 08/11/2026 que el banco ha liberado la retención de 93 €;

@@ -1,0 +1,331 @@
+# Método de análisis (módulos 7c)
+
+Documento de trabajo para el capítulo de metodología del TFG. Cada módulo se
+propone aquí **antes** de programarlo; el código solo se escribe cuando el método
+está aprobado. Las marcas **[VERIFICAR]** señalan lo que aún no se ha podido
+confirmar en la fuente original, con indicación de dónde comprobarlo.
+
+| Módulo | Versión del método | Estado |
+|---|---|---|
+| 7c.1 Precisión de la ETA declarada | `eta-v1` | **Propuesto (04/11/2026), pendiente de aprobación** |
+| 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
+| 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
+
+---
+
+## 7c.1 Precisión de la ETA declarada (`eta-v1`)
+
+### 1. Pregunta
+
+¿Cuánto se equivoca la hora estimada de llegada (**ETA**, *Estimated Time of
+Arrival*) que los buques portacontenedores declaran por AIS al venir a València,
+y con cuánta antelación es fiable? La respuesta alimenta el escenario C del
+módulo 7c.3: un buque solo puede ajustar su velocidad si se sabe con tiempo
+cuándo debe llegar.
+
+### 2. Qué es la ETA del AIS (fuente y formato)
+
+- La ETA viaja en el **mensaje AIS 5** (datos estáticos y del viaje), que un buque
+  de clase A emite **cada 6 minutos**. Su formato es «MMDDHHMM UTC»: mes, día,
+  hora y minuto, **en UTC y sin año** (ITU, 2014, según la transcripción de USCG
+  Navigation Center, s. f.).
+- **Valores «no disponible»** del estándar: mes 0, día 0, hora 24 o minuto 60
+  (ITU, 2014).
+- **La escribe la tripulación a mano.** La OMI indica que el destino y la ETA se
+  introducen «al inicio del viaje» y se mantienen actualizados «según sea
+  necesario» (OMI, 2015, anexo). También recomienda escribir el destino con el
+  código UN/LOCODE (València = `ESVLC`) e incluso usar el campo para «puerto de
+  salida y siguiente puerto».
+- **Se sabe que estos campos manuales tienen errores** (Harati-Mokhtari et al.,
+  2007). En 2026 todavía se debatía en la OMI cómo mejorar su fiabilidad (ICS,
+  2026) [VERIFICAR autores y fecha del documento MSC 111/19/6].
+- **Referencia local:** un estudio con datos del propio Puerto de València midió un
+  error absoluto medio de 1066 min (unas 18 h) en la ETA de partida, frente a 13 min
+  con un modelo predictivo (Valero et al., 2021) [VERIFICAR en el artículo qué ETA
+  de partida usan, la del AIS o la que comunica el consignatario, y en qué tabla
+  aparece la cifra].
+
+> **¿Qué es UTC?** Es la hora universal, sin horario de verano. En València, en
+> invierno, son las 12:00 locales cuando en UTC son las 11:00. Todo el sistema
+> trabaja en UTC.
+
+### 3. Qué datos tenemos realmente (diagnóstico del 04/11/2026)
+
+**Cómo se guarda la ETA.**
+- El Collector guarda en `voyage_data` cada **cambio** de destino, calado o ETA,
+  con la hora a la que llegó. Si la ETA no cambia, no se añade fila: sigue
+  vigente la anterior.
+- El año lo deduce el Collector al recibir el mensaje: elige la primera fecha que
+  no quede más de 30 días en el pasado (`collector/messages.py`, función
+  `clean_eta`). Por ejemplo, el 30/12 una ETA «01-02» se entiende como 2 de enero
+  del año siguiente. Así queda resuelto el cambio de año.
+
+**Lo que hay** (consulta de solo lectura en el servidor, datos del 29/10 al
+04/11/2026):
+
+| Indicador | Valor |
+|---|---|
+| Filas en `voyage_data` (todos los buques) | 451, de 174 buques |
+| Filas con ETA válida | 437 (en 14 la ETA venía «no disponible») |
+| Filas con hora o minuto «no disponible» (24 / 60) | 0 |
+| Buques de carga de 100 m o más con datos | 87 (252 filas; mediana de 3 cambios por buque) |
+| ETA que ya había pasado cuando se emitió | 52 de 252 (21 %): ETA sin actualizar tras llegar |
+| ETA a más de 30 días vista | 1 |
+| Escalas con atraque en terminales de contenedores | 43 (17 OK, 18 dudosas, 8 en curso) |
+| … con espera fuera y alguna ETA antes de fondear | 25 de 31 |
+
+**Destinos declarados.** Aparecen `ESVLC`, `VALENCIA`, `ESVLC>ESBCN`,
+`ESBCN>ESVLC`, `MAPTM>ESVLC`, `ESVLC-MACAS` y hasta erratas como `ESVLS>MAPTM`.
+El signo `>` se usa como «origen > destino». Esto sigue la recomendación de usar el
+campo para el puerto de salida y el siguiente (OMI, 2015), aunque el uso del
+símbolo `>` es una convención del sector que no aparece en la resolución
+[VERIFICAR en SN/Circ.244].
+
+**Tres hallazgos que condicionan el método.**
+
+1. **La ETA declarada se refiere casi siempre a la llegada a aguas del puerto, no
+   al atraque.**
+   - Justo al entrar en espera, la mediana de (ETA − entrada en el fondeadero) es de
+     **+0,3 h**, y la mitad de las escalas quedan dentro de ±1 h.
+   - Durante la espera, la ETA casi **nunca se actualiza** (0 cambios en 21 de 25
+     escalas). Comparada con el atraque, el error es básicamente la duración de la
+     espera.
+   - Hay excepciones, como MSC LAURA y ONE MANEUVER, cuya ETA coincide con el atraque
+     (diferencia de −1,5 h y −0,4 h) y no con el fondeo.
+2. **Con la zona de captura actual no se pueden medir los horizontes de 6 a 72 h
+   antes de la llegada a aguas del puerto.**
+   - El rectángulo de captura llega a unas 10–15 millas náuticas del puerto
+     (39,25–39,60 N; 0,36 W–0,00), unos 50–70 min de navegación a 13 nudos.
+   - Antes de eso, el buque está fuera de cobertura y no recibimos su ETA. De 31
+     escalas con espera, a 6 h vista solo había una ETA utilizable; a 1 h vista, 14.
+3. **Hay pocas escalas.** Con 6 días de datos, todo resultado es provisional y está
+   pensado para recalcularse al acumular semanas.
+
+### 4. Definición de «llegada real»
+
+Se calculan las tres opciones y se recomienda una. Cada una responde a una
+pregunta distinta.
+
+| Código | Llegada real | Cómo se obtiene | Qué mide |
+|---|---|---|---|
+| **`AGUAS`** (recomendada) | **Llegada a aguas del puerto**: la entrada en espera (fondeadero o deriva) si el buque espera, o la entrada en el recinto portuario si atraca directamente | `t_anchor_in`, o la primera posición dentro de `PUERTO` | Si la ETA acierta **el suceso que la tripulación declara** |
+| `RECINTO` | Entrada en el recinto portuario (con práctico, camino del muelle) | Primera posición dentro de `PUERTO` tras la espera | Si la ETA acierta la entrada efectiva en puerto |
+| `ATRAQUE` | Hora de atraque | `t_berth` | La distancia entre lo que declara el buque y cuándo puede operar la terminal: es la **brecha de información** que interesa al JIT |
+
+**Por qué se recomienda `AGUAS`:**
+- Es el suceso al que se refiere la ETA en la práctica, según el hallazgo 1. Medir
+  la ETA contra el atraque mezclaría dos cosas: si el buque estima bien su llegada
+  y cuánto le hace esperar el puerto.
+- Encaja con la Guía JIT de la OMI. La Guía toma como hito clave la hora solicitada
+  de llegada al punto de embarque del práctico (*RTA Pilot Boarding Place*), previa
+  al atraque (GloMEEP y GIA, 2020, anexo 1, p. 47).
+- El fondeadero y la entrada del recinto son la mejor aproximación de ese punto que
+  tenemos. La posición oficial del punto de embarque de prácticos de València no
+  está en nuestras subzonas [VERIFICAR en las normas de la Autoridad Portuaria o
+  en el derrotero].
+
+**`ATRAQUE`** se calcula y se presenta aparte. No es un error de la ETA, sino la
+información que le falta al buque para un JIT. Se conecta directamente con 7c.3.
+
+### 5. ETA vigente en cada horizonte
+
+> **¿Qué es un horizonte?** Es la antelación con la que miramos la ETA. «A 24 h»
+> significa «qué ETA declaraba el buque 24 horas antes de llegar».
+
+Para cada escala, cada definición de llegada *T* y cada horizonte
+*h* ∈ {72, 48, 24, 12, 6, 2, 1, 0} h:
+
+1. **Momento de referencia:** *t_ref = T − h*. Se añaden los horizontes de 2, 1 y
+   0 h porque son los únicos medibles hoy con `AGUAS`.
+2. **ETA vigente:** la de la última fila de `voyage_data` del buque con hora
+   ≤ *t_ref*.
+3. **Comprobación de que el buque estaba a la vista:** se exige que haya alguna
+   posición o mensaje del buque en [*t_ref − W*, *t_ref*], con *W* = 2 h
+   (parámetro).
+   - Esto es necesario porque `voyage_data` solo guarda cambios mientras el buque
+     está en cobertura. Si no lo vemos, no sabemos si cambió la ETA mientras estaba
+     fuera.
+
+### 6. Error y signo
+
+**e = ETA declarada − llegada real** (en horas)
+
+- **e > 0:** el buque llegó **antes** de lo que declaraba. Ejemplo: ETA 14:00,
+  llega 12:30 → e = +1,5 h.
+- **e < 0:** llegó **más tarde** de lo declarado. Ejemplo: ETA 14:00, llega 17:00
+  → e = −3 h.
+
+### 7. Filtros y motivos de descarte
+
+Cada combinación escala × definición × horizonte queda con un estado. Se cuentan
+y se publican todos, no solo los utilizables.
+
+| Estado | Regla | Entra en las estadísticas |
+|---|---|---|
+| `USABLE` | Pasa todos los filtros | Sí |
+| `ANTES_CAPTURA` | *t_ref* anterior al inicio de los datos | No |
+| `SIN_COBERTURA` | Buque no visto en [*t_ref − W*, *t_ref*] | No |
+| `SIN_ETA` | No hay ETA, o es «no disponible» (mes 0, día 0, hora 24, minuto 60) | No |
+| `DESTINO_OTRO` | El último puerto del destino declarado no es València | No |
+| `DESTINO_DUDOSO` | València aparece, pero no como último puerto (`ESVLC-MACAS`), o el destino está vacío | No; se informa aparte |
+| `ETA_CADUCADA` | La ETA ya había pasado más de 1 h antes de *t_ref* (tripulación que no la actualizó) | No; se informa su porcentaje y se calcula una variante que la incluye |
+| `ETA_IMPOSIBLE` | ETA a más de 30 días de *t_ref* | No |
+| `ESCALA_EXCLUIDA` | Escala `EXCLUIDA` en `escalas-v1` (sin atraque o espera de más de 10 días) | No |
+
+**Reglas del destino.**
+- Se pasa a mayúsculas y se trocea por `>`, `=>`, `->`, `>>` y `-`. Se toma el
+  **último** trozo.
+- Es València si coincide con `ESVLC`, `ES VLC`, `VLC`, `VALENCIA` o `VALENCIA
+  PORT`, o si se diferencia de `ESVLC` en una sola letra (`ESVLS`). La lista es un
+  parámetro editable.
+
+**Escalas incluidas.**
+- Solo las de las terminales de contenedores (MSC, CSP y APM), como en
+  `escalas-v1`: el tipo AIS no distingue portacontenedores.
+- Se incluyen las escalas OK, las DUDOSAS y las EN CURSO cuyo suceso de llegada
+  se haya observado. Para la ETA solo importa haber visto la llegada; una salida
+  no vista no afecta. Además se calcula la variante «solo OK».
+
+**Sospecha de hora local.**
+- Algunas tripulaciones podrían escribir la hora local en lugar de UTC, lo que daría
+  errores de −1 h en invierno o −2 h en verano.
+- No se corrige buque a buque. Se revisará si el reparto de errores tiene picos en
+  esos valores y, si los hay, se señalará como resultado a revisar.
+
+### 8. Indicadores
+
+Por horizonte, por definición de llegada y por terminal (y en total):
+
+| Indicador | Fórmula | Explicación sencilla |
+|---|---|---|
+| *n* | número de casos `USABLE` | Cuántas escalas sostienen la cifra. Con *n* < 5 se muestra «pocos datos» |
+| Error medio (sesgo) | (1/*n*) Σ eᵢ | Si los buques tienden a llegar antes (+) o después (−). Errores de signo contrario se compensan |
+| Mediana del error | valor central de los eᵢ ordenados | El caso «típico»; un buque con un error enorme no la mueve |
+| Error absoluto medio (MAE) | (1/*n*) Σ \|eᵢ\| | Cuánto se equivoca de media, sin importar el signo. Ejemplo: errores de +2 y −2 h dan un error medio de 0 pero un MAE de 2 h |
+| % dentro de ±1, ±2 y ±6 h | casos con \|eᵢ\| ≤ *k* / *n* | Qué parte de las ETA sería útil para planificar con esa tolerancia |
+| Percentiles 10 y 90 | valores que dejan por debajo el 10 % y el 90 % de los errores | El rango donde cae el 80 % central de los casos. Ejemplo: P10 = −3 h y P90 = +1 h |
+| Intervalo de confianza al 90 % de la mediana (si *n* ≥ 10) | *bootstrap* con 2000 remuestreos | Cuánto podría cambiar la mediana con otras escalas parecidas: una forma de medir la incertidumbre por tener pocos datos |
+| % de ETA caducadas | casos `ETA_CADUCADA` / casos con ETA | Cuántas tripulaciones no actualizan la ETA |
+| % de ETA en punto (minuto 00) | — | Precisión con la que se declara: si casi todas acaban en :00, la ETA se redondea a la hora |
+
+> **¿Qué es un percentil?** Ordenamos los errores de menor a mayor. El percentil
+> 90 es el valor que deja por debajo al 90 % de ellos. Para la mediana y los
+> percentiles se usa el mismo cálculo que en el resto del cuadro de mando,
+> equivalente a PERCENTIL.INC de Excel.
+>
+> **¿Qué es un *bootstrap*?** Se repite el cálculo 2000 veces, sacando cada vez las
+> escalas «al azar con reemplazo» de las que tenemos. El intervalo es el rango
+> donde cae el 90 % de esas medianas. No necesita suponer ninguna forma concreta
+> para el reparto de los errores.
+
+### 9. Parámetros (archivo `parametros_7c.json`, sección `eta`)
+
+Ninguno irá escrito en el código. Cada uno llevará su valor, unidad, motivo o
+fuente y fecha.
+
+| Parámetro | Valor propuesto | Unidad | Motivo |
+|---|---|---|---|
+| `horizontes_h` | 72, 48, 24, 12, 6, 2, 1, 0 | h | Encargo del TFG más los horizontes medibles hoy |
+| `definicion_principal` | `AGUAS` | — | Apartado 4 |
+| `ventana_vista_h` (*W*) | 2 | h | Un buque fondeado se guarda cada 10 min y uno en marcha cada minuto; 2 h deja margen para pequeños huecos de recepción |
+| `caducada_tolerancia_h` | 1 | h | Una ETA que ya pasó hace menos de 1 h puede ser simplemente un retraso |
+| `eta_max_dias` | 30 | días | La misma ventana que usa el Collector para deducir el año |
+| `bandas_h` | 1, 2, 6 | h | Encargo del TFG |
+| `min_n` | 5 | escalas | Por debajo no se muestran cifras, solo «pocos datos» |
+| `destinos_valencia` | `ESVLC`, `ES VLC`, `VLC`, `VALENCIA`, `VALENCIA PORT` | — | Valores observados y UN/LOCODE |
+| `bootstrap_remuestreos` | 2000 | — | Habitual; con tan pocos datos el cálculo es instantáneo |
+
+### 10. Resultados y dónde se verán (al implementar)
+
+- **Tabla `eta_obs` en `analysis.db`**, recalculable como `port_call`. Tiene una
+  fila por escala × definición × horizonte, con estado, ETA, hora de la
+  declaración, destino tal cual, error y `method_version = 'eta-v1'`.
+- **API:** `GET /api/eta_accuracy?zone=VALENCIA`, en JSON o con `&format=csv`
+  (CSV para Excel, con `;` y coma decimal).
+- **Cuadro de mando `/escalas`**, con un nuevo apartado:
+  - cifras clave: MAE y % dentro de ±1 h en el horizonte medible más largo;
+  - el error por horizonte (mediana y banda P10–P90);
+  - la tabla de casos y de descartes por motivo;
+  - un aviso fijo de que son pocos datos.
+- **Código:** un módulo nuevo `collector/eta_accuracy.py`, con sus tests, que solo
+  lee `voyage_data`, `position` y `port_call`. **No se toca la captura.**
+
+### 11. Cobertura: ampliar la captura con una zona de aproximación (requiere tu permiso)
+
+**El límite.**
+- Sin ampliar la captura, para la llegada a aguas del puerto (`AGUAS`) solo se
+  pueden medir horizontes de 0–2 h.
+- Los horizontes largos (6–72 h) solo existen hoy frente al atraque (`ATRAQUE`), y
+  únicamente para los buques que ya estaban esperando.
+
+**La posible solución.**
+- Añadir una segunda zona, **«APROXIMACIÓN»**, mucho más grande pero con muestreo
+  grueso, por ejemplo una posición cada 30 min en marcha y cada 60 min parado.
+- El editor de zonas de la Fase 5 ya permite cambiar el muestreo de cada zona: **no
+  habría que tocar el código de captura**, solo su configuración.
+- Además, esta zona daría la velocidad de aproximación que necesita 7c.3.
+
+| Opción | Alcance | Horizonte cubierto (a 12,5 kn) | Buques a la vez (estimación) | Almacenamiento (estimación) |
+|---|---|---|---|---|
+| 0. Sin cambios | 10–15 NM | ≈ 1 h | — | ≈ 0,4 GB/año (actual) |
+| A. Aproximación media | ≈ 150 NM (37,0–42,0 N; 3,5 W–2,9 E) | ≈ 12 h | 300–800 | + 0,3–0,9 GB/año |
+| B. Mediterráneo occidental | ≈ 300 NM, incluye el Estrecho y Baleares | ≈ 24 h | 1000–2500 | + 1–3 GB/año |
+
+**Cautelas de esta estimación.**
+- Las cifras de buques y de almacenamiento son **estimaciones mías**, sin medir.
+  Supongo unos 60 bytes por posición y el muestreo de 30/60 min. Lo correcto es
+  medirlo antes de decidir, con una prueba de 1 h en tu PC que solo cuente mensajes
+  sin guardarlos.
+- Los receptores AIS terrestres cubren unas decenas de millas desde la costa. Lejos
+  de ella habrá huecos, así que el horizonte real se medirá, no se supondrá.
+- Los límites de tamaño de zona o de volumen de las fuentes gratuitas (aisstream y
+  OpenSeaFeed) están por confirmar [VERIFICAR en sus condiciones de uso].
+- **Los datos no se recuperan hacia atrás:** cada semana sin la zona de
+  aproximación es una semana sin horizontes largos.
+
+No haré nada de esto sin tu «sí».
+
+### 12. Limitaciones previstas (se pasarán a LIMITACIONES.md al implementar)
+
+- **Muestra pequeña y de pocos días.** Las cifras son provisionales.
+- **Horizontes largos sin medir** si no se amplía la captura (apartado 11).
+- **ETA manual.** Puede estar desactualizada, en hora local o referida a otro punto.
+  Solo se detectan los casos evidentes.
+- **El punto de embarque de prácticos** se aproxima con el fondeadero y el recinto.
+- **«Portacontenedores»** se identifica por la terminal donde atraca, no por el
+  tipo AIS.
+
+### Bibliografía (7c.1)
+
+- GloMEEP Project Coordination Unit & Global Industry Alliance for Low Carbon
+  Shipping. (2020). *Just in time arrival guide: Barriers and potential
+  solutions*. International Maritime Organization.
+  https://greenvoyage2050.imo.org/wp-content/uploads/2021/01/GIA-just-in-time-hires.pdf
+  [VERIFICAR la autoría exacta en la portadilla]
+- Harati-Mokhtari, A., Wall, A., Brooks, P., & Wang, J. (2007). Automatic
+  Identification System (AIS): Data reliability and human error implications.
+  *The Journal of Navigation, 60*(3), 373–389.
+  https://doi.org/10.1017/S0373463307004298
+- International Chamber of Shipping. (2026). *Revision of the Revised guidelines
+  for the onboard operational use of shipborne automatic identification systems
+  (AIS) (resolution A.1106(29))* (MSC 111/19/6). https://www.ics-shipping.org/submission/msc-111-19-6-revision-of-the-revised-guidelines-for-the-onboard-operational-use-of-shipborne-automatic-identification-systems-ais-resolution-a-110629/
+  [VERIFICAR autores y fecha]
+- International Maritime Organization. (2015). *Revised guidelines for the
+  onboard operational use of shipborne automatic identification systems (AIS)*
+  (Resolución A.1106(29), adoptada el 2 de diciembre de 2015).
+  https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/AIS/Resolution%20A.1106(29).pdf
+- International Maritime Organization. (s. f.). *Guidance on the use of the
+  UN/LOCODE in the destination field in AIS messages* (SN/Circ.244).
+  https://www.navcen.uscg.gov/sites/default/files/pdf/NAIS/IMO_SN_Circ244_AIS_UNLOCODE.pdf
+  [VERIFICAR año]
+- International Telecommunication Union. (2014). *Technical characteristics for
+  an automatic identification system using time division multiple access in the
+  VHF maritime mobile frequency band* (Recomendación ITU-R M.1371-5).
+  https://www.itu.int/rec/R-REC-M.1371 [VERIFICAR el año en la ficha de la ITU]
+- U.S. Coast Guard Navigation Center. (s. f.). *AIS Class A ship static and voyage
+  related data (Message 5)*. Recuperado el 4 de noviembre de 2026, de
+  https://www.navcen.uscg.gov/ais-class-a-static-voyage-message-5
+- Valero, C. I., Ivancos Pla, E., Vaño, R., Garro, E., Boronat, F., & Palau, C. E.
+  (2021). Design and development of an AIoT architecture for introducing a vessel
+  ETA cognitive service in a legacy port management solution. *Sensors, 21*(23),
+  8133. https://doi.org/10.3390/s21238133
