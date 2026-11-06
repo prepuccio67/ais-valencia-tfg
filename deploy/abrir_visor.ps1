@@ -6,7 +6,11 @@ $puertoLocal = 5081   # 5081 para no chocar con un Collector de prueba en el PC 
 
 Write-Host "Leyendo el token del servidor..."
 $token = (ssh ais-oracle "sudo grep '^API_TOKEN=' /opt/ais/.env | cut -d= -f2").Trim()
-if (-not $token) { Write-Host "No se pudo leer el token. ¿Está encendido el servidor?"; exit 1 }
+if (-not $token) {
+    Write-Host "No se pudo leer el token. ¿Está encendido el servidor?"
+    Read-Host "Pulsa Intro para cerrar"   # sin esto, abierto con doble clic, la ventana se cierra sin dejar leer el error
+    exit 1
+}
 
 Write-Host "Abriendo el túnel SSH (ventana aparte)..."
 Start-Process ssh -ArgumentList "-N -L ${puertoLocal}:127.0.0.1:5080 ais-oracle"
