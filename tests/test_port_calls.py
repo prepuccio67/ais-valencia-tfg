@@ -17,7 +17,7 @@ ANCHOR = (39.40, -0.22)       # fondeadero
 ENTRY = (39.428, -0.305)      # dentro del recinto, cerca de la bocana
 MSC = (39.439, -0.325)
 CSP = (39.432, -0.320)
-OTHER = (39.4537, -0.3200)    # muelle sin terminal dibujada
+OTHER = (39.4451, -0.3117)    # muelle sin terminal dibujada (terminal de coches, dársena este)
 
 
 class Base(unittest.TestCase):

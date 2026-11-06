@@ -92,8 +92,12 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   estadísticas.
 - **Recintos de las terminales dibujados con los datos** de los primeros 3 días
   y con los rótulos de OpenStreetMap. MSC y CSP son claros (cada una solo recibe
-  a sus navieras), pero **APM está pendiente de comprobar** [VERIFICAR]: la
-  dársena norte mezcla portacontenedores con graneleros y ro-ro.
+  a sus navieras). **APM se redibujó el 06/11/2026** sobre imagen de satélite
+  (D-17): cubre todo el espigón de contenedores. Queda por confirmar con el plano
+  oficial si la cara oeste de la punta es de APM [VERIFICAR]. Además, ahí atracan
+  también buques pequeños (ELBIA, 134 m; MSM DON, 105 m) y de carga rodada (ECO
+  PONENTE) que podrían no ser portacontenedores y que ahora cuentan como escalas
+  de APM.
 - **El tipo AIS 70–79 («carga») no distingue portacontenedores** de graneleros,
   ro-ro o carga general. Por eso las estadísticas «de contenedores» se basan en
   la terminal donde atraca el buque, no en su tipo.

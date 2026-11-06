@@ -44,10 +44,12 @@
       "type": "Feature",
       "properties": {
         "subzone_id": "T-APM", "kind": "TERMINAL", "name": "APM Terminals Valencia",
-        "notes": "[VERIFICAR] Dibujada solo alrededor del muelle donde atracaron MAERSK CALABAR y NICARAGUA EXPRESS (Hapag-Lloyd). La dársena norte también tiene graneleros y ro-ro, y MAERSK NORFOLK atracó en su extremo norte (39,4537 N; 0,3200 W): hay que confirmar con el plano qué muelles son de APM."
+        "notes": "Redibujada el 06/11/2026 sobre imagen de satélite (Esri World Imagery): todo el espigón de contenedores de la dársena norte, con un margen de agua a cada lado para los buques atracados. La ubicación de APM la confirma una infografía aportada por el autor (zona azul claro) y que atracan ahí los buques de Maersk y Hapag-Lloyd (MAERSK CALABAR, BARCELONA MAERSK, MAERSK NORFOLK, NICARAGUA EXPRESS, CHENNAI EXPRESS). [VERIFICAR] con el plano oficial de la Autoridad Portuaria si la cara oeste de la punta es de APM."
       },
       "geometry": {"type": "Polygon", "coordinates": [[
-        [-0.3150, 39.4455], [-0.3100, 39.4455], [-0.3100, 39.4500], [-0.3150, 39.4500], [-0.3150, 39.4455]]]}
+        [-0.32386, 39.45831], [-0.31871, 39.45939], [-0.31474, 39.45434], [-0.31313, 39.45085],
+        [-0.31174, 39.44870], [-0.31313, 39.44597], [-0.31620, 39.44590], [-0.31800, 39.44920],
+        [-0.32180, 39.45367], [-0.32386, 39.45831]]]}
     },
     {
       "type": "Feature",

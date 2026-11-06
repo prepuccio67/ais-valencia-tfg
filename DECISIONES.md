@@ -253,3 +253,33 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   - Que cada naviera atraque en «su» terminal confirma a la vez los datos y las
     etiquetas.
   - APM queda marcada [VERIFICAR] hasta contrastarla con el plano oficial.
+
+## D-17 · 06/11/2026 · Recinto de APM redibujado sobre imagen de satélite
+- **Decisión:**
+  - El recinto `T-APM` pasa de un rectángulo de unos 430 × 500 m, que solo cubría
+    la punta del espigón, a **todo el espigón de contenedores de la dársena
+    norte**. Incluye un margen de agua a cada lado para los buques atracados.
+  - Se dibujó sobre la imagen de satélite de Esri World Imagery, con los puntos de
+    atraque reales del 29/10 al 06/11/2026.
+  - El cambio solo afecta a `subzones.geojson`. `analysis.db` se rehízo sola y
+    conserva el recinto anterior en su historial, con fecha de fin. En el servidor
+    queda además una copia del archivo anterior,
+    `subzones.geojson.antes-apm-2026-11-06`.
+- **Motivo:**
+  - Una infografía aportada por el autor sitúa APM en ese espigón (zona azul
+    claro).
+  - En él atracan los buques de Maersk y Hapag-Lloyd. Con el rectángulo antiguo,
+    BARCELONA MAERSK y MAERSK NORFOLK contaban como «otros muelles».
+- **Efecto con los datos hasta el 06/11/2026:**
+  - Escalas de APM: de 5 a 19 (de 4 a 11 OK).
+  - Escalas en «otros muelles»: de 25 a 11.
+  - Escalas OK en terminales de contenedores: de 36 a 43.
+- **Alternativas:**
+  - Mantener el rectángulo pequeño: dejaba fuera buques de Maersk.
+  - Esperar al plano oficial: retrasaba el análisis.
+  - Polígonos de OpenStreetMap: Overpass seguía sin responder.
+- **Pendiente:**
+  - Confirmar con el plano de la Autoridad Portuaria si la cara oeste de la punta
+    es de APM [VERIFICAR].
+  - Revisar si buques pequeños o de carga rodada (ELBIA, MSM DON, ECO PONENTE)
+    deben contar como escalas «de contenedores».
