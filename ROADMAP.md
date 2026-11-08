@@ -1,6 +1,6 @@
 # Hoja de ruta
 
-Última actualización: 01/11/2026
+Última actualización: 08/11/2026
 
 ## ✅ Hecho
 - **Versión 0 (GitHub Actions):**
@@ -77,6 +77,16 @@
   - 115 tests; desplegado: 53 escalas calculadas con los datos del 29/10 al
     01/11/2026.
 
+- **Zona de APROXIMACIÓN** (08/11/2026, D-18):
+  - prueba de 1 h que solo contaba mensajes: 16.065 mensajes/h, 967 buques,
+    alcance de hasta 189 NM con cobertura «a islas»;
+  - rectángulo 37,0–42,0 N; 3,5 W–2,9 E con 1 posición cada 30 min en marcha y
+    cada 60 min parado, y todos los cambios de destino/calado/ETA;
+  - VALENCIA, zona por defecto explícita; el editor acepta el muestreo; límite de
+    zona de 40 grados²;
+  - 123 tests; desplegada a las 17:04 UTC y vigilada 30 min: VALENCIA igual
+    (324 posiciones frente a 327), sin huecos ni errores.
+
 ## 🔄 En curso
 - **Fase 7c. Núcleo del TFG** (método en METODO.md; cada módulo se aprueba antes
   de programarlo):
@@ -85,9 +95,12 @@
   - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
   - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente.
 - **Revisiones pendientes:**
-  - comprobar en *Cost Analysis* que el gasto de Oracle es 0 €;
-  - comprobar el 08/11/2026 que el banco ha liberado la retención de 93 €;
-  - el enlace de las copias caduca el 31/12/2027: renovarlo si el proyecto sigue.
+  - ~~gasto de Oracle 0 € y retención de 93 € liberada~~: comprobado por Marcos el 08/11/2026;
+  - el enlace de las copias caduca el 31/12/2027: renovarlo si el proyecto sigue;
+  - 09/11/2026: comprobar que la copia diaria incluye la zona `APROXIMACION`
+    (`backup-staging/APROXIMACION/daily`) y que se sube al bucket;
+  - systemd avisa de que el archivo `ais-collector.service` cambió en disco (aviso
+    anterior a D-18): revisar la diferencia y ejecutar `systemctl daemon-reload`.
 
 ## ⏳ Pendiente
 | Fase | Contenido |

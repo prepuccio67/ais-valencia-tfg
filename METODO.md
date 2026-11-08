@@ -292,6 +292,12 @@ No haré nada de esto sin tu «sí».
 60 min parado, más los eventos (arranca/para y cambio de estado AIS). Todos los cambios
 de destino, calado y ETA (mensaje AIS 5) se guardan siempre, como en VALENCIA.
 
+**Desplegada el 08/11/2026 a las 17:04 UTC.** En la primera media hora (17:05–17:35)
+guardó 296 posiciones y 269 cambios de destino/calado/ETA (250 con ETA válida), sin
+huecos ni errores, y VALENCIA siguió igual (324 posiciones frente a 327 la media hora
+anterior). Los primeros horizontes largos de 7c.1 se podrán calcular cuando se acumulen
+semanas de datos.
+
 **Cifras medidas** (prueba de 1 h en el PC, domingo 08/11/2026 de 15:28 a 16:28 UTC,
 `scripts/prueba_aproximacion.py`; resultado completo en
 `informes/prueba_aproximacion_2026-11-08.json`):

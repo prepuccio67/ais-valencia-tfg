@@ -283,3 +283,49 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
     es de APM [VERIFICAR].
   - Revisar si buques pequeños o de carga rodada (ELBIA, MSM DON, ECO PONENTE)
     deben contar como escalas «de contenedores».
+
+## D-18 · 08/11/2026 · Zona de APROXIMACIÓN (opción A completa) con muestreo grueso
+- **Decisión:**
+  - Segunda zona `APROXIMACION`: rectángulo 37,0–42,0 N; 3,5 W–2,9 E (≈150 NM
+    alrededor de València, 32 grados²), **sin recortar**: incluye Barcelona,
+    Cartagena, Alicante, Ibiza y Palma, que es donde se capta la ETA con antelación.
+  - Muestreo: 1 posición cada 30 min en marcha y 1 cada 60 min parado, más los
+    eventos (arranca/para y cambio de estado AIS), con la misma histéresis que
+    VALENCIA (D-08). **Todos** los cambios de destino, calado y ETA (mensaje AIS 5)
+    se guardan siempre, como en VALENCIA.
+  - VALENCIA no cambia: cada zona tiene su base, su muestreo y su cálculo; las
+    escalas (`escalas-v1`) solo leen VALENCIA.
+  - Cambios de código para hacerlo posible: el editor de zonas acepta el muestreo
+    (validado), el límite de tamaño pasa de 25 a 40 grados², y VALENCIA es la zona
+    por defecto de forma explícita en la API, el visor, el cuadro de escalas y el
+    recálculo de escalas (una zona sin terminales no da error ahí).
+  - Desplegada el 08/11/2026 a las 17:04 UTC con recarga ordenada (D-13).
+- **Alternativas:**
+  - opción 0 (sin cambios): solo horizontes de 0–2 h para 7c.1;
+  - opción B (Mediterráneo occidental, ≈300 NM): más del doble de mensajes y supera
+    el límite de 40 grados²;
+  - recortar el rectángulo a mar abierto: perdería las «islas» de cobertura donde
+    sí se oye a los buques.
+- **Motivo:**
+  - 7c.1 necesita la ETA declarada 6–72 h antes de llegar, y 7c.3 la velocidad de
+    aproximación. Con la zona VALENCIA solo se ve el último ≈1 h.
+  - Prueba de 1 h del 08/11/2026 (15:28–16:28 UTC, METODO.md §11): 16.065 mensajes/h,
+    967 buques, 3.359 mensajes AIS 5/h, alcance de hasta 189 NM; 0,45–1,1 GB/año.
+  - Los datos no se recuperan hacia atrás: cuanto antes, más semanas de horizontes
+    largos.
+- **Comprobaciones:**
+  - Test que simula un buque en las dos zonas: VALENCIA guarda exactamente lo mismo
+    (posiciones, ETA y cobertura) con y sin la zona nueva.
+  - Los repetidos de aisstream no los causa el solape: el servidor, solo con
+    VALENCIA, contó 2.245 mensajes/h frente a 2.249 en la prueba.
+  - Vigilancia de 30 min tras desplegar (17:05–17:35 UTC frente a 16:33–17:03 UTC):
+    VALENCIA 1.748 mensajes frente a 1.776 y 324 posiciones frente a 327; sin
+    huecos ni errores. APROXIMACION: 296 posiciones y 269 cambios de
+    destino/calado/ETA en la media hora.
+  - Los cambios de zona y de muestreo solo se aceptan con el token en la cabecera
+    HTTP; la API escucha solo dentro de la máquina (túnel SSH). Comprobado en el
+    servidor: sin token o con el token en la URL responde 401.
+- **Cómo desactivarla en un minuto, conservando los datos:** botón «Desactivar» del
+  editor de zonas o `POST /api/zones/APROXIMACION/deactivate` con el token. Las
+  copias diarias y el archivo de segmentos la incluyen sin cambios (recorren todas
+  las zonas).
