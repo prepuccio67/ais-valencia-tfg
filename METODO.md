@@ -261,8 +261,10 @@ fuente y fecha.
 **La posible solución.**
 - Añadir una segunda zona, **«APROXIMACIÓN»**, mucho más grande pero con muestreo
   grueso, por ejemplo una posición cada 30 min en marcha y cada 60 min parado.
-- El editor de zonas de la Fase 5 ya permite cambiar el muestreo de cada zona: **no
-  habría que tocar el código de captura**, solo su configuración.
+- Cada zona tiene su propio muestreo en su `zone.json`: **no hay que tocar el código
+  de captura**, solo su configuración. *Corrección (08/11/2026):* el editor de zonas
+  de la Fase 5 no permitía cambiar el muestreo; se ha añadido ese parámetro a la API
+  del editor (D-18) para crear la zona con la recarga ordenada de siempre.
 - Además, esta zona daría la velocidad de aproximación que necesita 7c.3.
 
 | Opción | Alcance | Horizonte cubierto (a 12,5 kn) | Buques a la vez (estimación) | Almacenamiento (estimación) |
@@ -284,6 +286,43 @@ fuente y fecha.
   aproximación es una semana sin horizontes largos.
 
 No haré nada de esto sin tu «sí».
+
+**Elegida: opción A, rectángulo completo (08/11/2026, D-18).** Zona `APROXIMACION`,
+37,0–42,0 N; 3,5 W–2,9 E (32 grados²), con 1 posición cada 30 min en marcha y 1 cada
+60 min parado, más los eventos (arranca/para y cambio de estado AIS). Todos los cambios
+de destino, calado y ETA (mensaje AIS 5) se guardan siempre, como en VALENCIA.
+
+**Cifras medidas** (prueba de 1 h en el PC, domingo 08/11/2026 de 15:28 a 16:28 UTC,
+`scripts/prueba_aproximacion.py`; resultado completo en
+`informes/prueba_aproximacion_2026-11-08.json`):
+
+| Indicador | aisstream | OpenSeaFeed | Total |
+|---|---|---|---|
+| Mensajes por hora en el rectángulo | 9.318 | 6.747 | 16.065 |
+| … dentro de VALENCIA | 2.249 | 1.486 | 3.735 |
+| Buques distintos | 955 | 947 | 967 |
+| Mensajes AIS 5 (ETA) por hora | 2.048 | 1.311 | 3.359 |
+| Mensajes por minuto | | | mediana 259, pico 826 |
+
+- **Alcance real:** máximo 189 NM; la cobertura va «a islas» (València, Palma,
+  Barcelona, Cartagena, Alicante e Ibiza), con muy pocos buques entre 30 y 100 NM
+  (tabla en LIMITACIONES.md). Un buque con destino València apareció a 158 NM a
+  10,8 kn, unas 15 h antes de llegar.
+- **Lo que se guardaría en esa hora:** 1.366 posiciones (la mayoría, la primera de
+  cada buque) y 352 cambios de destino/calado/ETA. Ocupación medida: 71,5 bytes por
+  fila en SQLite.
+- **Almacenamiento:** 1,1 GB/año si cada hora fuera como la primera (caso pesimista,
+  medido); **0,45–0,6 GB/año** en régimen normal (*estimación* a partir de las
+  posiciones guardadas tras los primeros 10 min).
+- **Repetidos de aisstream:** 395 mensajes idénticos repetidos en la hora (159 dentro
+  de VALENCIA). No los causa el solape de las dos zonas: en la misma hora el servidor,
+  suscrito solo a VALENCIA, contó 2.245 mensajes de aisstream frente a los 2.249 de la
+  prueba. No afectan a las posiciones guardadas (la base no admite dos con el mismo
+  buque y la misma hora, y el muestreo ignora la copia).
+- **Límites de las fuentes:** OpenSeaFeed admite en el nivel libre rectángulos de hasta
+  30.000 grados² (su especificación OpenAPI); aisstream publica un máximo de 3
+  conexiones por cuenta, pero no límites de tamaño de zona ni de mensajes [VERIFICAR:
+  no publicados].
 
 ### 12. Limitaciones previstas (se pasarán a LIMITACIONES.md al implementar)
 

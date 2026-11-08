@@ -19,7 +19,7 @@ from . import port_calls as pc
 from . import queries as q
 from . import viewer_queries as vq
 from . import zones_admin
-from .config import REPO_ROOT, ConfigError
+from .config import REPO_ROOT, ConfigError, default_zone_id
 from .storage import iso
 
 DAY = 86400
@@ -118,11 +118,21 @@ def _zone_summary(z):
     return {"zone_id": z.zone_id, "name": z.name, "description": z.description, "active": z.active,
             "geometry_type": z.geometry_type, "bbox": z.bbox,
             "geometry": {"type": "Polygon", "coordinates": [z.ring]}, "sources": z.sources,
-            "created_utc": z.created_utc}
+            "created_utc": z.created_utc, "port_calls": pc.has_port_analysis(z)}
 
 
 async def zones(request):
-    return web.json_response({"zones": [_zone_summary(z) for z in request.app[STATE].zones.values()]})
+    zs = request.app[STATE].zones
+    return web.json_response({"zones": [_zone_summary(z) for z in zs.values()],
+                              "default_zone": default_zone_id(zs)})
+
+
+def _port_zone(request):
+    """Zona con escalas: una zona sin terminales (p. ej. la de aproximación) responde 400, no 500."""
+    z = _zone(request)
+    if not pc.has_port_analysis(z):
+        raise ValueError(f"la zona {z.zone_id} no tiene terminales ni fondeadero: no se calculan escalas")
+    return z
 
 
 async def zone(request):
@@ -281,7 +291,7 @@ def _calls_data(z, t_from, t_to, now):
 
 async def port_calls(request):
     """Escalas y tiempos de espera (Fase 7). &format=csv descarga el CSV para Excel."""
-    z = _zone(request)
+    z = _port_zone(request)
     t_from, t_to = _range(request, default_days=30)
     if t_to <= t_from or t_to - t_from > MAX_CALLS_RANGE_DAYS * DAY:
         raise ValueError(f"el intervalo debe ser positivo y de {MAX_CALLS_RANGE_DAYS} días como máximo")
@@ -302,7 +312,7 @@ async def port_calls(request):
 
 async def subzones(request):
     """Subzonas del análisis (recinto, terminales, fondeadero) en GeoJSON, con los parámetros del método."""
-    z = _zone(request)
+    z = _port_zone(request)
     cfg = await asyncio.to_thread(pc.load_config, z)
     return web.json_response({"type": "FeatureCollection", "method": cfg["method"], "features": [
         {"type": "Feature", "properties": {k: s[k] for k in ("subzone_id", "kind", "name", "notes")},

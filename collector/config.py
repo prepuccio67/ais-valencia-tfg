@@ -13,6 +13,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 KNOWN_SOURCES = ("openseafeed", "aisstream")
+# Zona que abren por defecto el visor, el cuadro de escalas y el recálculo de escalas
+# (no depende del orden alfabético de las carpetas).
+DEFAULT_ZONE_ID = "VALENCIA"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Valores por defecto del muestreo (DISEÑO.md §4); zone.json puede cambiarlos.
@@ -208,6 +211,14 @@ def parse_zone(raw, zone_dir):
         zone_dir=zone_dir,
         raw=raw,
     )
+
+
+def default_zone_id(zone_ids):
+    """VALENCIA si existe; si no, la primera zona (o None si no hay ninguna)."""
+    zone_ids = list(zone_ids)
+    if DEFAULT_ZONE_ID in zone_ids:
+        return DEFAULT_ZONE_ID
+    return zone_ids[0] if zone_ids else None
 
 
 def zones_root(data_dir):

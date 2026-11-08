@@ -250,8 +250,11 @@ async function start() {
   S.token = getToken();
   const z = await api('/api/zones');
   const sel = $('zone');
-  sel.innerHTML = z.zones.map((x) => `<option value="${esc(x.zone_id)}">${esc(x.name)}</option>`).join('');
-  S.zone = z.zones[0]?.zone_id;
+  // solo las zonas con terminales tienen escalas (la de aproximación no aparece aquí)
+  const withCalls = z.zones.filter((x) => x.port_calls !== false);
+  sel.innerHTML = withCalls.map((x) => `<option value="${esc(x.zone_id)}">${esc(x.name)}</option>`).join('');
+  S.zone = withCalls.some((x) => x.zone_id === z.default_zone) ? z.default_zone : withCalls[0]?.zone_id;
+  if (!S.zone) { alert('Ninguna zona tiene terminales definidas: no hay escalas que mostrar.'); return; }
   sel.addEventListener('change', () => { S.zone = sel.value; load(); });
   $('range').addEventListener('click', (ev) => {
     const b = ev.target.closest('button');

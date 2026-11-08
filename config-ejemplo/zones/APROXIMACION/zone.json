@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "zone_id": "APROXIMACION",
+  "name": "Aproximación a València (opción A)",
+  "description": "≈150 NM alrededor del puerto, con muestreo grueso: ETA declarada con antelación (7c.1) y velocidad de aproximación (7c.3). Ver D-18 y METODO.md §11.",
+  "active": true,
+  "geometry_type": "Rectangle",
+  "bbox": { "north": 42.0, "south": 37.0, "east": 2.9, "west": -3.5 },
+  "sources": ["openseafeed", "aisstream"],
+  "sampling": {
+    "moving_interval_s": 1800,
+    "stopped_interval_s": 3600,
+    "stopped_speed_kn": 0.3,
+    "moving_speed_kn": 0.5,
+    "max_age_s": 900,
+    "min_event_gap_s": 10
+  },
+  "silence_alert_min": 10
+}

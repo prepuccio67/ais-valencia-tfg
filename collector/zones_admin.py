@@ -17,7 +17,8 @@ from .config import (DEFAULT_ARCHIVE_POLICY, DEFAULT_SAMPLING, KNOWN_SOURCES, Co
 from .geo import ring_self_intersects
 from .storage import write_json_atomic
 
-MAX_ZONE_DEG2 = 25.0        # tamaño máximo del rectángulo envolvente (grados²); València mide 0,13
+MAX_ZONE_DEG2 = 40.0        # tamaño máximo del rectángulo envolvente (grados²); València mide 0,13 y
+                            # la aproximación (D-18) 32; la prueba del 08/11/2026 midió ~16.000 mensajes/h
 MAX_VERTICES = 200
 
 DEFAULT_RAW = {
@@ -58,6 +59,34 @@ def _polygon_from_geojson(g):
     return {"type": "Polygon", "coordinates": [ring]}
 
 
+# Valores admitidos para cada parámetro del muestreo (mínimo, máximo)
+SAMPLING_LIMITS = {
+    "moving_interval_s": (10, 86400),
+    "stopped_interval_s": (10, 86400),
+    "stopped_speed_kn": (0.0, 5.0),
+    "moving_speed_kn": (0.0, 5.0),
+    "max_age_s": (60, 3600),
+    "min_event_gap_s": (0, 600),
+}
+
+
+def _sampling(new, old):
+    """Mezcla el muestreo recibido con el anterior y comprueba cada valor."""
+    if not isinstance(new, dict):
+        raise ConfigError("sampling debe ser un objeto con los parámetros del muestreo")
+    unknown = [k for k in new if k not in SAMPLING_LIMITS]
+    if unknown:
+        raise ConfigError(f"parámetros de muestreo desconocidos {unknown}. Válidos: {list(SAMPLING_LIMITS)}")
+    merged = dict(DEFAULT_SAMPLING)
+    merged.update(old)
+    for k, v in new.items():
+        lo, hi = SAMPLING_LIMITS[k]
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or not lo <= v <= hi:
+            raise ConfigError(f"sampling.{k} debe ser un número entre {lo} y {hi}")
+        merged[k] = int(v) if isinstance(lo, int) else float(v)
+    return merged
+
+
 def build_raw(payload, base=None, zone_id=None):
     """Mezcla lo recibido con la configuración anterior (o la de por defecto)."""
     if not isinstance(payload, dict):
@@ -73,6 +102,8 @@ def build_raw(payload, base=None, zone_id=None):
         raw["sources"] = list(payload["sources"])
     if "active" in payload:
         raw["active"] = bool(payload["active"])
+    if "sampling" in payload:
+        raw["sampling"] = _sampling(payload["sampling"], raw.get("sampling") or DEFAULT_SAMPLING)
     gtype = payload.get("geometry_type", raw.get("geometry_type"))
     if gtype == "Rectangle" and "bbox" in payload:
         try:

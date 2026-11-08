@@ -45,6 +45,13 @@ def subzones_path(zone):
     return Path(zone.zone_dir) / "subzones.geojson"
 
 
+def has_port_analysis(zone):
+    """¿Tiene la zona terminales y fondeadero (subzones.geojson propio o de ejemplo)?
+    Las zonas sin ellos (p. ej. la de aproximación) no tienen escalas, pero tampoco dan error."""
+    example = REPO_ROOT / "config-ejemplo" / "zones" / zone.zone_id / "subzones.geojson"
+    return subzones_path(zone).exists() or example.exists()
+
+
 def load_config(zone):
     """Lee subzones.geojson (si no existe, copia el de ejemplo de la zona) y lo valida."""
     path = subzones_path(zone)

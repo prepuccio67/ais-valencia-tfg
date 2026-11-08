@@ -13,6 +13,28 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   28/10/2026, la celda del puerto tuvo mucha más actividad que la de la zona de
   fondeo sur (520 frente a 143 buques en el mapa de cobertura de OpenSeaFeed).
   Podría haber buques fondeados lejos que se oigan peor.
+- **Cobertura «a islas» lejos de la costa (zona de aproximación, D-18).** Las
+  dos fuentes son redes de receptores en tierra: se oye bien a los buques cerca
+  de los puertos con receptor y casi nada en mar abierto entre ellos. Prueba de
+  1 h del 08/11/2026 (15:28–16:28 UTC) en el rectángulo de aproximación
+  (37,0–42,0 N; 3,5 W–2,9 E), buques distintos según su distancia al puerto de
+  València:
+
+  | Distancia (NM) | 0–15 | 15–30 | 30–50 | 50–75 | 75–100 | 100–125 | 125–150 | > 150 |
+  |---|---|---|---|---|---|---|---|---|
+  | Buques | 216 | 20 | 4 | 32 | 33 | 117 | 327 | 224 |
+
+  - Casi todos los mensajes salen de seis «islas»: València, Palma, Barcelona,
+    Cartagena, Alicante e Ibiza. Tarragona y Castellón apenas aparecen y el
+    mar entre València y Baleares queda casi vacío.
+  - Consecuencia: la ETA con antelación se capta cuando el buque pasa cerca de
+    una de esas islas (p. ej. Cartagena o Ibiza, a 8–15 h de València), no de
+    forma continua. Entre una isla y la llegada habrá huecos de horas en la
+    trayectoria, y la velocidad de aproximación (7c.3) se medirá solo en los
+    tramos con señal.
+  - Es una foto de una hora de un domingo por la tarde: la cobertura puede
+    cambiar si se conectan o desconectan receptores. *Medida:* `coverage_minute`
+    de la zona `APROXIMACION` y el script `scripts/prueba_aproximacion.py`.
 - **Licencias:** los datos de OpenSeaFeed son CC BY 4.0 (hay que citarlos).
   aisstream no publica condiciones de uso [VERIFICAR con aisstream].
 - **Las dos fuentes no ven lo mismo.** En la prueba de 30 min del 28/10/2026:

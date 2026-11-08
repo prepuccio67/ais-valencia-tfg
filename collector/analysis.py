@@ -246,7 +246,7 @@ def to_csv(calls):
 
 # ------------------------------------------------------------ línea de órdenes
 def main(argv=None):
-    from .config import load_settings, load_zones
+    from .config import default_zone_id, load_settings, load_zones
     p = argparse.ArgumentParser(description="Recalcula las escalas y muestra el resumen")
     p.add_argument("--env", help="ruta del .env")
     p.add_argument("--zone", help="solo esta zona")
@@ -255,8 +255,17 @@ def main(argv=None):
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     settings = load_settings(args.env)
     now = int(time.time())
-    for zone in load_zones(settings.data_dir):
+    zones = {z.zone_id: z for z in load_zones(settings.data_dir)}
+    if args.zone and args.zone not in zones:
+        print(f"No existe la zona {args.zone}")
+        return 2
+    # VALENCIA primero (explícito, no por orden alfabético); las zonas sin terminales se saltan
+    first = default_zone_id(zones)
+    for zone in sorted(zones.values(), key=lambda z: z.zone_id != first):
         if args.zone and zone.zone_id != args.zone:
+            continue
+        if not pc.has_port_analysis(zone):
+            print(f"\nZona {zone.zone_id}: sin terminales ni fondeadero, no tiene escalas (se salta)")
             continue
         recompute(zone, now)
         cfg = pc.load_config(zone)

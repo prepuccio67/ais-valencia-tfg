@@ -368,7 +368,9 @@ async function loadZones(preferred) {
   S.zones = {};
   for (const z of data.zones) S.zones[z.zone_id] = z;
   const keep = preferred || S.zone;
-  S.zone = keep && S.zones[keep] ? keep : (data.zones[0] && data.zones[0].zone_id);
+  // VALENCIA por defecto, de forma explícita (la API la indica en default_zone)
+  S.zone = keep && S.zones[keep] ? keep
+    : (S.zones[data.default_zone] ? data.default_zone : (data.zones[0] && data.zones[0].zone_id));
   sel.value = S.zone;
   drawZone();
 }
