@@ -78,7 +78,8 @@ async function load() {
     $('computed').textContent = 'Error: ' + e.message;
     return;
   }
-  $('computed').textContent = `Calculado ${fmtT(S.data.computed_utc)} UTC · datos desde ${fmtT(S.data.data_from)}`;
+  $('computed').textContent = `Método ${S.data.method.version} · calculado ${fmtT(S.data.computed_utc)} UTC · ` +
+    `datos desde ${fmtT(S.data.data_from)}`;
   renderAll();
 }
 
@@ -88,10 +89,14 @@ function renderAll() {
 }
 
 function renderNotice() {
-  const days = (Date.now() - toMs(S.data.data_from)) / 86400000;
+  const from = S.data.summary.wait_stats_from;
+  const days = (Date.now() - toMs(from || S.data.data_from)) / 86400000;
   const n = $('notice');
   n.classList.toggle('hidden', days >= 14);
-  n.innerHTML = `<b>Solo hay ${days.toFixed(1).replace('.', ',')} días de datos.</b> Las esperas más largas todavía ` +
+  n.innerHTML = `<b>Solo hay ${days.toFixed(1).replace('.', ',')} días de datos${from ? ' para medir las esperas' : ''}.</b> ` +
+    (from ? `Las esperas se miden solo con las escalas iniciadas desde el ${fmtT(from)} UTC, cuando empezó la zona de ` +
+      'aproximación (antes no se veía la espera al este de la zona). Una terminal puede no tener todavía ninguna. ' : '') +
+    'Las esperas más largas todavía ' +
     'no han terminado y por eso aún no entran en las medianas (ver «Ahora mismo»): con pocos días las cifras ' +
     'salen más bajas de lo real. Las estadísticas usan solo las escalas OK (vistas completas).';
 }
@@ -127,15 +132,23 @@ function renderQueue() {
 function renderTerminals() {
   const rows = S.data.summary.terminals;
   Charts.hbars($('byTerminal'), rows.map((t) => ({
-    label: t.name, value: t.wait_median_h, mark: t.calls >= 3 ? t.wait_p90_h : null, color: colorOf(t.terminal_id),
-    tip: `<b>${esc(t.name)}</b><br>${t.calls} escalas OK · ${t.with_wait} con espera<br>` +
+    label: t.name, value: t.wait_median_h, mark: (t.wait_calls ?? t.calls) >= 3 ? t.wait_p90_h : null,
+    color: colorOf(t.terminal_id),
+    tip: `<b>${esc(t.name)}</b><br>${t.wait_calls ?? t.calls} escalas OK para la espera · ${t.with_wait} esperaron<br>` +
       `mediana ${fmtH(t.wait_median_h)} · p75 ${fmtH(t.wait_p75_h)} · p90 ${fmtH(t.wait_p90_h)}<br>` +
       `media ${fmtH(t.wait_mean_h)} · máxima ${fmtH(t.wait_max_h)}`,
   })), { fmt: fmtH });
-  $('statsTable').innerHTML = '<tr><th>Terminal</th><th>Escalas OK</th><th>Esperaron</th><th>Espera mediana</th>' +
+  const from = S.data.summary.wait_stats_from;
+  const none = '<td colspan="3" class="q">aún sin escalas terminadas para medir la espera</td>';
+  $('statsTable').innerHTML = '<tr><th>Terminal</th><th>Escalas OK</th>' +
+    (from ? '<th>Para la espera</th>' : '') + '<th>Esperaron</th><th>Espera mediana</th>' +
     '<th>p90</th><th>Estancia mediana</th></tr>' + rows.map((t) =>
-    `<tr><td>${esc(t.name)}</td><td>${t.calls}</td><td>${t.with_wait}</td><td>${fmtH(t.wait_median_h)}</td>` +
-    `<td>${fmtH(t.wait_p90_h)}</td><td>${fmtH(t.stay_median_h)}</td></tr>`).join('');
+    `<tr><td>${esc(t.name)}</td><td>${t.calls}</td>` + (from ? `<td>${t.wait_calls}</td>` : '') +
+    (from && !t.wait_calls ? none
+      : `<td>${t.with_wait}</td><td>${fmtH(t.wait_median_h)}</td><td>${fmtH(t.wait_p90_h)}</td>`) +
+    `<td>${fmtH(t.stay_median_h)}</td></tr>`).join('') +
+    (from ? `<tr><td colspan="7" class="q">«Para la espera»: escalas OK iniciadas desde el ${fmtT(from)} UTC. ` +
+      'Las terminales sin ninguna no aparecen en el gráfico.</td></tr>' : '');
 }
 
 function nowItem(v, berthed) {
