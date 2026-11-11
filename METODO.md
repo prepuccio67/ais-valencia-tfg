@@ -10,6 +10,85 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 | 7c.1 Precisión de la ETA declarada | `eta-v1` | **Propuesto (04/11/2026), pendiente de aprobación** |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
+| Escalas: completar con la zona de aproximación | `escalas-v2` | **Propuesto (11/11/2026), pendiente de aprobación** |
+
+---
+
+## Escalas: completar los huecos con la zona de aproximación (`escalas-v2`)
+
+### 1. Problema
+- `escalas-v1` (D-15) solo lee la zona VALENCIA, cuyo borde este está en 0,00° de
+  longitud, a unas 10–15 NM del puerto.
+- Muchos portacontenedores **esperan a la deriva justo al este de ese borde**. Mientras
+  están fuera, para `escalas-v1` no existen: la escala sale DUDOSA («sin señal» o
+  «llegada no observada») o, peor, sale **OK con una espera más corta de la real**,
+  porque solo se ve el último tramo dentro del rectángulo.
+- Desde el 08/11/2026 a las 17:04 UTC la zona `APROXIMACION` (D-18) sí los ve.
+
+### 2. Cambio propuesto (lo único que cambia)
+- A la trayectoria de cada buque de carga se añaden las posiciones de `APROXIMACION`
+  que están **fuera del rectángulo VALENCIA y dentro de un «área de espera ampliada»**:
+  39,25–39,60 N y 0,36 W–**0,25 E** (el rectángulo VALENCIA con el borde este movido
+  unas 12 NM; en total, ≈25 NM al este del puerto).
+- Todo lo demás es igual que en `escalas-v1`: la clasificación (atracado, esperando,
+  navegando), las reglas de inicio y fin de escala, y los umbrales de calidad (1 h para
+  dar la llegada por vista y 2 h para «sin señal»).
+- **Por qué un área limitada y no toda la zona de aproximación:** para no contar como
+  «espera en València» a un buque parado en Castellón, Ibiza o Barcelona. Los límites
+  norte y sur son los de VALENCIA, así que Castellón (39,97 N) queda fuera.
+- **Por qué 0,25 E:** en el ensayo, los buques que esperaban fuera estaban entre 0,00 y
+  0,17 E, y el resultado fue **idéntico** con el borde en 0,15, 0,25 o 0,50 E. Se elige
+  0,25 E para dejar margen sin acercarse a Ibiza.
+- **Precisión:** la zona de aproximación guarda al momento el paso de «en marcha» a
+  «parado» y al revés. El inicio y el fin de la espera tienen la misma precisión que en
+  VALENCIA, siempre que el buque se oiga en ese momento. Si no, la precisión es de hasta
+  60 min, el intervalo de un buque parado en esa zona.
+- **Transparencia:** cada escala indicará cuántas posiciones vienen de la zona de
+  aproximación (columna nueva `puntos_aprox` en la tabla y en el CSV). `escalas-v1` se
+  podrá seguir calculando (parámetro `fill_zone: null`) para comparar las dos versiones
+  en el TFG.
+
+### 3. Ensayo (11/11/2026, solo lectura, datos hasta las 18:45 UTC)
+Se calcularon las escalas con las dos versiones sin guardar nada.
+
+- **Escalas anteriores al 08/11: idénticas** en las dos versiones (no hay datos de
+  aproximación con que completarlas).
+- **Escalas de portacontenedores con atraque desde el 08/11 17:04: 19, de las que
+  cambian 4.**
+
+| Buque | `escalas-v1` | `escalas-v2` | Puntos añadidos |
+|---|---|---|---|
+| MSC GAYANE | DUDOSA (sin señal 2,5 h), espera 0,5 h | **OK, espera 7,1 h** | 8 |
+| MSC ARUSHI R. | OK, espera 0,6 h | **OK, espera 5,1 h** | 6 |
+| CMA CGM INNOVATION | OK, espera 1,6 h | **DUDOSA, espera ≥ 31,1 h** (ya esperaba cuando empezó la zona de aproximación y tuvo un hueco de 4 h) | 29 |
+| TEXAS TRIUMPH | EN CURSO, sin espera | **EN CURSO, espera 40,1 h** | 41 |
+
+- **Lectura:** de las 12 escalas OK de `escalas-v1` en ese periodo, **2 tenían la espera
+  muy subestimada** (0,6 h frente a 5,1 h y 1,6 h frente a 31 h o más). Es un sesgo
+  sistemático hacia esperas más cortas, no un error aleatorio.
+- La muestra es de solo 3 días: las cifras indican la dirección del sesgo, no su
+  tamaño.
+
+### 4. Consecuencias para el TFG
+- Las esperas calculadas con datos **anteriores al 08/11** probablemente están
+  **subestimadas**, y no se pueden corregir, porque esos días no había zona de
+  aproximación. Se dirá en la memoria (LIMITACIONES.md).
+- Para los resultados finales conviene usar las escalas con atraque **desde el 08/11**,
+  calculadas con `escalas-v2`. Hay que decidirlo con el tutor, junto con la fecha de
+  corte [pendiente].
+- `escalas-v2` también beneficia a 7c.1 (la llegada a aguas del puerto se ve mejor) y a
+  7c.2 (el tiempo de espera, y con él el combustible y el CO₂, sería mayor).
+
+### 5. Si se aprueba: qué se programa
+- `collector/port_calls.py`: leer las posiciones de la zona de relleno y mezclarlas
+  según el apartado 2 (unas 40 líneas).
+- Parámetros en `subzones.geojson` (`method`): `version: "escalas-v2"`,
+  `fill_zone: "APROXIMACION"` y `fill_box_east: 0.25`.
+- Columna `puntos_aprox` en `analysis.db`, la API, el CSV y el cuadro de escalas.
+- Tests: con `fill_zone: null` el resultado debe ser idéntico a `escalas-v1`, y además
+  hay casos como los de MSC GAYANE y un buque parado en Castellón, que no debe contar.
+- Decisión D-19 y despliegue con tu «sí»: solo hay que recalcular las escalas, sin
+  reiniciar la captura.
 
 ---
 

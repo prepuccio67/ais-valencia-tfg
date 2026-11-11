@@ -124,6 +124,13 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   0,01° y 0,10° E. *Mitigación posible:* completar los huecos de VALENCIA con las
   posiciones de `APROXIMACION` en el cálculo de escalas (cambio de método, requiere
   aprobación); los datos anteriores al 08/11 no se pueden recuperar.
+- **Esperas subestimadas con `escalas-v1` (ensayo del 11/11/2026).** El mismo borde
+  hace que algunas escalas salgan OK con una espera mucho más corta de la real: solo
+  se ve el último tramo dentro del rectángulo. En las 12 escalas OK de
+  portacontenedores con atraque entre el 08/11 y el 11/11 hubo 2 casos: MSC ARUSHI R.
+  (0,6 h frente a 5,1 h) y CMA CGM INNOVATION (1,6 h frente a 31 h o más). Es un sesgo
+  hacia esperas más cortas. Las esperas anteriores al 08/11 no se pueden corregir.
+  *Mitigación propuesta:* `escalas-v2` (METODO.md, pendiente de aprobación).
 - **Recintos de las terminales dibujados con los datos** de los primeros 3 días
   y con los rótulos de OpenStreetMap. MSC y CSP son claros (cada una solo recibe
   a sus navieras). **APM se redibujó el 06/11/2026** sobre imagen de satélite

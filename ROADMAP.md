@@ -1,6 +1,6 @@
 # Hoja de ruta
 
-Última actualización: 08/11/2026
+Última actualización: 11/11/2026
 
 ## ✅ Hecho
 - **Versión 0 (GitHub Actions):**
@@ -93,7 +93,10 @@
   - 7c.1, precisión de la ETA declarada (`eta-v1`): método propuesto el
     04/11/2026, pendiente de aprobación;
   - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
-  - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente.
+  - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente;
+  - `escalas-v2`, completar los huecos de VALENCIA con la zona de aproximación:
+    propuesto el 11/11/2026, pendiente de aprobación (el ensayo mostró esperas
+    subestimadas con `escalas-v1`).
 - **Revisiones pendientes:**
   - ~~gasto de Oracle 0 € y retención de 93 € liberada~~: comprobado por Marcos el 08/11/2026;
   - el enlace de las copias caduca el 31/12/2027: renovarlo si el proyecto sigue;
