@@ -10,7 +10,7 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 | 7c.1 Precisión de la ETA declarada | `eta-v1` | **Propuesto (04/11/2026), pendiente de aprobación** |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
-| Escalas: completar con la zona de aproximación | `escalas-v2` | **Propuesto (11/11/2026), pendiente de aprobación** |
+| Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y programado (11/11/2026, D-19); pendiente de desplegar** |
 
 ---
 
@@ -96,10 +96,33 @@ Se calcularon las escalas con las dos versiones sin guardar nada.
 - Para los resultados finales conviene usar las escalas con atraque **desde el 08/11**,
   calculadas con `escalas-v2`. Hay que decidirlo con el tutor, junto con la fecha de
   corte [pendiente].
-- `escalas-v2` también beneficia a 7c.1 (la llegada a aguas del puerto se ve mejor) y a
+- `escalas-v2` también beneficia a 7c.1 (la llegada a la zona de espera se ve mejor) y a
   7c.2 (el tiempo de espera, y con él el combustible y el CO₂, sería mayor).
 
-### 5. Si se aprueba: qué se programa
+### 5. Aprobado el 11/11/2026: decisiones tomadas (D-19)
+- **Periodo de las esperas (opción A).** Las estadísticas de espera (media, mediana,
+  percentiles, histograma) usan solo las escalas que **empiezan desde el 08/11/2026 a
+  las 17:05 UTC** (parámetro `wait_stats_from`). Antes de esa hora no había zona de
+  aproximación y las esperas pueden estar recortadas. Las escalas anteriores siguen
+  sirviendo para contar escalas, medir la estancia en el muelle y analizar la ETA.
+- **Definición de espera (se mantiene la de D-15).** Va desde la primera parada fuera
+  del recinto hasta que el buque arranca definitivamente hacia el puerto, con los
+  desplazamientos cortos entre paradas incluidos (caso de MSC ARUSHI R.): es tiempo
+  perdido aunque el buque se mueva un poco.
+- **Esperas de menos de 1 h.** En el área ampliada la posición de un buque parado se
+  guarda cada 60 min, así que una espera de menos de 1 h no se mide con precisión.
+  Fijar un umbral mínimo de 1 h para contar una espera está **pendiente de decidir**
+  (no se ha programado). En el ensayo no hubo ninguna escala OK con espera entre 0 y 1 h.
+- **Ensayo con el código definitivo (11/11/2026, datos hasta las 19:03 UTC, solo
+  lectura):** 11 escalas de portacontenedores empiezan después del corte: 7 OK y 4 en
+  curso, ninguna dudosa; 4 usan posiciones de la zona de aproximación. Esperas de las
+  7 OK: mediana 7,1 h con `escalas-v2` frente a 3,3 h con `escalas-v1` sobre el mismo
+  periodo; entre las 6 que esperaron, media 15,5 h y mediana 13,4 h. **Son solo 7
+  escalas en 3 días**: sirven para comprobar el método, no como resultado. Además, las
+  escalas que empiezan y terminan en tan pocos días son, por fuerza, las de espera
+  corta (las largas siguen en curso), así que estas cifras subirán.
+
+### 6. Qué se ha programado
 - `collector/port_calls.py`: leer las posiciones de la zona de relleno y mezclarlas
   según el apartado 2 (unas 40 líneas).
 - Parámetros en `subzones.geojson` (`method`): `version: "escalas-v2"`,
@@ -107,8 +130,11 @@ Se calcularon las escalas con las dos versiones sin guardar nada.
 - Columna `puntos_aprox` en `analysis.db`, la API, el CSV y el cuadro de escalas.
 - Tests: con `fill_zone: null` el resultado debe ser idéntico a `escalas-v1`, y además
   hay casos como los de MSC GAYANE y un buque parado en Castellón, que no debe contar.
-- Decisión D-19 y despliegue con tu «sí»: solo hay que recalcular las escalas, sin
-  reiniciar la captura.
+- Columnas nuevas en el resumen: `wait_calls` (escalas usadas para las esperas) y la
+  media y la mediana solo entre los buques que esperaron.
+- Despliegue con tu «sí»: `git pull`, añadir los parámetros al `subzones.geojson` del
+  servidor y reiniciar el Collector (unos segundos, registrado), para que cargue el
+  código nuevo.
 
 ---
 
@@ -182,7 +208,7 @@ símbolo `>` es una convención del sector que no aparece en la resolución
 
 **Tres hallazgos que condicionan el método.**
 
-1. **La ETA declarada se refiere casi siempre a la llegada a aguas del puerto, no
+1. **La ETA declarada se refiere casi siempre a la llegada a la zona de espera, no
    al atraque.**
    - Justo al entrar en espera, la mediana de (ETA − entrada en el fondeadero) es de
      **+0,3 h**, y la mitad de las escalas quedan dentro de ±1 h.
@@ -192,7 +218,7 @@ símbolo `>` es una convención del sector que no aparece en la resolución
    - Hay excepciones, como MSC LAURA y ONE MANEUVER, cuya ETA coincide con el atraque
      (diferencia de −1,5 h y −0,4 h) y no con el fondeo.
 2. **Con la zona de captura actual no se pueden medir los horizontes de 6 a 72 h
-   antes de la llegada a aguas del puerto.**
+   antes de la llegada a la zona de espera.**
    - El rectángulo de captura llega a unas 10–15 millas náuticas del puerto
      (39,25–39,60 N; 0,36 W–0,00), unos 50–70 min de navegación a 13 nudos.
    - Antes de eso, el buque está fuera de cobertura y no recibimos su ETA. De 31
@@ -207,11 +233,17 @@ pregunta distinta.
 
 | Código | Llegada real | Cómo se obtiene | Qué mide |
 |---|---|---|---|
-| **`AGUAS`** (recomendada) | **Llegada a aguas del puerto**: la entrada en espera (fondeadero o deriva) si el buque espera, o la entrada en el recinto portuario si atraca directamente | `t_anchor_in`, o la primera posición dentro de `PUERTO` | Si la ETA acierta **el suceso que la tripulación declara** |
+| **`ZONA_ESPERA`** (recomendada) | **Llegada a la zona de espera**: la entrada en espera (fondeadero o deriva) si el buque espera, o la entrada en el recinto portuario si atraca directamente | `t_anchor_in`, o la primera posición dentro de `PUERTO` | Si la ETA acierta **el suceso que la tripulación declara** |
 | `RECINTO` | Entrada en el recinto portuario (con práctico, camino del muelle) | Primera posición dentro de `PUERTO` tras la espera | Si la ETA acierta la entrada efectiva en puerto |
 | `ATRAQUE` | Hora de atraque | `t_berth` | La distancia entre lo que declara el buque y cuándo puede operar la terminal: es la **brecha de información** que interesa al JIT |
 
-**Por qué se recomienda `AGUAS`:**
+> **Cambio de nombre (11/11/2026).** Esta definición se llamaba `AGUAS` («llegada a
+> aguas del puerto»). Se renombra a `ZONA_ESPERA` porque los buques que esperan a la
+> deriva al este de 0,00° no están en las aguas del puerto en sentido legal: el límite
+> este de la Zona II queda más al oeste (0° 12,714 min W según el BOE [VERIFICAR la
+> coordenada y la referencia exacta en el BOE]). La definición no cambia, solo el nombre.
+
+**Por qué se recomienda `ZONA_ESPERA`:**
 - Es el suceso al que se refiere la ETA en la práctica, según el hallazgo 1. Medir
   la ETA contra el atraque mezclaría dos cosas: si el buque estima bien su llegada
   y cuánto le hace esperar el puerto.
@@ -235,7 +267,7 @@ Para cada escala, cada definición de llegada *T* y cada horizonte
 *h* ∈ {72, 48, 24, 12, 6, 2, 1, 0} h:
 
 1. **Momento de referencia:** *t_ref = T − h*. Se añaden los horizontes de 2, 1 y
-   0 h porque son los únicos medibles hoy con `AGUAS`.
+   0 h porque son los únicos medibles hoy con `ZONA_ESPERA`.
 2. **ETA vigente:** la de la última fila de `voyage_data` del buque con hora
    ≤ *t_ref*.
 3. **Comprobación de que el buque estaba a la vista:** se exige que haya alguna
@@ -325,7 +357,7 @@ fuente y fecha.
 | Parámetro | Valor propuesto | Unidad | Motivo |
 |---|---|---|---|
 | `horizontes_h` | 72, 48, 24, 12, 6, 2, 1, 0 | h | Encargo del TFG más los horizontes medibles hoy |
-| `definicion_principal` | `AGUAS` | — | Apartado 4 |
+| `definicion_principal` | `ZONA_ESPERA` | — | Apartado 4 |
 | `ventana_vista_h` (*W*) | 2 | h | Un buque fondeado se guarda cada 10 min y uno en marcha cada minuto; 2 h deja margen para pequeños huecos de recepción |
 | `caducada_tolerancia_h` | 1 | h | Una ETA que ya pasó hace menos de 1 h puede ser simplemente un retraso |
 | `eta_max_dias` | 30 | días | La misma ventana que usa el Collector para deducir el año |
@@ -352,7 +384,7 @@ fuente y fecha.
 ### 11. Cobertura: ampliar la captura con una zona de aproximación (requiere tu permiso)
 
 **El límite.**
-- Sin ampliar la captura, para la llegada a aguas del puerto (`AGUAS`) solo se
+- Sin ampliar la captura, para la llegada a la zona de espera (`ZONA_ESPERA`) solo se
   pueden medir horizontes de 0–2 h.
 - Los horizontes largos (6–72 h) solo existen hoy frente al atraque (`ATRAQUE`), y
   únicamente para los buques que ya estaban esperando.

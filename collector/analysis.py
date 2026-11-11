@@ -32,7 +32,7 @@ CALL_COLS = ["mmsi", "imo", "name", "ship_type", "length_m", "terminal_id", "wai
              "t_start", "t_anchor_in", "t_anchor_out", "t_berth", "t_unberth", "t_exit", "t_last_seen",
              "wait_h", "stay_h", "draught_in_m", "draught_out_m", "berth_lat", "berth_lon",
              "censored_start", "censored_end", "overlaps_gap", "gap_overlap_min", "max_track_gap_h",
-             "quality", "method_version"]
+             "fill_points", "quality", "method_version"]
 TIME_COLS = [c for c in CALL_COLS if c.startswith("t_")]
 SCHEMA = f"""
 CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -151,11 +151,16 @@ def percentile(values, q):
     return v[i] if i + 1 >= len(v) else v[i] + (v[i + 1] - v[i]) * (k - i)
 
 
-def _stats(calls):
-    waits = [c["wait_h"] for c in calls]
+def _stats(calls, wait_from=None):
+    """Cifras de un grupo de escalas OK. Con wait_from (escalas-v2, D-19), las esperas solo usan las
+    escalas que empiezan desde esa hora: las anteriores no veían la espera al este del rectángulo."""
+    waits = [c["wait_h"] for c in calls if wait_from is None or c["t_start"] >= wait_from]
     stays = [c["stay_h"] for c in calls if c["stay_h"] is not None]
     r = lambda x: None if x is None else round(x, 2)     # noqa: E731
-    return {"calls": len(calls), "with_wait": sum(1 for w in waits if w > 0),
+    with_wait = [w for w in waits if w > 0]
+    return {"calls": len(calls), "wait_calls": len(waits), "with_wait": len(with_wait),
+            "wait_mean_waiting_h": r(sum(with_wait) / len(with_wait)) if with_wait else None,
+            "wait_median_waiting_h": r(percentile(with_wait, .5)),
             "wait_mean_h": r(sum(waits) / len(waits)) if waits else None,
             "wait_median_h": r(percentile(waits, .5)), "wait_p75_h": r(percentile(waits, .75)),
             "wait_p90_h": r(percentile(waits, .9)), "wait_max_h": r(max(waits)) if waits else None,
@@ -167,7 +172,10 @@ def summary(calls, cfg, t_from, t_to, now):
     ok = [c for c in calls if c["quality"] == "OK"]
     terminals = [(s["subzone_id"], s["name"]) for s in cfg["subzones"] if s["kind"] == "TERMINAL"]
     terminals.append((pc.OTHER_BERTH, "Otros muelles"))
-    by_terminal = [{"terminal_id": tid, "name": name, **_stats([c for c in ok if c["terminal_id"] == tid])}
+    wait_from = cfg["method"].get("wait_stats_from")
+    wait_from = pc.parse_when(wait_from, "wait_stats_from") if wait_from else None
+    by_terminal = [{"terminal_id": tid, "name": name,
+                    **_stats([c for c in ok if c["terminal_id"] == tid], wait_from)}
                    for tid, name in terminals]
     containers = [c for c in ok if c["terminal_id"] not in (None, pc.OTHER_BERTH)]
     quality = defaultdict(int)
@@ -189,7 +197,8 @@ def summary(calls, cfg, t_from, t_to, now):
         if c["t_berth"] and not c["quality"].startswith("EXCLUIDA") and t_from <= c["t_berth"] < t_to:
             daily[iso(c["t_berth"])[:10]][c["terminal_id"]] += 1
     ongoing = [c for c in calls if c["quality"] == "EN CURSO"]
-    return {"terminals": by_terminal, "containers": _stats(containers), "all_ok": _stats(ok),
+    return {"terminals": by_terminal, "containers": _stats(containers, wait_from),
+            "all_ok": _stats(ok, wait_from), "wait_stats_from": iso(wait_from),
             "quality": dict(quality),
             "queue": {"hours": [iso(h) for h in hours], "waiting": waiting,
                       "berthed": {k: v for k, v in berthed.items()}},
@@ -223,6 +232,7 @@ CSV_COLUMNS = [("buque", "name"), ("mmsi", "mmsi"), ("imo", "imo"), ("tipo_ais",
                ("calado_salida_m", "draught_out_m"), ("calidad", "quality"),
                ("llegada_no_vista", "censored_start"), ("salida_no_vista", "censored_end"),
                ("hueco_zona_min", "gap_overlap_min"), ("max_sin_senal_h", "max_track_gap_h"),
+               ("puntos_aprox", "fill_points"),
                ("metodo", "method_version")]
 
 

@@ -108,7 +108,8 @@ function renderKpis() {
     kpi(s.berthed_now.length, 'atracados ahora'),
     kpi(c.calls, 'escalas completas en terminales de contenedores',
       `${q.OK || 0} OK · ${q.DUDOSA || 0} dudosas · ${q['EN CURSO'] || 0} en curso · ${q.EXCLUIDA || 0} excluidas`),
-    kpi(fmtH(c.wait_median_h), 'espera mediana (contenedores)', `p90 ${fmtH(c.wait_p90_h)} · media ${fmtH(c.wait_mean_h)}`),
+    kpi(fmtH(c.wait_median_h), 'espera mediana (contenedores)', `p90 ${fmtH(c.wait_p90_h)} · media ${fmtH(c.wait_mean_h)}` +
+      (s.wait_stats_from ? ` · ${c.wait_calls} escalas desde el ${fmtT(s.wait_stats_from)}` : '')),
     kpi(fmtH(c.stay_median_h), 'estancia mediana atracado', `p90 ${fmtH(c.stay_p90_h)}`),
   ].join('');
 }
@@ -156,7 +157,9 @@ const BINS = [[0, 1, '< 1 h'], [1, 3, '1–3 h'], [3, 6, '3–6 h'], [6, 12, '6�
   [24, 48, '1–2 días'], [48, Infinity, '> 2 días']];
 
 function renderHist() {
-  const ok = S.data.calls.filter((c) => c.quality === 'OK');
+  // con escalas-v2 las esperas solo se cuentan desde wait_stats_from (antes no se veía la espera al este)
+  const from = S.data.summary.wait_stats_from ? toMs(S.data.summary.wait_stats_from) : 0;
+  const ok = S.data.calls.filter((c) => c.quality === 'OK' && toMs(c.t_start) >= from);
   const count = {};
   for (const c of ok) {
     const b = BINS.find(([a, z]) => c.wait_h >= a && c.wait_h < z)[2];
@@ -227,6 +230,8 @@ function renderTable() {
   $('method').textContent = `Método ${m.version}: atracado = dentro del recinto y ≤ ${m.berth_max_kn} kn; ` +
     `esperando = fuera del recinto y ≤ ${m.anchor_max_kn} kn; buques tipo ${m.ship_types.join('–')} de ` +
     `${m.min_length_m} m o más. Espera = tiempo fondeado o a la deriva hasta arrancar hacia el puerto. ` +
+    (m.fill_zone ? `Las trayectorias se completan con la zona ${m.fill_zone} hasta ${String(m.fill_box_east).replace('.', ',')}° E. ` : '') +
+    (S.data.summary.wait_stats_from ? `Las estadísticas de espera usan solo las escalas iniciadas desde el ${fmtT(S.data.summary.wait_stats_from)}. ` : '') +
     'Horas en UTC.';
 }
 

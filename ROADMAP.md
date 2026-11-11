@@ -94,9 +94,10 @@
     04/11/2026, pendiente de aprobación;
   - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
   - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente;
-  - `escalas-v2`, completar los huecos de VALENCIA con la zona de aproximación:
-    propuesto el 11/11/2026, pendiente de aprobación (el ensayo mostró esperas
-    subestimadas con `escalas-v1`).
+  - `escalas-v2` (D-19), completar los huecos de VALENCIA con la zona de aproximación:
+    aprobado y programado el 11/11/2026 (129 tests); **pendiente de desplegar**. Las
+    esperas se medirán solo con escalas desde el 08/11 a las 17:05 UTC. Pendiente de
+    decidir: umbral mínimo de 1 h para contar una espera.
 - **Revisiones pendientes:**
   - ~~gasto de Oracle 0 € y retención de 93 € liberada~~: comprobado por Marcos el 08/11/2026;
   - el enlace de las copias caduca el 31/12/2027: renovarlo si el proyecto sigue;

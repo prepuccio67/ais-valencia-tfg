@@ -130,7 +130,18 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   portacontenedores con atraque entre el 08/11 y el 11/11 hubo 2 casos: MSC ARUSHI R.
   (0,6 h frente a 5,1 h) y CMA CGM INNOVATION (1,6 h frente a 31 h o más). Es un sesgo
   hacia esperas más cortas. Las esperas anteriores al 08/11 no se pueden corregir.
-  *Mitigación propuesta:* `escalas-v2` (METODO.md, pendiente de aprobación).
+  *Mitigación:* `escalas-v2` (D-19) completa las trayectorias con la zona de
+  aproximación, y las estadísticas de espera usan solo las escalas iniciadas desde el
+  08/11/2026 a las 17:05 UTC.
+- **Con `escalas-v2`, las esperas al este del rectángulo tienen menos resolución.**
+  Allí un buque parado se guarda cada 60 min (el arranque y la parada, al momento si se
+  oyen). Una espera de menos de 1 h no se mide con precisión, y la hora de inicio o de
+  fin puede tener hasta 60 min de error si el buque no se oía en ese instante.
+- **«Zona de espera» no es «aguas del puerto».** Parte de la espera a la deriva ocurre
+  fuera de la Zona II del puerto [VERIFICAR su límite este en el BOE]. Por eso la
+  llegada de referencia de la ETA se llama `ZONA_ESPERA` y no «aguas del puerto».
+- **Periodo corto para las esperas.** Al contar solo desde el 08/11, las primeras
+  semanas hay pocas escalas, y las que ya han terminado son las de espera corta.
 - **Recintos de las terminales dibujados con los datos** de los primeros 3 días
   y con los rótulos de OpenStreetMap. MSC y CSP son claros (cada una solo recibe
   a sus navieras). **APM se redibujó el 06/11/2026** sobre imagen de satélite

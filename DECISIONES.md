@@ -329,3 +329,40 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   editor de zonas o `POST /api/zones/APROXIMACION/deactivate` con el token. Las
   copias diarias y el archivo de segmentos la incluyen sin cambios (recorren todas
   las zonas).
+
+## D-19 · 11/11/2026 · Método de escalas «escalas-v2»: completar con la zona de aproximación
+- **Decisión:**
+  - La trayectoria de cada buque se completa con las posiciones de `APROXIMACION` que
+    están fuera del rectángulo VALENCIA y dentro del área de espera ampliada
+    (39,25–39,60 N; 0,36 W–0,25 E). Todo lo demás es igual que en `escalas-v1` (D-15).
+  - Las estadísticas de espera usan solo las escalas que empiezan desde el 08/11/2026 a
+    las 17:05 UTC (opción A): antes no había zona de aproximación. Las anteriores
+    siguen valiendo para contar escalas, medir la estancia y analizar la ETA.
+  - La espera se sigue midiendo desde la primera parada hasta el arranque definitivo
+    hacia el puerto, con los desplazamientos entre paradas incluidos.
+  - En 7c.1, la llegada de referencia `AGUAS` pasa a llamarse `ZONA_ESPERA`.
+  - Parámetros en `subzones.geojson` (`method`): `version`, `fill_zone`,
+    `fill_box_east` y `wait_stats_from`. Con `fill_zone: null` el resultado es el de
+    `escalas-v1`, que se conserva para comparar. El archivo de ejemplo del repositorio
+    sigue en `escalas-v1`; los parámetros de v2 se ponen en el servidor al desplegar.
+- **Alternativas:**
+  - ampliar el rectángulo VALENCIA al este: cambiaría la captura y sus resultados;
+  - usar todas las escalas marcando las anteriores al 08/11 (opción B), o usarlas solo
+    para contar (opción C): mezclan esperas bien medidas con esperas recortadas;
+  - rellenar con toda la zona de aproximación: contaría como espera en València a
+    buques parados en Castellón, Ibiza o Barcelona.
+- **Motivo:**
+  - El borde este de VALENCIA (0,00°) corta la zona donde los portacontenedores
+    esperan a la deriva. `escalas-v1` daba escalas dudosas (12 de 15) y, peor, escalas
+    OK con la espera recortada: el error siempre acorta la espera, nunca la alarga.
+  - Comprobado buque a buque con posiciones, velocidad y ETA declarada (METODO.md): la
+    ETA de la tripulación coincide con la llegada a la zona de espera.
+- **Comprobaciones:**
+  - 6 tests nuevos (129 en total): sin relleno, idéntico a `escalas-v1`; buque a la
+    deriva al este; buque parado en Castellón o más allá de 0,25 E, que no cuenta;
+    periodo de las esperas; errores de configuración.
+  - Ensayo de solo lectura con datos reales (hasta el 11/11 a las 19:03 UTC): las
+    escalas con atraque anterior al corte salen iguales en las dos versiones; de las 11
+    que empiezan después, 4 usan posiciones de aproximación y ninguna es dudosa.
+- **Pendiente:** desplegar; decidir el umbral mínimo de 1 h para contar una espera;
+  confirmar con el tutor el periodo de las esperas y la fecha de corte.

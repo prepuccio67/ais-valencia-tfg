@@ -16,6 +16,12 @@ Cálculo de escalas y tiempos de espera (DISEÑO.md §3.3, Fase 7). Método 'esc
 4. Calidad: OK, DUDOSA (con el motivo), EXCLUIDA (con el motivo) o EN CURSO.
    Las estadísticas usan solo las OK.
 
+Método 'escalas-v2' (D-19): igual que el anterior, pero la trayectoria de cada buque se
+completa con las posiciones de otra zona (`fill_zone`, la de aproximación) que caen fuera
+del rectángulo de esta zona y dentro de un «área de espera ampliada» (el mismo rectángulo
+con el borde este movido a `fill_box_east`). Así se ve a los buques que esperan a la
+deriva justo al este del borde. Con `fill_zone: null` el resultado es el de escalas-v1.
+
 Los parámetros y las subzonas están en Zones/<ZONA>/subzones.geojson.
 """
 import bisect
@@ -25,14 +31,18 @@ import shutil
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from .config import REPO_ROOT, ConfigError
-from .geo import point_in_ring
+from .config import REPO_ROOT, ConfigError, load_zones
+from .geo import in_bbox, point_in_ring
 from .queries import MAX_TS, gaps, parse_when, segments_for
 from .storage import connect
 
 DEFAULT_METHOD = {"version": "escalas-v1", "ship_types": [70, 79], "min_length_m": 100,
                   "berth_max_kn": 0.5, "anchor_max_kn": 1.0, "max_gap_h": 12,
-                  "max_wait_days": 10, "min_stay_h": 2}
+                  "max_wait_days": 10, "min_stay_h": 2,
+                  # escalas-v2 (D-19); con estos tres valores vacíos el método es escalas-v1
+                  "fill_zone": None,           # zona con la que se completan los huecos (APROXIMACION)
+                  "fill_box_east": None,       # borde este del área de espera ampliada (grados)
+                  "wait_stats_from": None}     # las estadísticas de espera solo usan escalas desde esta hora
 KINDS = ("PORT_AREA", "TERMINAL", "ANCHORAGE")
 OBSERVED_S = 3600        # una llegada o salida cuenta como vista si hay un punto en movimiento a menos de 1 h
 MAX_TRACK_GAP_H = 2      # parado se guarda 1 posición cada 10 min: más de 2 h sin datos es pérdida de señal
@@ -66,6 +76,18 @@ def load_config(zone):
         raise ConfigError(f"{path.name} no es un JSON válido: {e}")
     method = dict(DEFAULT_METHOD)
     method.update(raw.get("method") or {})
+    if method["fill_zone"] is not None:
+        east = method["fill_box_east"]
+        if isinstance(east, bool) or not isinstance(east, (int, float)) or not zone.bbox["east"] < east <= 180:
+            raise ConfigError(f"{path.name}: con fill_zone hay que indicar fill_box_east, un número mayor que "
+                              f"el borde este de la zona ({zone.bbox['east']})")
+        if method["fill_zone"] == zone.zone_id:
+            raise ConfigError(f"{path.name}: fill_zone no puede ser la propia zona")
+    if method["wait_stats_from"] is not None:
+        try:
+            parse_when(method["wait_stats_from"], "wait_stats_from")
+        except ValueError as e:
+            raise ConfigError(f"{path.name}: wait_stats_from no es una fecha válida ({e})")
     subzones = []
     for f in raw.get("features") or []:
         props, geom = f.get("properties") or {}, f.get("geometry") or {}
@@ -134,6 +156,49 @@ def load_data(zone, method):
     for lst in list(points.values()) + list(draughts.values()):
         lst.sort()
     return wanted, points, draughts, (first, last)
+
+
+def load_fill(zone, method, mmsis):
+    """Posiciones de la zona de relleno (escalas-v2) para completar las trayectorias.
+
+    Solo las que están FUERA del rectángulo de `zone` (dentro ya manda `zone`, que tiene más
+    detalle) y DENTRO del área de espera ampliada: mismas latitudes y borde oeste, y borde
+    este en fill_box_east. Así un buque parado en otro puerto no cuenta como espera aquí.
+    """
+    if method["fill_zone"] is None or not mmsis:
+        return {}
+    others = {z.zone_id: z for z in load_zones(Path(zone.zone_dir).parent.parent)}
+    fill = others.get(method["fill_zone"])
+    if fill is None:
+        raise ConfigError(f"{zone.zone_id}: la zona de relleno '{method['fill_zone']}' no existe")
+    b = zone.bbox
+    out = defaultdict(list)
+    ids = sorted(mmsis)
+    for path in segments_for(fill, 0, MAX_TS)[0]:
+        conn = connect(path, readonly=True)
+        try:
+            for i in range(0, len(ids), 500):
+                chunk = ids[i:i + 500]
+                marks = ",".join("?" * len(chunk))
+                for mmsi, *p in conn.execute(
+                        f"SELECT mmsi, ts, lat, lon, sog, nav_status FROM position WHERE mmsi IN ({marks}) "
+                        "AND lat BETWEEN ? AND ? AND lon BETWEEN ? AND ?",
+                        chunk + [b["south"], b["north"], b["west"], method["fill_box_east"]]):
+                    if not in_bbox(p[1], p[2], b):
+                        out[mmsi].append(tuple(p))
+        finally:
+            conn.close()
+    return out
+
+
+def merge_fill(pts, extra):
+    """Mezcla por hora las posiciones propias con las de relleno. Devuelve (puntos, horas de relleno).
+    Si las dos zonas tienen una posición con la misma hora, se queda la propia."""
+    if not extra:
+        return pts, frozenset()
+    own = {p[0] for p in pts}
+    added = {p[0]: p for p in extra if p[0] not in own}
+    return sorted(pts + list(added.values())), frozenset(added)
 
 
 def zone_gap_intervals(zone, t_from, t_to, now):
@@ -217,7 +282,7 @@ def _latest(series, t):
     return series[i - 1][1] if i else None
 
 
-def describe(call, vessel, draughts, cfg, zone_gaps, data_end):
+def describe(call, vessel, draughts, cfg, zone_gaps, data_end, fill_ts=frozenset()):
     """Convierte una escala en bruto en una fila de port_call, con sus tiempos y su calidad."""
     m = cfg["method"]
     pts, wait, berth = call["points"], call["wait"], call["berth"]
@@ -270,6 +335,7 @@ def describe(call, vessel, draughts, cfg, zone_gaps, data_end):
             "censored_start": int(censored_start), "censored_end": int(censored_end),
             "overlaps_gap": int(overlaps), "gap_overlap_min": round(gap_min, 1),
             "max_track_gap_h": round(track_gap, 2),
+            "fill_points": sum(1 for p in pts if p[0] in fill_ts),
             "quality": quality, "method_version": m["version"]}
 
 
@@ -279,9 +345,11 @@ def compute(zone, cfg, now):
     if first is None:
         return [], (None, None)
     zone_gaps = zone_gap_intervals(zone, first, now + 1, now)
+    fill = load_fill(zone, cfg["method"], points.keys())
     out = []
-    for mmsi, pts in points.items():
+    for mmsi, own in points.items():
+        pts, fill_ts = merge_fill(own, fill.get(mmsi))
         for call in split_calls(pts, cfg):
-            out.append(describe(call, vessels[mmsi], draughts.get(mmsi, []), cfg, zone_gaps, last))
+            out.append(describe(call, vessels[mmsi], draughts.get(mmsi, []), cfg, zone_gaps, last, fill_ts))
     out.sort(key=lambda c: (c["t_start"], c["mmsi"]))
     return out, (first, last)
