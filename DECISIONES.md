@@ -335,9 +335,12 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   - La trayectoria de cada buque se completa con las posiciones de `APROXIMACION` que
     están fuera del rectángulo VALENCIA y dentro del área de espera ampliada
     (39,25–39,60 N; 0,36 W–0,25 E). Todo lo demás es igual que en `escalas-v1` (D-15).
-  - Las estadísticas de espera usan solo las escalas que empiezan desde el 08/11/2026 a
-    las 17:05 UTC (opción A): antes no había zona de aproximación. Las anteriores
-    siguen valiendo para contar escalas, medir la estancia y analizar la ETA.
+  - **Periodo de las esperas: opción A, decidida por Marcos el 11/11/2026.** Las
+    estadísticas de espera usan solo las escalas que empiezan desde el **08/11/2026 a
+    las 17:05 UTC**. La zona de aproximación arrancó a las 17:04:40 UTC; el corte se
+    fija en el minuto siguiente, ya completo (parámetro `wait_stats_from`). Antes no
+    había zona de aproximación. Las escalas anteriores siguen valiendo para contar
+    escalas, medir la estancia y analizar la ETA.
   - La espera se sigue midiendo desde la primera parada hasta el arranque definitivo
     hacia el puerto, con los desplazamientos entre paradas incluidos.
   - En 7c.1, la llegada de referencia `AGUAS` pasa a llamarse `ZONA_ESPERA`.
@@ -369,5 +372,12 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   genera hueco). Copia del archivo anterior en el servidor:
   `subzones.geojson.antes-escalas-v2-2026-11-11`. Tras el despliegue, el servidor da
   las mismas cifras que el ensayo y la captura sigue sin errores.
+- **Primeras cifras con `escalas-v2` (11/11/2026 a las 19:23 UTC, escalas de
+  portacontenedores iniciadas desde el corte):** 12 escalas, 7 OK y 5 en curso. Espera
+  de las 7 OK: mediana 7,1 h y media 13,3 h; entre las 6 que esperaron, media 15,5 h y
+  mediana 13,4 h. CSP aún no tiene ninguna escala OK en el periodo. Son 3 días de
+  datos: comprobación del método, no resultado.
+- **Cuadro de escalas adaptado (11/11/2026):** el método se ve arriba, hay una columna
+  «Para la espera» y las terminales sin escalas en el periodo lo dicen expresamente.
 - **Pendiente:** decidir el umbral mínimo de 1 h para contar una espera; confirmar con
   el tutor el periodo de las esperas y la fecha de corte.
