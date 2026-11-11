@@ -69,6 +69,26 @@ Se calcularon las escalas con las dos versiones sin guardar nada.
 - La muestra es de solo 3 días: las cifras indican la dirección del sesgo, no su
   tamaño.
 
+**Comprobación caso a caso (posiciones, velocidad y ETA declarada; 11/11/2026).**
+- **CMA CGM INNOVATION:** parado (0,1–0,7 kn) entre 0,08 y 0,14 E desde el 08/11 a las
+  17:00 hasta el 09/11 a las 19:16; arranca a 11 kn a las 21:01 y atraca el 10/11 a
+  la 01:15. El 08/11 a las 21:58 cambió su ETA a «10/11 00:00»: sabía que iba a esperar.
+  `v1` solo vio la pausa final junto a la bocana (1,6 h).
+- **TEXAS TRIUMPH:** llega a 11,7 kn y se para a 0,04 E el 09/11 a las 18:03 (su ETA
+  declarada era las 19:00). Espera a la deriva entrando y saliendo del rectángulo hasta
+  el 11/11 a las 10:09 y atraca a las 13:17. `v1` partió esa espera en dos por un hueco
+  de 12 h fuera del rectángulo y no le asignó espera.
+- **MSC GAYANE:** llega a 13 kn y se queda a 0,5–3 kn junto al borde desde las 02:51
+  (ETA declarada: 03:00) hasta las 09:55. `v1` solo vio media hora.
+- **MSC ARUSHI R.:** caso ambiguo. Sale del puerto el 10/11 por la mañana, se para
+  unas 3 h a 0,07 E y vuelve a atracar a las 17:17. `v2` da 5,1 h porque, como `v1`
+  (D-15), cuenta la espera desde la primera parada hasta que arranca definitivamente
+  hacia el puerto, con los ≈1,6 h de desplazamiento entre las dos paradas incluidos.
+- **Conclusión:** en los cuatro casos `v2` se ajusta a lo que hizo el buque y `v1` no.
+  La diferencia no es ruido: `v1` no ve la parte de la espera que ocurre al este de
+  0,00°. La ETA declarada coincide con la llegada a la zona de espera, no con el
+  atraque, igual que en el diagnóstico del apartado 7c.1 §3.
+
 ### 4. Consecuencias para el TFG
 - Las esperas calculadas con datos **anteriores al 08/11** probablemente están
   **subestimadas**, y no se pueden corregir, porque esos días no había zona de
