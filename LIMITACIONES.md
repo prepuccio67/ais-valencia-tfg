@@ -112,6 +112,18 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   captura, tras un hueco o porque se le oye mal a la deriva lejos de la costa),
   no se sabe cuándo llegó: la escala se marca DUDOSA y no entra en las
   estadísticas.
+- **El borde este del rectángulo VALENCIA corta la zona de deriva (comprobado el
+  11/11/2026).** De las 15 escalas de portacontenedores dudosas que no se deben al
+  arranque de la captura, **12** pierden la señal o «aparecen» ya paradas a menos de
+  ≈2 NM del borde este (0,00° de longitud). Los buques que esperan a la deriva salen
+  un poco del rectángulo y desaparecen de VALENCIA, aunque se sigan oyendo. Solo 2
+  (CMA CGM LOIRE y WEC CORNEILLE) son huecos reales de recepción dentro del
+  fondeadero, y 1 (YAKOOT) está justo en el límite de 2 h. Desde el 08/11 la zona
+  `APROXIMACION` los sigue viendo: en los dos casos posteriores (MSC GAYANE y
+  MSC ADITI) tiene 3 y 10 posiciones durante el hueco, todas fuera de VALENCIA, entre
+  0,01° y 0,10° E. *Mitigación posible:* completar los huecos de VALENCIA con las
+  posiciones de `APROXIMACION` en el cálculo de escalas (cambio de método, requiere
+  aprobación); los datos anteriores al 08/11 no se pueden recuperar.
 - **Recintos de las terminales dibujados con los datos** de los primeros 3 días
   y con los rótulos de OpenStreetMap. MSC y CSP son claros (cada una solo recibe
   a sus navieras). **APM se redibujó el 06/11/2026** sobre imagen de satélite
