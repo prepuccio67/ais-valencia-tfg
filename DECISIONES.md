@@ -364,5 +364,10 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   - Ensayo de solo lectura con datos reales (hasta el 11/11 a las 19:03 UTC): las
     escalas con atraque anterior al corte salen iguales en las dos versiones; de las 11
     que empiezan después, 4 usan posiciones de aproximación y ninguna es dudosa.
-- **Pendiente:** desplegar; decidir el umbral mínimo de 1 h para contar una espera;
-  confirmar con el tutor el periodo de las esperas y la fecha de corte.
+- **Desplegado el 11/11/2026 a las 19:09 UTC:** reinicio ordenado de menos de 1 s
+  (anotado en el registro de sucesos como parada y arranque; al durar menos de 1 s no
+  genera hueco). Copia del archivo anterior en el servidor:
+  `subzones.geojson.antes-escalas-v2-2026-11-11`. Tras el despliegue, el servidor da
+  las mismas cifras que el ensayo y la captura sigue sin errores.
+- **Pendiente:** decidir el umbral mínimo de 1 h para contar una espera; confirmar con
+  el tutor el periodo de las esperas y la fecha de corte.

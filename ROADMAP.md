@@ -95,14 +95,15 @@
   - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
   - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente;
   - `escalas-v2` (D-19), completar los huecos de VALENCIA con la zona de aproximación:
-    aprobado y programado el 11/11/2026 (129 tests); **pendiente de desplegar**. Las
-    esperas se medirán solo con escalas desde el 08/11 a las 17:05 UTC. Pendiente de
+    aprobado, programado (129 tests) y **desplegado el 11/11/2026 a las 19:09 UTC**.
+    Las esperas se miden solo con escalas desde el 08/11 a las 17:05 UTC. Pendiente de
     decidir: umbral mínimo de 1 h para contar una espera.
 - **Revisiones pendientes:**
   - ~~gasto de Oracle 0 € y retención de 93 € liberada~~: comprobado por Marcos el 08/11/2026;
   - el enlace de las copias caduca el 31/12/2027: renovarlo si el proyecto sigue;
-  - 09/11/2026: comprobar que la copia diaria incluye la zona `APROXIMACION`
-    (`backup-staging/APROXIMACION/daily`) y que se sube al bucket;
+  - ~~comprobar que la copia diaria incluye la zona `APROXIMACION`~~: comprobado el
+    11/11/2026 (copias del 08, 09 y 10/11 hechas y subidas, 0 errores; unas 21.000
+    posiciones al día, ≈0,55 GB/año, dentro de lo estimado);
   - systemd avisa de que el archivo `ais-collector.service` cambió en disco (aviso
     anterior a D-18): revisar la diferencia y ejecutar `systemctl daemon-reload`.
 

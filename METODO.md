@@ -10,7 +10,7 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 | 7c.1 Precisión de la ETA declarada | `eta-v1` | **Propuesto (04/11/2026), pendiente de aprobación** |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
-| Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y programado (11/11/2026, D-19); pendiente de desplegar** |
+| Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y desplegado (11/11/2026, D-19)** |
 
 ---
 
