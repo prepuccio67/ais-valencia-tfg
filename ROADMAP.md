@@ -104,8 +104,8 @@
   - ~~comprobar que la copia diaria incluye la zona `APROXIMACION`~~: comprobado el
     11/11/2026 (copias del 08, 09 y 10/11 hechas y subidas, 0 errores; unas 21.000
     posiciones al día, ≈0,55 GB/año, dentro de lo estimado);
-  - systemd avisa de que el archivo `ais-collector.service` cambió en disco (aviso
-    anterior a D-18): revisar la diferencia y ejecutar `systemctl daemon-reload`.
+  - ~~aviso de systemd sobre `ais-collector.service`~~: revisado el 11/11/2026; el
+    servicio instalado es igual que el del repositorio y systemd ya no pide recarga.
 
 ## ⏳ Pendiente
 | Fase | Contenido |
