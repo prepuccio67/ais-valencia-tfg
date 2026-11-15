@@ -473,3 +473,8 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   `informes/umbral_espera_ensayo_2026-11-15.md`). La histéresis quita la frenada de llegada y los
   falsos inicios sin perder las esperas a la deriva. La espera en fondeadero oficial es comparable
   con la APV.
+- **Programado y desplegado el 15/11/2026 a las 20:02 UTC** (`collector/escalas_v3.py`; 151 tests,
+  todos en verde antes de desplegar). `eta-v1` se recalcula con las llegadas de `escalas-v3` y con
+  `ESCALA_ANTERIOR` y «ETA de atraque». En el servidor se guardaron copias de `subzones.geojson` y
+  `parametros_7c.json` (`*.antes-escalas-v3-2026-11-15`). Los resultados del servidor coinciden con
+  los del ensayo.

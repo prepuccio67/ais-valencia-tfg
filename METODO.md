@@ -10,12 +10,29 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 | 7c.1 Precisión de la ETA declarada | `eta-v1` | **Aprobado como provisional (15/11/2026), pendiente del tutor** (D-20); desplegado el 15/11/2026 |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
-| Escalas: unir las esperas partidas | `escalas-v3` | **Aprobado en parte (15/11/2026, D-21)**; umbral de espera pendiente; sin programar |
+| Escalas: unir las esperas partidas | `escalas-v3` | **Congelado el 15/11/2026 (D-22)**: programado y desplegado; desde ahora solo se corrigen errores |
 | Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y desplegado (11/11/2026, D-19)** |
 
 ---
 
-## Escalas: unir las esperas partidas (`escalas-v3`, propuesta del 15/11/2026)
+## Escalas: unir las esperas partidas (`escalas-v3`, congelado el 15/11/2026)
+
+> **Método congelado (D-22, 15/11/2026).** A partir de ahora solo se corrigen errores; no se cambian
+> reglas. Reglas definitivas:
+> - **Espera con histéresis:** empieza en el área de espera con < 1 kn o estado «fondeado» (a
+>   < 3,9 kn); continúa mientras el buque siga en el área a < 3,9 kn.
+> - **Área de espera:** 25 NM desde la bocana (39,44 N; 0,31 W), fuera del recinto, sin 3 NM
+>   alrededor de Sagunto. La espera sigue viva mientras el buque esté en el área.
+> - **Unión** de una escala «sin atraque» con la siguiente del mismo buque si empieza en menos de
+>   72 h y no hay indicios de otro puerto.
+> - **Mínimo de 1 h** para contar una espera, con ≥ 3 h como sensibilidad. **Sensibilidad del
+>   umbral:** reglas de 1,0 kn y de 3,9 kn.
+> - **Dos esperas:** «en fondeadero oficial» (Resolución APV 2020, medible desde el 29/10) y «total
+>   en el área de espera» (desde el 08/11 a las 17:05).
+> - **Merodeo lento:** horas en el área a 1–3,9 kn antes de llegar (como mucho 72 h), descriptivo;
+>   no se suma a la espera.
+> - Parámetros en `subzones.geojson` (`method`), código en `collector/escalas_v3.py`. Los apartados
+>   siguientes cuentan cómo se llegó a estas reglas.
 
 ### 1. Problema
 - La revisión manual de los 9 casos de ETA con error de más de 24 h
@@ -171,6 +188,28 @@ Fuente: Autoridad Portuaria de Valencia, «Tiempos medios de escala» (consultad
 **Conclusión del contraste:** las cifras no contradicen a la APV, porque miden cosas distintas.
 Para la memoria convendría presentar dos esperas: «en el fondeadero», comparable con la APV, y
 «total en el área de espera», la que interesa para el JIT y las emisiones.
+
+### 6. Primeros resultados en el servidor (15/11/2026 a las 20:03 UTC, PROVISIONALES)
+Escalas OK de portacontenedores. Espera total: escalas iniciadas desde el 08/11 a las 17:05 (n = 27).
+Fondeadero oficial: desde el 29/10 (n = 107).
+
+| Grupo | Esperan ≥ 1 h | ≥ 3 h | Mediana | Media | P90 | Fondean (oficial) | Media en fondeadero |
+|---|---|---|---|---|---|---|---|
+| **Todas** | **59,3 %** | 55,6 % | **3,4 h** | 12,7 h | 41,1 h | **31,8 %** | **51,0 h** |
+| MSC | 70,6 % | 70,6 % | 5,5 h | 13,4 h | 39,2 h | 21,7 % | 33,1 h |
+| CSP | 75,0 % | 50,0 % | 21,1 h | 27,7 h | 60,0 h | 62,5 % | 59,2 h |
+| APM | 16,7 % | 16,7 % | 0 h | 0,6 h | 1,7 h | 13,8 % | 54,3 h |
+| < 150 m | 50 % | 50 % | 2,8 h | 6,3 h | 15,4 h | 52,6 % | 49,2 h |
+| 150–200 m | 40 % | 40 % | 0 h | 21,5 h | 55,8 h | 50,0 % | 69,0 h |
+| 200–300 m | 60 % | 60 % | 4,5 h | 14,8 h | 40,0 h | 27,0 % | 36,8 h |
+| ≥ 300 m | 75 % | 62,5 % | 3,7 h | 7,7 h | 16,6 h | 10,3 % | 37,7 h |
+
+- **Sensibilidad:** con 1,0 kn, 59,3 % esperan ≥ 1 h y la mediana es 3,1 h; con 3,9 kn, 69,2 % y 5,9 h.
+- **APV (1.er semestre de 2026):** fondea el 37,8 %, con ≈ 44,8 h de media; buques grandes, 8–12 %;
+  feeders, 63–72 %. El AIS en fondeadero oficial (31,8 %, 51,0 h; ≥ 300 m: 10,3 %; < 150 m: 52,6 %)
+  sigue el mismo patrón.
+- **Merodeo lento:** el 14,8 % de las escalas lo tiene (≥ 1 h), con 5,3 h de media (p. ej., ZIM XIAMEN
+  5,6 h; MSC JASPER VIII 6,1 h).
 
 ### 5. Decisiones (15/11/2026, D-21)
 **Aprobado por Marcos (sin programar todavía):**

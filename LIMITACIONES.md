@@ -176,3 +176,15 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   se da como análisis de sensibilidad (METODO.md, 7c.1, apartado 7).
 - **ETA redondeada.** El 62,5 % de las ETA utilizables acaban en :00: la precisión
   declarada es, en la práctica, de una hora.
+
+## Espera con `escalas-v3` (D-22)
+- **El merodeo lento sin pararse no cuenta como espera.** Un buque que hace tiempo a 1–3,9 kn sin bajar
+  nunca de 1 kn (p. ej., ZIM XIAMEN, 5,6 h) no espera según la regla de histéresis. Se da aparte como
+  «merodeo lento», descriptivo. Si hay huecos de señal largos (MSC JASPER VIII, MSC NICOLA MASTRO),
+  ni siquiera ese indicador lo mide bien.
+- **Fondeaderos oficiales de 2020.** La espera «en fondeadero oficial» usa los rectángulos de la
+  Resolución de la APV de 10/11/2020. No consta si se han modificado después [VERIFICAR con el tutor].
+- **La espera en fondeadero y la de la APV no son idénticas.** La APV mide desde la entrada en la
+  Zona II hasta el embarque del práctico, en medias de un semestre; el AIS mide el tiempo dentro de
+  los rectángulos de fondeo, en escalas OK de pocos días. La espera a la deriva fuera de la Zona II
+  solo entra en la «espera total» del AIS.

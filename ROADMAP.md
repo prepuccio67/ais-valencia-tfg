@@ -96,10 +96,10 @@
     gráfico del error por horizonte y capa de prácticos. Revisados a mano los 9 casos de más
     de 24 h (15/11): ninguno es un retraso real; propuestas las reglas `ESCALA_ANTERIOR` y
     «ETA de atraque» (sin programar);
-  - `escalas-v3` (D-21): aprobados el 15/11/2026 la espera viva en el área, la unión de esperas
-    partidas, el área de 25 NM y el desdoble de la espera (fondeadero oficial / total). Pendiente
-    el umbral de espera (ensayo de histéresis hecho) y el mínimo de 1 h. Sin programar;
-  - `eta-v1`: aprobadas `ESCALA_ANTERIOR` y la categoría «ETA de atraque» (D-21). Sin programar;
+  - **`escalas-v3` congelado el 15/11/2026 (D-22)**, programado y desplegado (151 tests): espera con
+    histéresis, área de 25 NM, uniones, mínimo de 1 h, espera doble (fondeadero oficial / total),
+    sensibilidad de 1,0 y 3,9 kn y merodeo lento. En el cuadro: espera doble y comparación con la APV;
+  - `eta-v1` recalculado con `escalas-v3`, `ESCALA_ANTERIOR` y «ETA de atraque» (D-21), desplegado;
   - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
   - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente;
   - `escalas-v2` (D-19), completar los huecos de VALENCIA con la zona de aproximación:
