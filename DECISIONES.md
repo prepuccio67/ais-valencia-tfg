@@ -449,3 +449,27 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   frenada pesa poco (0,3–0,7 h por buque) y la diferencia con la APV se debe al lugar: los buques
   grandes esperan a la deriva fuera de la Zona II (0 de 8 entra en un fondeadero oficial). También
   queda pendiente el umbral mínimo de 1 h.
+
+## D-22 · 15/11/2026 · `escalas-v3` congelado
+- **Decisión de Marcos: método congelado. A partir de ahora solo se corrigen errores; no se
+  cambian reglas.** `escalas-v3` queda así:
+  - **Espera con histéresis:** empieza cuando el buque, dentro del área de espera, va a < 1 kn o
+    declara «fondeado» (a < 3,9 kn); continúa mientras siga en el área a < 3,9 kn.
+  - **Área de espera:** mar a menos de 25 NM de la bocana (39,44 N; 0,31 W), fuera del recinto y sin
+    el círculo de 3 NM alrededor del puerto de Sagunto. La espera sigue viva mientras el buque esté
+    en el área; solo termina si pasa más de 12 h fuera de ella.
+  - **Unión de esperas partidas:** una escala «sin atraque» se une con la siguiente del mismo buque
+    si empieza en menos de 72 h y no hay indicios de otro puerto entre medias (otro destino
+    declarado, o parado y «fondeado» o «amarrado» fuera del área según la zona de aproximación).
+  - **Mínimo de 1 h:** una espera de menos de 1 h cuenta como «sin espera». Sensibilidad: ≥ 3 h.
+  - **Sensibilidad del umbral:** se calculan también las reglas de 1,0 kn y de 3,9 kn (las dos sin
+    histéresis) y se muestran al lado.
+  - **Dos esperas siempre:** «en fondeadero oficial» (tiempo dentro de los fondeaderos norte y sur de
+    la Resolución de la APV de 10/11/2020, BOE-A-2020-15569) y «total en el área de espera».
+  - **Indicador descriptivo de «merodeo lento»:** horas en el área a 1–3,9 kn, sin bajar de 1 kn,
+    antes de la llegada (como mucho 72 h). No se suma a la espera.
+  - Se descarta la variante «histéresis + merodeo sostenido de 2 h».
+- **Motivo:** ensayos del 15/11/2026 (METODO.md, apartado `escalas-v3`;
+  `informes/umbral_espera_ensayo_2026-11-15.md`). La histéresis quita la frenada de llegada y los
+  falsos inicios sin perder las esperas a la deriva. La espera en fondeadero oficial es comparable
+  con la APV.
