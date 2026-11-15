@@ -427,3 +427,25 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
 - **Pendiente:** visto bueno del tutor (método y regla de caducidad); revisar a mano los
   casos de más de 24 h; gráfico del error por horizonte y capa del punto de embarque de
   prácticos en el visor.
+
+## D-21 · 15/11/2026 · `escalas-v3` aprobado en parte; reglas nuevas de `eta-v1`
+- **Decisión de Marcos (sin programar; el método se congelará cuando se decida el umbral):**
+  - `escalas-v3`: la espera **sigue viva** mientras el buque esté en el área de espera; se **unen
+    las esperas partidas** (una escala «sin atraque» con la siguiente del mismo buque si empieza en
+    menos de 72 h y no hay indicios de otro puerto entre medias); **área de espera de 25 NM** desde
+    la bocana, sin Sagunto.
+  - **La espera se desdobla** en «en fondeadero» (dentro de los fondeaderos oficiales de la
+    Resolución de la APV de 10/11/2020, BOE-A-2020-15569; comparable con la APV) y «total en el área
+    de espera».
+  - `eta-v1`: estado **`ESCALA_ANTERIOR`** (la ETA es de la escala anterior del mismo buque) y
+    categoría **«ETA de atraque»**, contada y no descartada.
+- **Motivo:** la revisión de los 9 casos de más de 24 h y el ensayo de v2 frente a v3 (METODO.md;
+  `informes/revision_eta_24h_fichas_2026-11-15.md`). `escalas-v2` partía en dos las esperas de los
+  buques que merodean y subestimaba la espera (p. ej., MSC ANZIO II, 0 h en lugar de 43 h). Con v3 y
+  las reglas nuevas, 7 de los 9 errores de ETA de más de 24 h desaparecen.
+- **Pendiente:** el **umbral de espera**. Marcos no acepta 3,9 kn tal cual, porque sospecha que se
+  cuenta la frenada de llegada. En el ensayo de la regla con histéresis (empieza con < 1 kn o
+  «fondeado» y continúa a < 3,9 kn en el área; `informes/umbral_espera_ensayo_2026-11-15.md`), la
+  frenada pesa poco (0,3–0,7 h por buque) y la diferencia con la APV se debe al lugar: los buques
+  grandes esperan a la deriva fuera de la Zona II (0 de 8 entra en un fondeadero oficial). También
+  queda pendiente el umbral mínimo de 1 h.

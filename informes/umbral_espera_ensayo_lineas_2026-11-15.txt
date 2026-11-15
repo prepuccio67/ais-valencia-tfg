@@ -1,0 +1,502 @@
+
+######## V1 · escalas 194 · excluidas sin atraque 3 · calidad (contenedores con atraque) {'OK': 107, 'DUDOSA': 36, 'EN CURSO': 9}
+   TOTAL      n= 27 | ≥1h  59.3% ≥3h  51.9% | med   3.1 media  11.9 P90  36.7 | media≥1h  20.0 | FONDEADERO: fondea  18.5% media  27.9 h
+   T-MSC      n= 17 | ≥1h  70.6% ≥3h  64.7% | med   5.1 media  12.5 P90  31.6 | media≥1h  17.7 | FONDEADERO: fondea  23.5% media  23.7 h
+   T-CSP      n=  4 | ≥1h  75.0% ≥3h  50.0% | med  21.0 media  26.1 P90  62.0 | media≥1h  34.7 | FONDEADERO: fondea  25.0% media  44.5 h
+   T-APM      n=  6 | ≥1h  16.7% ≥3h  16.7% | med   0.0 media   0.5 P90   0.0 | media≥1h   3.3 | FONDEADERO: fondea   0.0% media   0.0 h
+   <150 m     n=  4 | ≥1h  50.0% ≥3h  50.0% | med   2.3 media   6.0 P90  19.7 | media≥1h  12.1 | FONDEADERO: fondea  25.0% media  19.7 h
+   150–200 m  n=  5 | ≥1h  40.0% ≥3h  40.0% | med   0.3 media  19.3 P90  64.5 | media≥1h  48.0 | FONDEADERO: fondea  20.0% media  17.2 h
+   200–300 m  n= 10 | ≥1h  60.0% ≥3h  60.0% | med   4.2 media  14.0 P90  36.7 | media≥1h  23.4 | FONDEADERO: fondea  30.0% media  34.1 h
+   ≥300 m     n=  8 | ≥1h  75.0% ≥3h  50.0% | med   2.7 media   7.5 P90   6.6 | media≥1h   9.9 | FONDEADERO: fondea   0.0% media   0.0 h
+   +EN CURSO atracadas n= 35 | ≥1h  60.0% ≥3h  54.3% | med   3.3 media  14.2 P90  54.9 | media≥1h  23.6 | FONDEADERO: fondea  22.9% media  25.2 h
+   todo el periodo OK  n=107 | ≥1h  63.6% ≥3h  50.5% | med   3.1 media  19.4 P90  62.4 | media≥1h  30.4 | FONDEADERO: fondea  31.8% media  50.9 h
+
+######## V39 · escalas 197 · excluidas sin atraque 6 · calidad (contenedores con atraque) {'OK': 98, 'DUDOSA': 45, 'EN CURSO': 9}
+   TOTAL      n= 26 | ≥1h  69.2% ≥3h  61.5% | med   5.9 media  14.0 P90  40.1 | media≥1h  20.1 | FONDEADERO: fondea  19.2% media  28.1 h
+   T-MSC      n= 16 | ≥1h  75.0% ≥3h  75.0% | med   7.8 media  15.1 P90  43.0 | media≥1h  20.0 | FONDEADERO: fondea  25.0% media  23.9 h
+   T-CSP      n=  4 | ≥1h 100.0% ≥3h  50.0% | med  21.4 media  28.2 P90  68.7 | media≥1h  28.2 | FONDEADERO: fondea  25.0% media  44.6 h
+   T-APM      n=  6 | ≥1h  33.3% ≥3h  33.3% | med   0.3 media   1.6 P90   3.5 | media≥1h   4.6 | FONDEADERO: fondea   0.0% media   0.0 h
+   <150 m     n=  4 | ≥1h  50.0% ≥3h  50.0% | med   4.3 media   7.1 P90  19.8 | media≥1h  14.2 | FONDEADERO: fondea  25.0% media  19.8 h
+   150–200 m  n=  5 | ≥1h  80.0% ≥3h  60.0% | med   9.3 media  23.7 P90  64.6 | media≥1h  29.6 | FONDEADERO: fondea  20.0% media  17.5 h
+   200–300 m  n= 10 | ≥1h  60.0% ≥3h  60.0% | med   4.8 media  15.0 P90  37.3 | media≥1h  24.9 | FONDEADERO: fondea  30.0% media  34.3 h
+   ≥300 m     n=  7 | ≥1h  85.7% ≥3h  71.4% | med   5.6 media   9.5 P90   7.1 | media≥1h  11.0 | FONDEADERO: fondea   0.0% media   0.0 h
+   +EN CURSO atracadas n= 34 | ≥1h  70.6% ≥3h  61.8% | med   6.2 media  16.0 P90  55.2 | media≥1h  22.5 | FONDEADERO: fondea  23.5% media  25.4 h
+   todo el periodo OK  n= 98 | ≥1h  74.5% ≥3h  60.2% | med   5.2 media  21.8 P90  64.7 | media≥1h  29.2 | FONDEADERO: fondea  34.7% media  51.2 h
+
+######## HIST · escalas 194 · excluidas sin atraque 3 · calidad (contenedores con atraque) {'OK': 107, 'DUDOSA': 36, 'EN CURSO': 9}
+   TOTAL      n= 27 | ≥1h  59.3% ≥3h  55.6% | med   3.4 media  12.7 P90  40.1 | media≥1h  21.4 | FONDEADERO: fondea  18.5% media  27.9 h
+   T-MSC      n= 17 | ≥1h  70.6% ≥3h  70.6% | med   5.5 media  13.4 P90  36.8 | media≥1h  19.0 | FONDEADERO: fondea  23.5% media  23.8 h
+   T-CSP      n=  4 | ≥1h  75.0% ≥3h  50.0% | med  21.1 media  27.8 P90  68.6 | media≥1h  36.9 | FONDEADERO: fondea  25.0% media  44.5 h
+   T-APM      n=  6 | ≥1h  16.7% ≥3h  16.7% | med   0.0 media   0.6 P90   0.0 | media≥1h   3.4 | FONDEADERO: fondea   0.0% media   0.0 h
+   <150 m     n=  4 | ≥1h  50.0% ≥3h  50.0% | med   2.8 media   6.3 P90  19.7 | media≥1h  12.6 | FONDEADERO: fondea  25.0% media  19.7 h
+   150–200 m  n=  5 | ≥1h  40.0% ≥3h  40.0% | med   0.3 media  21.5 P90  64.6 | media≥1h  53.6 | FONDEADERO: fondea  20.0% media  17.2 h
+   200–300 m  n= 10 | ≥1h  60.0% ≥3h  60.0% | med   4.5 media  14.8 P90  36.8 | media≥1h  24.6 | FONDEADERO: fondea  30.0% media  34.2 h
+   ≥300 m     n=  8 | ≥1h  75.0% ≥3h  62.5% | med   3.7 media   7.8 P90   6.6 | media≥1h  10.3 | FONDEADERO: fondea   0.0% media   0.0 h
+   +EN CURSO atracadas n= 35 | ≥1h  62.9% ≥3h  57.1% | med   4.3 media  14.9 P90  55.1 | media≥1h  23.6 | FONDEADERO: fondea  22.9% media  25.2 h
+   todo el periodo OK  n=107 | ≥1h  66.4% ≥3h  54.2% | med   4.0 media  19.8 P90  64.6 | media≥1h  29.8 | FONDEADERO: fondea  31.8% media  51.0 h
+
+######## Buques ≥ 300 m (OK, desde el corte) que esperan ≥ 1 h con 3,9 kn: dónde y a qué velocidad
+
+  TEXAS TRIUMPH (366 m, T-CSP) · espera 3,9 kn: 40.1 h (09/11 18:03 → 11/11 10:09) · HIST: 40.1 h · 1,0 kn: 40.1 h · en fondeadero oficial: 0.0 h · atraque 11/11 13:32
+     09/11 18:03–19:04 área 17 NM E            <1 kn (0.0–0.3) · 2 pos
+     09/11 19:16–19:16 área 17 NM E         1–3,9 kn (1.7–1.7) · 1 pos
+     09/11 19:53–19:53 área 17 NM E            <1 kn (0.6–0.6) · 1 pos
+     09/11 20:23–20:23 área 16 NM E            <1 kn (0.6–0.6) · 1 pos
+     09/11 20:53–22:01 área 17 NM E            <1 kn (0.5–0.7) · 3 pos
+     09/11 23:26–00:45 área 18 NM E            <1 kn (0.5–0.6) · 3 pos
+     10/11 01:24–03:33 área 19 NM E            <1 kn (0.4–0.7) · 4 pos
+     10/11 04:21–04:21 área 19 NM E         1–3,9 kn (1.0–1.0) · 1 pos
+     10/11 05:00–05:39 área 20 NM E         1–3,9 kn (1.0–1.4) · 2 pos
+     10/11 06:19–07:21 área 21 NM E         1–3,9 kn (1.0–1.1) · 3 pos
+     10/11 08:21–08:21 área 22 NM E         1–3,9 kn (2.4–2.4) · 1 pos
+     10/11 08:53–08:53 área 22 NM E          ≥3,9 kn (5.0–5.0) · 1 pos
+     10/11 09:33–09:33 área 18 NM E          ≥3,9 kn (8.0–8.0) · 1 pos
+     10/11 10:03–10:08 área 15 NM E          ≥3,9 kn (7.5–8.1) · 2 pos
+     10/11 10:18–10:18 área 13 NM E          ≥3,9 kn (6.9–6.9) · 1 pos
+     10/11 10:29–10:29 área 12 NM SE         ≥3,9 kn (6.8–6.8) · 1 pos
+     10/11 10:38–10:43 área 11 NM SE         ≥3,9 kn (4.8–6.9) · 4 pos
+     10/11 10:57–16:14 área 11 NM SE           <1 kn (0.2–0.6) · 46 pos
+     10/11 16:25–18:56 área 10 NM SE           <1 kn (0.3–0.5) · 37 pos
+     10/11 18:58–19:32 área 9 NM SE            <1 kn (0.3–0.9) · 12 pos
+     10/11 19:33–19:33 área 9 NM SE         1–3,9 kn (1.4–1.4) · 1 pos
+     10/11 19:37–19:37 área 9 NM E          1–3,9 kn (3.5–3.5) · 1 pos
+     10/11 19:47–19:47 área 10 NM E          ≥3,9 kn (7.1–7.1) · 1 pos
+     10/11 20:01–20:01 área 12 NM E          ≥3,9 kn (8.2–8.2) · 1 pos
+     10/11 20:08–20:08 área 13 NM E          ≥3,9 kn (7.7–7.7) · 1 pos
+     10/11 20:14–20:18 área 14 NM E          ≥3,9 kn (5.1–6.6) · 2 pos
+     10/11 20:21–20:22 área 14 NM E         1–3,9 kn (2.9–3.5) · 2 pos
+     10/11 20:32–21:23 área 14 NM E            <1 kn (0.2–0.9) · 6 pos
+     10/11 21:51–00:51 área 15 NM E            <1 kn (0.2–0.5) · 8 pos
+     11/11 01:53–06:23 área 16 NM E            <1 kn (0.2–0.6) · 8 pos
+     11/11 07:27–08:59 área 17 NM E            <1 kn (0.1–0.5) · 4 pos
+     11/11 10:09–10:09 área 17 NM E          ≥3,9 kn (4.4–4.4) · 1 pos
+
+  MSC PAMELA (337 m, T-MSC) · espera 3,9 kn: 6.3 h (13/11 21:01 → 14/11 03:19) · HIST: 5.652 h · 1,0 kn: 5.652 h · en fondeadero oficial: 0.0 h · atraque 14/11 04:49
+     13/11 20:33–20:38 área 15 NM SE         ≥3,9 kn (8.8–8.9) · 2 pos
+     13/11 20:47–20:50 área 13 NM SE         ≥3,9 kn (8.1–8.8) · 2 pos
+     13/11 20:58–20:58 área 12 NM SE         ≥3,9 kn (4.5–4.5) · 1 pos
+     13/11 21:01–21:04 área 12 NM SE        1–3,9 kn (3.1–3.7) · 3 pos
+     13/11 21:07–21:34 área 11 NM SE        1–3,9 kn (1.0–2.6) · 9 pos
+     13/11 21:40–21:58 área 11 NM SE           <1 kn (0.7–0.9) · 5 pos
+     13/11 22:02–22:02 área 11 NM SE         ≥3,9 kn (4.2–4.2) · 1 pos
+     13/11 22:08–22:08 área 10 NM SE         ≥3,9 kn (8.1–8.1) · 1 pos
+     13/11 22:12–22:13 área 9 NM SE          ≥3,9 kn (8.7–8.7) · 2 pos
+     13/11 22:23–22:23 área 8 NM SE          ≥3,9 kn (8.7–8.7) · 1 pos
+     13/11 22:33–22:34 área 7 NM E           ≥3,9 kn (5.3–5.8) · 2 pos
+     13/11 22:36–22:56 área 7 NM E          1–3,9 kn (1.2–3.8) · 6 pos
+     13/11 22:58–23:50 área 8 NM E          1–3,9 kn (1.2–1.4) · 12 pos
+     13/11 23:52–00:30 área 9 NM E          1–3,9 kn (1.4–1.8) · 11 pos
+     14/11 00:35–00:59 área 10 NM E         1–3,9 kn (1.8–2.1) · 7 pos
+     14/11 01:12–01:37 área 11 NM E         1–3,9 kn (2.2–2.2) · 3 pos
+     14/11 01:42–02:01 área 12 NM E         1–3,9 kn (2.0–2.1) · 4 pos
+     14/11 02:21–02:21 área 10 NM E          ≥3,9 kn (12.7–12.7) · 1 pos
+     14/11 02:25–02:25 área 9 NM E           ≥3,9 kn (12.4–12.4) · 1 pos
+     14/11 02:29–02:33 área 8 NM E           ≥3,9 kn (9.8–11.5) · 3 pos
+     14/11 02:35–02:35 área 7 NM E           ≥3,9 kn (8.6–8.6) · 1 pos
+     14/11 02:46–02:47 área 6 NM E           ≥3,9 kn (5.2–5.7) · 2 pos
+     14/11 02:57–02:59 área 6 NM E          1–3,9 kn (2.2–2.6) · 2 pos
+     14/11 03:11–03:11 área 5 NM E          1–3,9 kn (1.0–1.0) · 1 pos
+     14/11 03:13–03:13 área 5 NM E             <1 kn (0.9–0.9) · 1 pos
+     14/11 03:19–03:25 área 5 NM E           ≥3,9 kn (4.0–6.2) · 3 pos
+     14/11 03:29–03:29 área 4 NM E           ≥3,9 kn (6.7–6.7) · 1 pos
+
+  ZIM XIAMEN (300 m, T-APM) · espera 3,9 kn: 5.6 h (12/11 08:07 → 12/11 13:43) · HIST: 0.0 h · 1,0 kn: 0.0 h · en fondeadero oficial: 0.0 h · atraque 12/11 16:53
+     12/11 07:41–07:53 área 12 NM E          ≥3,9 kn (7.7–10.2) · 2 pos
+     12/11 08:07–08:07 área 12 NM E         1–3,9 kn (3.8–3.8) · 1 pos
+     12/11 08:11–08:34 área 13 NM E         1–3,9 kn (1.6–2.9) · 9 pos
+     12/11 08:43–09:07 área 14 NM E         1–3,9 kn (1.7–1.9) · 4 pos
+     12/11 09:13–09:13 área 15 NM E         1–3,9 kn (1.8–1.8) · 1 pos
+     12/11 09:44–09:44 área 16 NM E         1–3,9 kn (2.1–2.1) · 1 pos
+     12/11 10:17–10:17 área 17 NM E         1–3,9 kn (2.1–2.1) · 1 pos
+     12/11 10:56–10:56 área 18 NM E         1–3,9 kn (2.0–2.0) · 1 pos
+     12/11 11:34–11:34 área 19 NM E         1–3,9 kn (1.3–1.3) · 1 pos
+     12/11 12:20–12:20 área 20 NM E         1–3,9 kn (1.9–1.9) · 1 pos
+     12/11 12:55–12:55 área 21 NM E         1–3,9 kn (1.8–1.8) · 1 pos
+     12/11 13:43–13:43 área 22 NM E          ≥3,9 kn (4.5–4.5) · 1 pos
+
+  MSC GAYANE (314 m, T-MSC) · espera 3,9 kn: 7.1 h (09/11 02:51 → 09/11 09:55) · HIST: 6.569 h · 1,0 kn: 6.569 h · en fondeadero oficial: 0.0 h · atraque 09/11 12:48
+     09/11 02:51–02:51 área 16 NM E         1–3,9 kn (1.0–1.0) · 1 pos
+     09/11 03:21–03:54 área 16 NM E            <1 kn (0.8–0.9) · 2 pos
+     09/11 04:33–05:08 área 16 NM E         1–3,9 kn (1.1–1.7) · 2 pos
+     09/11 05:46–06:03 área 14 NM E         1–3,9 kn (2.6–2.7) · 4 pos
+     09/11 06:29–06:49 área 13 NM E            <1 kn (0.3–0.9) · 4 pos
+     09/11 06:58–07:00 área 13 NM E         1–3,9 kn (3.0–3.7) · 2 pos
+     09/11 07:03–07:03 área 13 NM E          ≥3,9 kn (6.0–6.0) · 1 pos
+     09/11 07:22–07:26 área 14 NM E         1–3,9 kn (2.4–2.9) · 3 pos
+     09/11 07:52–09:35 área 15 NM E            <1 kn (0.2–0.7) · 3 pos
+     09/11 09:55–09:55 área 14 NM E          ≥3,9 kn (9.0–9.0) · 1 pos
+     09/11 09:59–10:03 área 13 NM E          ≥3,9 kn (11.0–12.0) · 2 pos
+
+  MSC NAIROBI X (300 m, T-MSC) · espera 3,9 kn: 4.4 h (11/11 13:43 → 11/11 18:05) · HIST: 3.106 h · 1,0 kn: 3.072 h · en fondeadero oficial: 0.0 h · atraque 11/11 19:16
+     11/11 13:19–13:21 área 11 NM E          ≥3,9 kn (5.0–5.4) · 2 pos
+     11/11 13:26–13:26 área 10 NM E          ≥3,9 kn (4.0–4.0) · 1 pos
+     11/11 13:43–14:02 área 9 NM E          1–3,9 kn (1.6–2.5) · 3 pos
+     11/11 14:15–14:15 área 8 NM E           ≥3,9 kn (6.4–6.4) · 1 pos
+     11/11 14:23–14:23 área 7 NM E           ≥3,9 kn (9.3–9.3) · 1 pos
+     11/11 14:42–14:54 área 6 NM E          1–3,9 kn (1.0–1.2) · 2 pos
+     11/11 14:59–15:09 área 6 NM E             <1 kn (0.7–0.8) · 2 pos
+     11/11 15:40–16:03 área 5 NM E             <1 kn (0.8–0.9) · 3 pos
+     11/11 16:10–16:18 área 5 NM E          1–3,9 kn (1.2–1.3) · 2 pos
+     11/11 16:23–16:29 área 5 NM E             <1 kn (0.4–0.8) · 3 pos
+     11/11 16:36–16:36 área 5 NM E          1–3,9 kn (3.7–3.7) · 1 pos
+     11/11 16:38–16:38 área 5 NM E           ≥3,9 kn (4.5–4.5) · 1 pos
+     11/11 16:48–17:09 área 5 NM E          1–3,9 kn (1.5–2.9) · 7 pos
+     11/11 17:21–17:37 área 6 NM E             <1 kn (0.5–0.9) · 6 pos
+     11/11 18:03–18:03 área 6 NM E          1–3,9 kn (3.2–3.2) · 1 pos
+     11/11 18:05–18:05 área 6 NM E           ≥3,9 kn (4.8–4.8) · 1 pos
+     11/11 18:11–18:11 área 5 NM E           ≥3,9 kn (7.2–7.2) · 1 pos
+
+  HMM PERIDOT (336 m, T-CSP) · espera 3,9 kn: 2.7 h (10/11 09:19 → 10/11 12:00) · HIST: 2.039 h · 1,0 kn: 1.956 h · en fondeadero oficial: 0.0 h · atraque 10/11 13:34
+     10/11 08:55–08:58 área 12 NM E          ≥3,9 kn (11.7–11.7) · 2 pos
+     10/11 09:01–09:01 área 11 NM E          ≥3,9 kn (11.7–11.7) · 1 pos
+     10/11 09:16–09:16 área 9 NM E           ≥3,9 kn (4.6–4.6) · 1 pos
+     10/11 09:19–09:22 área 9 NM E          1–3,9 kn (3.3–3.8) · 2 pos
+     10/11 09:25–09:26 área 9 NM SE         1–3,9 kn (2.7–2.7) · 2 pos
+     10/11 09:45–09:50 área 8 NM E          1–3,9 kn (1.1–1.2) · 2 pos
+     10/11 09:57–09:57 área 8 NM E             <1 kn (0.9–0.9) · 1 pos
+     10/11 09:59–09:59 área 8 NM E          1–3,9 kn (1.0–1.0) · 1 pos
+     10/11 10:06–11:48 área 8 NM E             <1 kn (0.4–0.9) · 26 pos
+     10/11 11:51–11:51 área 9 NM E             <1 kn (0.9–0.9) · 1 pos
+     10/11 11:55–11:55 área 9 NM E          1–3,9 kn (1.5–1.5) · 1 pos
+     10/11 11:57–11:57 área 8 NM E          1–3,9 kn (2.9–2.9) · 1 pos
+     10/11 12:00–12:05 área 8 NM E           ≥3,9 kn (4.8–7.0) · 3 pos
+     10/11 12:07–12:07 área 7 NM E           ≥3,9 kn (7.7–7.7) · 1 pos
+
+######## Las 9 escalas que pasan de OK a DUDOSA con 3,9 kn
+
+  MSC MELINE (301.0 m, T-MSC) · atraque 30/10 21:52
+     v2  : inicio 30/10 10:23 · espera 10.2 h · OK
+     3,9 : inicio 30/10 08:44 · espera 12.1 h · DUDOSA: llegada no observada
+     HIST: inicio 30/10 10:23 · espera 10.4 h · OK
+       30/10 08:44–08:58 área 16 NM SE        1–3,9 kn (1.2–2.3) · 4 pos
+       30/10 09:01–09:01 área 16 NM SE         ≥3,9 kn (6.5–6.5) · 1 pos
+       30/10 09:03–09:03 área 15 NM SE         ≥3,9 kn (9.0–9.0) · 1 pos
+       30/10 09:12–09:12 área 14 NM SE         ≥3,9 kn (12.7–12.7) · 1 pos
+       30/10 09:15–09:15 área 13 NM SE         ≥3,9 kn (13.1–13.1) · 1 pos
+       30/10 09:20–09:23 área 12 NM SE         ≥3,9 kn (13.2–13.2) · 2 pos
+       30/10 09:26–09:26 área 11 NM SE         ≥3,9 kn (13.3–13.3) · 1 pos
+       30/10 09:30–09:30 área 10 NM SE         ≥3,9 kn (13.3–13.3) · 1 pos
+       30/10 09:34–09:35 área 9 NM SE          ≥3,9 kn (13.2–13.4) · 2 pos
+       30/10 09:40–09:40 área 8 NM SE          ≥3,9 kn (13.2–13.2) · 1 pos
+       30/10 09:46–09:46 área 6 NM SE          ≥3,9 kn (10.7–10.7) · 1 pos
+       30/10 09:50–09:51 área 6 NM E           ≥3,9 kn (9.3–9.9) · 2 pos
+       30/10 10:00–10:02 área 5 NM E           ≥3,9 kn (4.9–5.8) · 2 pos
+       30/10 10:13–10:18 área 5 NM E          1–3,9 kn (2.8–3.5) · 3 pos
+       30/10 10:23–10:23 área 6 NM E             <1 kn (0.8–0.8) · 1 pos
+       30/10 10:31–10:47 área 6 NM E          1–3,9 kn (1.2–3.8) · 4 pos
+       30/10 10:55–10:55 área 6 NM E           ≥3,9 kn (4.2–4.2) · 1 pos
+       30/10 10:57–10:59 área 6 NM E          1–3,9 kn (3.1–3.6) · 2 pos
+       30/10 11:02–11:14 área 5 NM E          1–3,9 kn (1.4–2.7) · 3 pos
+       30/10 11:15–12:11 área 5 NM E             <1 kn (0.4–0.8) · 14 pos
+       30/10 12:15–12:16 área 5 NM E          1–3,9 kn (1.1–1.9) · 2 pos
+       30/10 12:21–12:21 área 4 NM SE          ≥3,9 kn (4.0–4.0) · 1 pos
+       30/10 12:35–12:36 área 6 NM E           ≥3,9 kn (7.0–7.2) · 2 pos
+       30/10 12:45–12:52 área 7 NM E           ≥3,9 kn (5.1–7.1) · 4 pos
+       30/10 12:58–12:59 área 8 NM E          1–3,9 kn (2.5–2.9) · 2 pos
+       30/10 13:10–14:13 área 8 NM E             <1 kn (0.5–0.9) · 14 pos
+       30/10 14:15–14:57 área 7 NM E             <1 kn (0.6–0.9) · 13 pos
+       30/10 15:03–15:03 área 7 NM E          1–3,9 kn (1.0–1.0) · 1 pos
+       30/10 15:21–15:27 área 7 NM E             <1 kn (0.6–0.6) · 3 pos
+       30/10 15:43–15:43 área 6 NM E             <1 kn (0.5–0.5) · 1 pos
+       30/10 15:54–15:54 área 7 NM E          1–3,9 kn (3.7–3.7) · 1 pos
+       30/10 16:02–16:04 área 7 NM E           ≥3,9 kn (5.7–6.0) · 3 pos
+       30/10 16:09–16:09 área 8 NM E           ≥3,9 kn (4.9–4.9) · 1 pos
+       30/10 16:19–16:21 área 8 NM E          1–3,9 kn (1.1–2.3) · 2 pos
+       30/10 16:30–17:15 área 8 NM E             <1 kn (0.4–0.7) · 10 pos
+       30/10 17:24–17:33 área 7 NM E             <1 kn (0.7–0.9) · 2 pos
+       30/10 17:44–18:39 área 7 NM SE            <1 kn (0.4–0.7) · 15 pos
+       30/10 18:42–18:52 área 7 NM SE         1–3,9 kn (1.2–3.8) · 3 pos
+       30/10 19:04–19:45 área 7 NM E          1–3,9 kn (1.1–3.5) · 9 pos
+       30/10 19:52–19:52 área 6 NM E           ≥3,9 kn (7.8–7.8) · 1 pos
+       30/10 20:00–20:05 área 5 NM E           ≥3,9 kn (6.4–7.5) · 3 pos
+       30/10 20:10–20:10 área 4 NM E           ≥3,9 kn (5.0–5.0) · 1 pos
+       30/10 20:17–20:17 área 4 NM E          1–3,9 kn (1.5–1.5) · 1 pos
+       30/10 20:18–20:22 área 4 NM E             <1 kn (0.4–0.8) · 3 pos
+       30/10 20:32–20:36 área 4 NM E          1–3,9 kn (1.1–1.9) · 3 pos
+       30/10 20:40–20:45 área 4 NM SE         1–3,9 kn (1.8–2.4) · 2 pos
+       30/10 20:49–20:59 área 3 NM SE          ≥3,9 kn (4.6–6.2) · 7 pos
+       30/10 21:01–21:10 área 2 NM SE          ≥3,9 kn (5.8–6.5) · 2 pos
+       30/10 21:16–21:16 RECINTO               ≥3,9 kn (6.9–6.9) · 1 pos
+       30/10 21:25–21:45 RECINTO              1–3,9 kn (1.4–3.7) · 7 pos
+       30/10 21:48–21:52 RECINTO                 <1 kn (0.3–0.8) · 3 pos
+
+  OOCL HONG KONG (400.0 m, T-CSP) · atraque 04/11 08:53
+     v2  : inicio 04/11 08:53 · espera 0.0 h · OK
+     3,9 : inicio 03/11 22:20 · espera 9.4 h · DUDOSA: llegada no observada, buque sin señal 6 h
+     HIST: inicio 04/11 08:53 · espera 0.0 h · OK
+       03/11 22:20–22:27 área 14 NM E         1–3,9 kn (2.4–2.5) · 3 pos
+       03/11 22:51–23:22 área 13 NM E         1–3,9 kn (2.2–2.8) · 10 pos
+       03/11 23:30–23:32 área 13 NM E          ≥3,9 kn (6.4–7.1) · 2 pos
+       03/11 23:34–23:38 área 14 NM E          ≥3,9 kn (7.3–7.9) · 3 pos
+       03/11 23:38–05:29 ··· SIN SEÑAL 5.8 h ···
+       04/11 05:29–05:29 área 17 NM SE         ≥3,9 kn (5.2–5.2) · 1 pos
+       04/11 05:31–05:39 área 16 NM SE         ≥3,9 kn (5.3–5.6) · 4 pos
+       04/11 05:43–05:51 área 15 NM SE         ≥3,9 kn (5.5–5.7) · 4 pos
+       04/11 05:57–06:03 área 14 NM SE         ≥3,9 kn (5.7–5.9) · 3 pos
+       04/11 06:15–06:15 área 13 NM SE         ≥3,9 kn (5.9–5.9) · 1 pos
+       04/11 06:17–06:28 área 12 NM SE         ≥3,9 kn (5.9–6.0) · 4 pos
+       04/11 06:42–06:42 área 11 NM E          ≥3,9 kn (6.0–6.0) · 1 pos
+       04/11 06:44–06:51 área 10 NM E          ≥3,9 kn (6.1–6.9) · 3 pos
+       04/11 07:06–07:06 área 8 NM E           ≥3,9 kn (9.1–9.1) · 1 pos
+       04/11 07:13–07:15 área 7 NM E           ≥3,9 kn (8.2–8.9) · 2 pos
+       04/11 07:21–07:21 área 6 NM E           ≥3,9 kn (5.9–5.9) · 1 pos
+       04/11 07:27–07:27 área 6 NM E          1–3,9 kn (3.6–3.6) · 1 pos
+       04/11 07:29–07:44 área 5 NM E          1–3,9 kn (2.5–3.3) · 5 pos
+       04/11 07:46–07:46 área 5 NM E           ≥3,9 kn (3.9–3.9) · 1 pos
+       04/11 07:51–07:54 área 4 NM E           ≥3,9 kn (6.6–6.9) · 2 pos
+       04/11 07:58–08:02 área 3 NM E           ≥3,9 kn (6.3–6.4) · 3 pos
+       04/11 08:10–08:17 área 2 NM SE          ≥3,9 kn (5.7–6.2) · 2 pos
+       04/11 08:22–08:23 área 1 NM SE          ≥3,9 kn (5.2–5.2) · 2 pos
+       04/11 08:29–08:35 RECINTO               ≥3,9 kn (3.9–5.0) · 3 pos
+       04/11 08:37–08:44 RECINTO              1–3,9 kn (2.3–3.5) · 4 pos
+       04/11 08:53–08:53 RECINTO                 <1 kn (0.2–0.2) · 1 pos
+
+  CHENNAI EXPRESS (304.0 m, T-APM) · atraque 04/11 15:06
+     v2  : inicio 04/11 15:06 · espera 0.0 h · OK
+     3,9 : inicio 04/11 10:44 · espera 2.9 h · DUDOSA: llegada no observada
+     HIST: inicio 04/11 15:06 · espera 0.0 h · OK
+       04/11 10:44–11:22 área 14 NM E         1–3,9 kn (1.6–1.8) · 10 pos
+       04/11 11:29–12:06 área 13 NM E         1–3,9 kn (1.6–1.8) · 7 pos
+       04/11 12:13–13:05 área 12 NM E         1–3,9 kn (1.6–1.6) · 9 pos
+       04/11 13:07–13:26 área 11 NM E         1–3,9 kn (1.5–3.3) · 5 pos
+       04/11 13:36–13:42 área 10 NM E          ≥3,9 kn (7.1–8.2) · 3 pos
+       04/11 13:46–13:46 área 9 NM E           ≥3,9 kn (10.5–10.5) · 1 pos
+       04/11 13:50–13:50 área 8 NM E           ≥3,9 kn (11.8–11.8) · 1 pos
+       04/11 13:55–13:55 área 7 NM E           ≥3,9 kn (12.1–12.1) · 1 pos
+       04/11 14:04–14:04 área 5 NM E           ≥3,9 kn (12.2–12.2) · 1 pos
+       04/11 14:10–14:10 área 4 NM E           ≥3,9 kn (11.3–11.3) · 1 pos
+       04/11 14:12–14:30 área 4 NM SE          ≥3,9 kn (10.6–10.6) · 2 pos
+       04/11 14:41–14:47 RECINTO               ≥3,9 kn (3.9–6.0) · 5 pos
+       04/11 14:56–15:01 RECINTO              1–3,9 kn (1.0–2.4) · 3 pos
+       04/11 15:06–15:06 RECINTO                 <1 kn (0.1–0.1) · 1 pos
+
+  MSC JASPER VIII (333.0 m, T-MSC) · atraque 05/11 11:31
+     v2  : inicio 05/11 09:02 · espera 0.6 h · OK
+     3,9 : inicio 04/11 08:14 · espera 26.3 h · DUDOSA: llegada no observada, buque sin señal 11 h
+     HIST: inicio 05/11 09:02 · espera 1.5 h · OK
+       04/11 08:14–08:40 área 14 NM E         1–3,9 kn (1.9–2.8) · 5 pos
+       04/11 08:40–14:43 ··· SIN SEÑAL 6.0 h ···
+       04/11 14:43–14:43 área 14 NM E         1–3,9 kn (2.2–2.2) · 1 pos
+       04/11 14:46–14:55 área 14 NM E          ≥3,9 kn (3.9–4.4) · 4 pos
+       04/11 14:55–02:06 ··· SIN SEÑAL 11.2 h ···
+       05/11 02:06–02:48 área 14 NM E         1–3,9 kn (1.4–1.9) · 14 pos
+       05/11 02:56–02:59 área 14 NM E          ≥3,9 kn (4.2–4.3) · 3 pos
+       05/11 03:04–05:48 área 14 NM E         1–3,9 kn (1.3–3.6) · 13 pos
+       05/11 07:23–07:23 área 13 NM E          ≥3,9 kn (8.1–8.1) · 1 pos
+       05/11 07:39–07:39 área 11 NM E          ≥3,9 kn (8.6–8.6) · 1 pos
+       05/11 07:45–07:49 área 10 NM E          ≥3,9 kn (5.5–6.9) · 2 pos
+       05/11 07:51–07:56 área 9 NM E           ≥3,9 kn (3.9–5.0) · 2 pos
+       05/11 07:59–08:02 área 9 NM E          1–3,9 kn (3.3–3.7) · 2 pos
+       05/11 08:04–08:05 área 8 NM E           ≥3,9 kn (3.9–4.2) · 2 pos
+       05/11 08:11–08:22 área 8 NM E          1–3,9 kn (2.5–3.2) · 4 pos
+       05/11 08:30–08:57 área 7 NM E          1–3,9 kn (1.2–2.3) · 6 pos
+       05/11 09:02–09:25 área 7 NM E             <1 kn (0.8–0.9) · 7 pos
+       05/11 09:36–09:41 área 6 NM E           ≥3,9 kn (3.9–5.0) · 3 pos
+       05/11 09:49–09:51 área 5 NM E           ≥3,9 kn (5.8–6.0) · 2 pos
+       05/11 09:58–10:01 área 4 NM E           ≥3,9 kn (4.1–4.7) · 2 pos
+       05/11 10:11–10:15 área 4 NM E          1–3,9 kn (1.1–1.6) · 2 pos
+       05/11 10:25–10:27 área 3 NM E          1–3,9 kn (2.8–3.3) · 2 pos
+       05/11 10:30–10:30 área 3 NM E           ≥3,9 kn (4.3–4.3) · 1 pos
+       05/11 10:40–10:50 área 2 NM SE          ≥3,9 kn (5.8–6.3) · 2 pos
+       05/11 11:01–11:01 RECINTO               ≥3,9 kn (6.3–6.3) · 1 pos
+       05/11 11:16–11:20 RECINTO              1–3,9 kn (1.2–1.3) · 3 pos
+       05/11 11:31–11:31 RECINTO                 <1 kn (0.0–0.0) · 1 pos
+
+  MSC MANZANILLO V (294.0 m, T-MSC) · atraque 05/11 14:33
+     v2  : inicio 05/11 14:33 · espera 0.0 h · OK
+     3,9 : inicio 05/11 07:26 · espera 6.3 h · DUDOSA: buque sin señal 4 h
+     HIST: inicio 05/11 14:33 · espera 0.0 h · OK
+       05/11 07:20–07:20 área 14 NM E          ≥3,9 kn (6.3–6.3) · 1 pos
+       05/11 07:26–07:28 área 14 NM E         1–3,9 kn (3.3–3.8) · 3 pos
+       05/11 07:31–08:11 área 13 NM E         1–3,9 kn (1.1–2.5) · 8 pos
+       05/11 08:17–08:20 área 12 NM E         1–3,9 kn (2.8–2.9) · 2 pos
+       05/11 08:27–08:27 área 13 NM E          ≥3,9 kn (4.3–4.3) · 1 pos
+       05/11 08:27–12:18 ··· SIN SEÑAL 3.9 h ···
+       05/11 12:18–12:20 área 13 NM E          ≥3,9 kn (10.9–11.0) · 2 pos
+       05/11 12:24–12:24 área 12 NM E          ≥3,9 kn (11.1–11.1) · 1 pos
+       05/11 12:32–12:32 área 11 NM E          ≥3,9 kn (11.1–11.1) · 1 pos
+       05/11 12:35–12:37 área 10 NM E          ≥3,9 kn (11.1–11.1) · 2 pos
+       05/11 12:43–12:44 área 9 NM E           ≥3,9 kn (10.7–11.1) · 2 pos
+       05/11 12:46–12:46 área 8 NM E           ≥3,9 kn (9.4–9.4) · 1 pos
+       05/11 12:52–12:54 área 7 NM E           ≥3,9 kn (7.7–8.0) · 3 pos
+       05/11 13:01–13:10 área 6 NM E           ≥3,9 kn (4.8–6.2) · 4 pos
+       05/11 13:16–13:18 área 5 NM E           ≥3,9 kn (6.7–6.8) · 2 pos
+       05/11 13:26–13:28 área 4 NM E           ≥3,9 kn (4.5–4.9) · 2 pos
+       05/11 13:33–13:36 área 4 NM E          1–3,9 kn (3.1–3.5) · 2 pos
+       05/11 13:38–13:40 área 3 NM E          1–3,9 kn (2.4–3.1) · 2 pos
+       05/11 13:44–13:44 área 3 NM E           ≥3,9 kn (6.8–6.8) · 1 pos
+       05/11 13:50–13:56 área 2 NM SE          ≥3,9 kn (6.6–6.8) · 2 pos
+       05/11 14:05–14:12 RECINTO               ≥3,9 kn (5.1–6.6) · 2 pos
+       05/11 14:15–14:32 RECINTO              1–3,9 kn (1.2–3.8) · 5 pos
+       05/11 14:33–14:33 RECINTO                 <1 kn (0.5–0.5) · 1 pos
+
+  ZIM ATLANTIC (262.0 m, T-CSP) · atraque 06/11 14:43
+     v2  : inicio 06/11 02:16 · espera 9.9 h · OK
+     3,9 : inicio 06/11 02:00 · espera 12.0 h · DUDOSA: llegada no observada
+     HIST: inicio 06/11 02:16 · espera 11.7 h · OK
+       06/11 02:00–02:01 área 15 NM E         1–3,9 kn (1.9–2.2) · 2 pos
+       06/11 02:16–02:39 área 15 NM E            <1 kn (0.3–0.7) · 8 pos
+       06/11 02:44–04:46 área 14 NM E            <1 kn (0.2–0.9) · 15 pos
+       06/11 04:52–04:58 área 13 NM E            <1 kn (0.4–0.4) · 3 pos
+       06/11 05:04–05:04 área 13 NM E         1–3,9 kn (1.0–1.0) · 1 pos
+       06/11 05:07–05:58 área 13 NM E            <1 kn (0.1–0.8) · 9 pos
+       06/11 06:03–06:30 área 13 NM E         1–3,9 kn (1.0–3.1) · 4 pos
+       06/11 06:34–06:34 área 13 NM E          ≥3,9 kn (4.5–4.5) · 1 pos
+       06/11 06:41–07:28 área 14 NM E         1–3,9 kn (1.0–2.9) · 10 pos
+       06/11 07:35–09:16 área 14 NM E            <1 kn (0.2–0.8) · 18 pos
+       06/11 09:39–09:51 área 14 NM E          ≥3,9 kn (5.0–6.4) · 3 pos
+       06/11 10:14–10:21 área 15 NM E         1–3,9 kn (1.3–1.8) · 2 pos
+       06/11 10:29–10:35 área 15 NM E            <1 kn (0.6–0.8) · 2 pos
+       06/11 11:34–11:58 área 14 NM E            <1 kn (0.4–0.8) · 6 pos
+       06/11 12:08–12:09 área 14 NM NE         ≥3,9 kn (4.0–4.3) · 2 pos
+       06/11 12:10–12:10 área 14 NM NE        1–3,9 kn (3.7–3.7) · 1 pos
+       06/11 12:16–12:17 área 13 NM E          ≥3,9 kn (6.8–7.6) · 2 pos
+       06/11 12:31–12:33 área 11 NM E          ≥3,9 kn (10.0–10.0) · 2 pos
+       06/11 12:36–12:37 área 10 NM E          ≥3,9 kn (10.0–10.0) · 2 pos
+       06/11 12:46–12:46 área 9 NM E           ≥3,9 kn (10.1–10.1) · 1 pos
+       06/11 12:48–12:49 área 8 NM E           ≥3,9 kn (10.2–10.2) · 2 pos
+       06/11 12:58–13:02 área 7 NM E           ≥3,9 kn (5.0–6.8) · 3 pos
+       06/11 13:05–13:19 área 6 NM E           ≥3,9 kn (3.9–7.6) · 4 pos
+       06/11 13:25–13:25 área 5 NM E           ≥3,9 kn (7.7–7.7) · 1 pos
+       06/11 13:37–13:38 área 4 NM E           ≥3,9 kn (4.0–4.3) · 2 pos
+       06/11 13:40–13:40 área 4 NM E          1–3,9 kn (3.5–3.5) · 1 pos
+       06/11 13:43–13:49 área 3 NM E          1–3,9 kn (1.4–3.4) · 4 pos
+       06/11 13:58–13:58 área 3 NM SE          ≥3,9 kn (7.1–7.1) · 1 pos
+       06/11 13:59–14:03 área 2 NM SE          ≥3,9 kn (7.2–7.6) · 3 pos
+       06/11 14:09–14:09 área 1 NM SE          ≥3,9 kn (7.8–7.8) · 1 pos
+       06/11 14:20–14:20 RECINTO               ≥3,9 kn (6.2–6.2) · 1 pos
+       06/11 14:22–14:31 RECINTO              1–3,9 kn (1.8–3.4) · 4 pos
+       06/11 14:33–14:43 RECINTO                 <1 kn (0.2–0.9) · 2 pos
+
+  NICARAGUA EXPRESS (270.0 m, T-APM) · atraque 11/11 20:06
+     v2  : inicio 11/11 06:26 · espera 11.9 h · OK
+     3,9 : inicio 11/11 05:50 · espera 13.4 h · DUDOSA: buque sin señal 2 h
+     HIST: inicio 11/11 06:26 · espera 12.8 h · DUDOSA: buque sin señal 2 h
+       11/11 05:19–05:19 área 23 NM E          ≥3,9 kn (7.1–7.1) · 1 pos
+       11/11 05:50–05:50 área 22 NM E         1–3,9 kn (1.7–1.7) · 1 pos
+       11/11 06:26–07:21 área 22 NM E            <1 kn (0.1–0.7) · 3 pos
+       11/11 08:02–09:19 área 23 NM E            <1 kn (0.6–0.8) · 3 pos
+       11/11 09:55–10:39 área 24 NM E            <1 kn (0.8–0.8) · 2 pos
+       11/11 11:14–11:51 área 25 NM E            <1 kn (0.4–0.4) · 2 pos
+       11/11 11:51–14:10 ··· SIN SEÑAL 2.3 h ···
+       11/11 14:10–14:10 área 25 NM E          ≥3,9 kn (9.2–9.2) · 1 pos
+       11/11 14:46–14:46 área 18 NM E          ≥3,9 kn (11.2–11.2) · 1 pos
+       11/11 15:12–15:12 área 14 NM E          ≥3,9 kn (11.2–11.2) · 1 pos
+       11/11 15:18–15:18 área 12 NM E          ≥3,9 kn (11.1–11.1) · 1 pos
+       11/11 15:25–15:25 área 11 NM E          ≥3,9 kn (11.1–11.1) · 1 pos
+       11/11 15:32–15:33 área 10 NM E          ≥3,9 kn (10.8–10.9) · 2 pos
+       11/11 15:35–15:41 área 9 NM E           ≥3,9 kn (7.5–10.7) · 2 pos
+       11/11 15:42–15:46 área 8 NM E           ≥3,9 kn (4.6–6.9) · 3 pos
+       11/11 15:49–15:53 área 8 NM E          1–3,9 kn (2.8–3.6) · 3 pos
+       11/11 16:02–16:20 área 7 NM E          1–3,9 kn (1.0–2.1) · 6 pos
+       11/11 16:26–18:19 área 7 NM E             <1 kn (0.5–0.9) · 34 pos
+       11/11 18:21–18:26 área 7 NM E          1–3,9 kn (1.8–3.1) · 5 pos
+       11/11 18:31–18:39 área 6 NM E           ≥3,9 kn (4.4–5.4) · 2 pos
+       11/11 18:45–18:56 área 5 NM E           ≥3,9 kn (4.9–6.1) · 3 pos
+       11/11 18:57–18:59 área 4 NM E           ≥3,9 kn (4.1–4.6) · 2 pos
+       11/11 19:03–19:08 área 4 NM E          1–3,9 kn (3.1–3.5) · 4 pos
+       11/11 19:11–19:13 área 4 NM E           ≥3,9 kn (4.2–4.7) · 2 pos
+       11/11 19:17–19:17 área 3 NM E           ≥3,9 kn (5.3–5.3) · 1 pos
+       11/11 19:25–19:25 área 3 NM SE          ≥3,9 kn (6.2–6.2) · 1 pos
+       11/11 19:29–19:35 área 2 NM SE          ≥3,9 kn (6.2–6.3) · 2 pos
+       11/11 19:37–19:37 área 1 NM SE          ≥3,9 kn (6.4–6.4) · 1 pos
+       11/11 19:43–19:56 RECINTO               ≥3,9 kn (3.9–5.0) · 2 pos
+       11/11 19:57–20:02 RECINTO              1–3,9 kn (1.9–3.6) · 2 pos
+       11/11 20:06–20:06 RECINTO                 <1 kn (0.5–0.5) · 1 pos
+
+  ELBIA (134.0 m, T-APM) · atraque 13/11 03:59
+     v2  : inicio 13/11 03:59 · espera 0.0 h · OK
+     3,9 : inicio 12/11 07:27 · espera 17.7 h · DUDOSA: buque sin señal 8 h
+     HIST: inicio 12/11 07:50 · espera 17.3 h · DUDOSA: buque sin señal 8 h
+       12/11 05:49–05:49 área 21 NM SE         ≥3,9 kn (10.3–10.3) · 1 pos
+       12/11 06:15–06:15 área 17 NM SE         ≥3,9 kn (10.2–10.2) · 1 pos
+       12/11 06:18–06:18 área 16 NM SE         ≥3,9 kn (10.0–10.0) · 1 pos
+       12/11 06:24–06:24 área 15 NM SE         ≥3,9 kn (10.1–10.1) · 1 pos
+       12/11 06:34–06:37 área 13 NM SE         ≥3,9 kn (12.3–12.4) · 2 pos
+       12/11 06:42–06:42 área 12 NM SE         ≥3,9 kn (12.6–12.6) · 1 pos
+       12/11 06:44–06:47 área 11 NM SE         ≥3,9 kn (12.1–12.5) · 2 pos
+       12/11 06:54–06:54 área 9 NM SE          ≥3,9 kn (14.0–14.0) · 1 pos
+       12/11 07:00–07:00 área 8 NM SE          ≥3,9 kn (14.0–14.0) · 1 pos
+       12/11 07:08–07:08 área 6 NM SE          ≥3,9 kn (14.4–14.4) · 1 pos
+       12/11 07:19–07:25 área 4 NM SE          ≥3,9 kn (4.9–7.4) · 2 pos
+       12/11 07:27–07:27 área 4 NM SE         1–3,9 kn (3.1–3.1) · 1 pos
+       12/11 07:29–07:37 FONDEO SUR           1–3,9 kn (1.0–2.4) · 2 pos
+       12/11 07:50–09:15 FONDEO SUR              <1 kn (0.1–0.6) · 7 pos
+       12/11 09:22–09:22 área 3 NM SE          ≥3,9 kn (5.6–5.6) · 1 pos
+       12/11 09:39–09:40 área 6 NM E           ≥3,9 kn (12.4–12.5) · 2 pos
+       12/11 09:47–09:47 área 8 NM E           ≥3,9 kn (12.6–12.6) · 1 pos
+       12/11 09:52–09:52 área 9 NM E           ≥3,9 kn (12.7–12.7) · 1 pos
+       12/11 10:00–10:02 área 10 NM E          ≥3,9 kn (9.3–9.6) · 2 pos
+       12/11 10:04–10:04 área 11 NM E          ≥3,9 kn (6.7–6.7) · 1 pos
+       12/11 10:19–10:19 área 11 NM E         1–3,9 kn (1.8–1.8) · 1 pos
+       12/11 10:25–10:55 área 12 NM E         1–3,9 kn (1.7–1.8) · 6 pos
+       12/11 10:59–11:29 área 13 NM E         1–3,9 kn (1.7–2.1) · 7 pos
+       12/11 11:37–11:58 área 14 NM E         1–3,9 kn (1.8–2.1) · 6 pos
+       12/11 12:33–12:33 área 16 NM E         1–3,9 kn (2.1–2.1) · 1 pos
+       12/11 13:03–13:03 área 17 NM E         1–3,9 kn (2.0–2.0) · 1 pos
+       12/11 13:41–13:41 área 18 NM E         1–3,9 kn (2.1–2.1) · 1 pos
+       12/11 14:24–14:24 área 19 NM E         1–3,9 kn (2.1–2.1) · 1 pos
+       12/11 14:54–14:54 área 20 NM E         1–3,9 kn (2.0–2.0) · 1 pos
+       12/11 15:27–15:27 área 21 NM E         1–3,9 kn (2.0–2.0) · 1 pos
+       12/11 15:59–15:59 área 22 NM E         1–3,9 kn (2.0–2.0) · 1 pos
+       12/11 16:31–16:31 área 24 NM E         1–3,9 kn (2.1–2.1) · 1 pos
+       12/11 17:02–17:02 área 25 NM E         1–3,9 kn (1.7–1.7) · 1 pos
+       12/11 17:02–01:08 ··· SIN SEÑAL 8.1 h ···
+       13/11 01:08–01:08 área 22 NM E          ≥3,9 kn (8.0–8.0) · 1 pos
+       13/11 01:38–01:38 área 17 NM E          ≥3,9 kn (8.0–8.0) · 1 pos
+       13/11 02:02–02:02 área 14 NM E          ≥3,9 kn (8.5–8.5) · 1 pos
+       13/11 02:08–02:11 área 13 NM E          ≥3,9 kn (8.4–8.6) · 2 pos
+       13/11 02:16–02:20 área 12 NM E          ≥3,9 kn (8.3–8.3) · 2 pos
+       13/11 02:24–02:24 área 11 NM E          ≥3,9 kn (8.3–8.3) · 1 pos
+       13/11 02:45–02:45 área 8 NM E           ≥3,9 kn (8.3–8.3) · 1 pos
+       13/11 02:50–02:57 área 7 NM E           ≥3,9 kn (8.0–8.5) · 5 pos
+       13/11 02:59–03:03 área 6 NM E           ≥3,9 kn (7.9–8.0) · 3 pos
+       13/11 03:08–03:08 área 5 NM E           ≥3,9 kn (8.1–8.1) · 1 pos
+       13/11 03:14–03:19 área 4 NM E           ≥3,9 kn (8.0–8.2) · 3 pos
+       13/11 03:22–03:22 área 3 NM E           ≥3,9 kn (8.1–8.1) · 1 pos
+       13/11 03:24–03:24 área 3 NM SE          ≥3,9 kn (8.0–8.0) · 1 pos
+       13/11 03:30–03:32 área 2 NM SE          ≥3,9 kn (7.8–7.9) · 2 pos
+       13/11 03:39–03:39 área 1 NM SE          ≥3,9 kn (9.2–9.2) · 1 pos
+       13/11 03:44–03:52 RECINTO               ≥3,9 kn (4.3–8.2) · 4 pos
+       13/11 03:55–03:57 RECINTO              1–3,9 kn (2.5–3.5) · 2 pos
+       13/11 03:59–03:59 RECINTO                 <1 kn (0.3–0.3) · 1 pos
+
+  MSC NICOLA MASTRO (399.0 m, T-MSC) · atraque 14/11 00:34
+     v2  : inicio 13/11 19:04 · espera 2.3 h · OK
+     3,9 : inicio 13/11 01:24 · espera 22.0 h · DUDOSA: llegada no observada, buque sin señal 6 h
+     HIST: inicio 13/11 19:04 · espera 4.3 h · OK
+       13/11 01:24–01:59 área 25 NM E         1–3,9 kn (2.4–3.3) · 2 pos
+       13/11 01:59–05:00 ··· SIN SEÑAL 3.0 h ···
+       13/11 05:00–05:00 área 22 NM E         1–3,9 kn (2.9–2.9) · 1 pos
+       13/11 05:33–05:33 área 23 NM E         1–3,9 kn (2.3–2.3) · 1 pos
+       13/11 06:05–06:05 área 25 NM E         1–3,9 kn (2.5–2.5) · 1 pos
+       13/11 06:05–09:56 ··· SIN SEÑAL 3.8 h ···
+       13/11 09:56–10:27 área 22 NM E         1–3,9 kn (2.3–3.4) · 2 pos
+       13/11 11:04–11:04 área 24 NM E         1–3,9 kn (2.2–2.2) · 1 pos
+       13/11 11:04–16:43 ··· SIN SEÑAL 5.6 h ···
+       13/11 16:43–16:43 área 24 NM E          ≥3,9 kn (6.4–6.4) · 1 pos
+       13/11 17:24–17:24 área 20 NM E          ≥3,9 kn (6.2–6.2) · 1 pos
+       13/11 17:54–17:54 área 17 NM E          ≥3,9 kn (8.1–8.1) · 1 pos
+       13/11 18:08–18:08 área 14 NM E          ≥3,9 kn (11.5–11.5) · 1 pos
+       13/11 18:23–18:23 área 11 NM E          ≥3,9 kn (10.8–10.8) · 1 pos
+       13/11 18:29–18:32 área 10 NM E          ≥3,9 kn (11.0–11.2) · 2 pos
+       13/11 18:34–18:38 área 9 NM E           ≥3,9 kn (9.4–11.2) · 4 pos
+       13/11 18:49–18:57 área 7 NM E           ≥3,9 kn (4.0–5.8) · 6 pos
+       13/11 18:58–18:58 área 7 NM E          1–3,9 kn (3.5–3.5) · 1 pos
+       13/11 19:04–19:34 área 7 NM E             <1 kn (0.2–0.8) · 10 pos
+       13/11 19:41–19:48 área 7 NM E          1–3,9 kn (1.0–1.0) · 3 pos
+       13/11 20:00–20:43 área 7 NM E             <1 kn (0.5–0.9) · 17 pos
+       13/11 20:46–21:13 área 8 NM E             <1 kn (0.5–0.9) · 7 pos
+       13/11 21:22–21:41 área 8 NM E          1–3,9 kn (1.3–1.5) · 8 pos
+       13/11 21:49–22:16 área 9 NM E          1–3,9 kn (1.5–3.1) · 6 pos
+       13/11 22:27–22:27 área 8 NM E           ≥3,9 kn (7.0–7.0) · 1 pos
+       13/11 22:32–22:32 área 7 NM E           ≥3,9 kn (6.2–6.2) · 1 pos
+       13/11 22:39–22:46 área 6 NM E           ≥3,9 kn (5.1–5.1) · 4 pos
+       13/11 22:51–22:55 área 5 NM E           ≥3,9 kn (4.2–5.2) · 3 pos
+       13/11 23:02–23:04 área 5 NM E          1–3,9 kn (2.7–3.0) · 2 pos
+       13/11 23:23–23:24 área 4 NM E           ≥3,9 kn (4.8–4.9) · 2 pos
+       13/11 23:27–23:31 área 3 NM E           ≥3,9 kn (5.0–5.2) · 2 pos
+       13/11 23:41–23:42 área 2 NM SE          ≥3,9 kn (5.2–5.2) · 2 pos
+       13/11 23:58–00:05 RECINTO               ≥3,9 kn (4.9–5.4) · 3 pos
+       14/11 00:13–00:29 RECINTO              1–3,9 kn (1.0–1.2) · 7 pos
+       14/11 00:34–00:34 RECINTO                 <1 kn (0.4–0.4) · 1 pos

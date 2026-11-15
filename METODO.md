@@ -10,7 +10,7 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 | 7c.1 Precisión de la ETA declarada | `eta-v1` | **Aprobado como provisional (15/11/2026), pendiente del tutor** (D-20); desplegado el 15/11/2026 |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
-| Escalas: unir las esperas partidas | `escalas-v3` | **Propuesto (15/11/2026), pendiente de aprobación** (ensayo hecho) |
+| Escalas: unir las esperas partidas | `escalas-v3` | **Aprobado en parte (15/11/2026, D-21)**; umbral de espera pendiente; sin programar |
 | Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y desplegado (11/11/2026, D-19)** |
 
 ---
@@ -172,12 +172,48 @@ Fuente: Autoridad Portuaria de Valencia, «Tiempos medios de escala» (consultad
 Para la memoria convendría presentar dos esperas: «en el fondeadero», comparable con la APV, y
 «total en el área de espera», la que interesa para el JIT y las emisiones.
 
-### 5. Decisiones pendientes antes de programar
-1. **V\*:** 3,9 kn (calibrado), con 1,0 kn como análisis de sensibilidad; o 1,0 kn.
-2. **Radio del área de espera:** 25 NM (P99) o 20 NM (P97).
-3. **Umbral mínimo de 1 h** para contar una espera (sigue pendiente desde el 11/11).
-4. **Revisar a mano las 9 escalas que pasan a DUDOSA.**
-5. **Desdoblar la espera** en «fondeadero» y «total en el área de espera» para comparar con la APV.
+### 5. Decisiones (15/11/2026, D-21)
+**Aprobado por Marcos (sin programar todavía):**
+- Mantener viva la espera mientras el buque esté en el área de espera (regla a).
+- Unir las esperas partidas: una escala «sin atraque» con la siguiente del mismo buque si empieza
+  en menos de 72 h y no hay indicios de otro puerto entre medias (regla b).
+- **Área de espera de 25 NM** (sin Sagunto).
+- **Desdoblar la espera:**
+  - **en fondeadero:** tiempo dentro de los fondeaderos oficiales de la Resolución de la APV de
+    10/11/2020 (BOE-A-2020-15569). Fondeo norte: 39° 26,170′–27,251′ N; 0° 12,714′–14,804′ W. Fondeo
+    sur: 39° 23,000′–24,297′ N; 0° 12,714′–17,029′ W. Comparable con la APV y medible desde el 29/10,
+    porque los dos fondeaderos están dentro del rectángulo VALENCIA;
+  - **total en el área de espera**, para el JIT y las emisiones.
+
+**Pendiente: el umbral de espera.** Marcos no lo da por bueno: con 3,9 kn «esperan» 5 de 6 buques
+grandes, frente al 8–12 % que fondea según la APV, y sospecha que se cuenta la frenada de llegada.
+Ensayo de una regla con **histéresis** (15/11/2026, solo lectura; detalle en
+`informes/umbral_espera_ensayo_2026-11-15.md`): la espera **empieza** con < 1 kn o «fondeado» y
+**continúa** mientras el buque esté en el área a < 3,9 kn.
+
+| Regla | Esperan ≥ 1 h | ≥ 3 h | Mediana | Media | P90 |
+|---|---|---|---|---|---|
+| 1,0 kn | 59,3 % | 51,9 % | 3,1 h | 11,9 h | 36,7 h |
+| 3,9 kn | 69,2 % | 61,5 % | 5,9 h | 14,0 h | 40,1 h |
+| **Histéresis** | **59,3 %** | **55,6 %** | **3,4 h** | **12,7 h** | **40,1 h** |
+
+*Escalas OK de portacontenedores iniciadas desde el 08/11 a las 17:05; n = 26–27.*
+- **Espera en fondeadero oficial** (histéresis, todo el periodo desde el 29/10, n = 107): fondea el
+  **31,8 %**, con una media de **51,0 h**, frente al **37,8 % y ≈ 44,8 h** de la APV. Ningún buque de
+  300 m o más entra en un fondeadero oficial (0 de 8; APV: 8–12 % en ULCS y VLCS).
+- **Los buques grandes sí esperan, pero a la deriva a 5–22 NM al este**, fuera de la Zona II. La frenada
+  de llegada que cuenta la regla de 3,9 kn existe, pero pesa poco (0,3–0,7 h por buque). La diferencia
+  con la APV se explica por el **lugar**, no por el umbral.
+- Con la histéresis, **7 de las 9 escalas que pasaban a DUDOSA vuelven a ser OK**. Las 2 que siguen
+  dudosas tienen huecos de señal reales.
+- **Lo que la histéresis no cuenta:** el **merodeo lento sin pararse** (1,3–3,8 kn sin bajar de 1 kn),
+  como ZIM XIAMEN (5,6 h) o, probablemente, MSC JASPER VIII y MSC NICOLA MASTRO (con huecos largos).
+- **Propuesta:** histéresis como regla principal, más un indicador aparte de «merodeo lento sin
+  pararse» (espera en movimiento) para el JIT y las emisiones. Se descarta la variante «histéresis +
+  merodeo sostenido de 2 h»: recupera ZIM XIAMEN, pero no los casos con huecos, y vuelve dudosas a dos
+  escalas.
+
+**Sigue pendiente:** el umbral mínimo de 1 h para contar una espera.
 
 ## Escalas: completar los huecos con la zona de aproximación (`escalas-v2`)
 
@@ -518,7 +554,7 @@ y se publican todos, no solo los utilizables.
 | `ETA_IMPOSIBLE` | ETA a más de 30 días de *t_ref* | No |
 | `ESCALA_EXCLUIDA` | Escala `EXCLUIDA` en `escalas-v1` (sin atraque o espera de más de 10 días) | No |
 | `LLEGADA_NO_VISTA` | No se observó el suceso de llegada de esa definición (p. ej., el buque apareció ya fondeado) | No |
-| `ESCALA_ANTERIOR` *(propuesto el 15/11/2026, sin programar)* | La ETA se emitió antes de que terminara la escala anterior del mismo buque, o *t_ref* cae antes de ese final: la ETA es de la escala anterior | No |
+| `ESCALA_ANTERIOR` *(aprobado el 15/11/2026, D-21; sin programar)* | La ETA se emitió antes de que terminara la escala anterior del mismo buque, o *t_ref* cae antes de ese final: la ETA es de la escala anterior | No |
 
 > **Regla de caducidad: decisión de Marcos del 15/11/2026, pendiente del tutor (D-20).**
 > - **Regla principal, «emisión»** (`caducada_referencia: "emision"`): una ETA es caducada
@@ -580,7 +616,7 @@ segundo plano, porque unos pocos errores muy grandes los mueven mucho.
 | % de ETA en punto (minuto 00) | — | Precisión con la que se declara: si casi todas acaban en :00, la ETA se redondea a la hora |
 | Antelación mediana (solo «última ETA») | mediana de *T* − hora de emisión | Con cuánto tiempo se emitió la última ETA válida |
 
-**Categoría «ETA de atraque»** *(propuesta el 15/11/2026, sin programar; contada, no
+**Categoría «ETA de atraque»** *(aprobada el 15/11/2026, D-21; sin programar; contada, no
 descartada)*. En las escalas con al menos 3 h de espera, un caso utilizable de `ZONA_ESPERA` se
 marca como «ETA de atraque» si la ETA está más cerca del atraque que de la llegada a la zona de
 espera. Entra en las estadísticas igual que los demás, y se informa de qué porcentaje de buques
