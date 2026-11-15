@@ -34,13 +34,14 @@ DEFINITIONS = ("ZONA_ESPERA", "RECINTO", "ATRAQUE")
 LAST = "ULTIMA"
 STATUSES = ("USABLE", "LLEGADA_NO_VISTA", "ANTES_CAPTURA", "SIN_COBERTURA", "SIN_ETA", "DESTINO_OTRO",
             "DESTINO_DUDOSO", "ETA_CADUCADA", "ETA_IMPOSIBLE", "ESCALA_EXCLUIDA")
-OBS_COLS = ["mmsi", "name", "terminal_id", "call_quality", "t_start", "definition", "horizon", "t_arrival",
+OBS_COLS = ["rule", "mmsi", "name", "terminal_id", "call_quality", "t_start", "definition", "horizon", "t_arrival",
             "t_ref", "status", "eta_utc", "eta_raw", "eta_ts", "destination", "error_h", "lead_h", "method_version"]
+MAIN, SENS = "principal", "sensibilidad"       # regla de caducidad principal y la del análisis de sensibilidad
 SCHEMA = f"""
 CREATE TABLE eta_obs (obs_id INTEGER PRIMARY KEY, {", ".join(OBS_COLS)});
-CREATE INDEX ix_eta_def_h ON eta_obs (definition, horizon);
+CREATE INDEX ix_eta_def_h ON eta_obs (rule, definition, horizon);
 CREATE VIEW v_eta_obs AS
-  SELECT name, terminal_id, definition, horizon, datetime(t_arrival, 'unixepoch') AS llegada_utc,
+  SELECT rule AS regla, name, terminal_id, definition, horizon, datetime(t_arrival, 'unixepoch') AS llegada_utc,
          datetime(eta_utc, 'unixepoch') AS eta_utc_txt, ROUND(error_h, 2) AS error_h, status, destination
   FROM eta_obs;
 """
@@ -48,7 +49,8 @@ AVISO = ("Cifras PROVISIONALES: pocas semanas de datos y método eta-v1 pendient
          "La ETA del AIS la teclea la tripulación; los estudios de comparación usan la ETA comunicada al puerto.")
 REQUIRED = ("version", "horizontes_h", "ultima_eta", "definiciones", "definicion_principal", "ventana_vista_h",
             "caducada_tolerancia_h", "caducada_referencia", "eta_max_dias", "bandas_h", "min_n",
-            "destinos_valencia", "bootstrap_remuestreos", "bootstrap_min_n", "llegada_vista_h")
+            "destinos_valencia", "bootstrap_remuestreos", "bootstrap_min_n", "llegada_vista_h",
+            "sensibilidad_caducada_referencia", "revision_umbral_h")
 
 
 # ------------------------------------------------------------ parámetros
@@ -75,8 +77,9 @@ def load_params(zone):
     p = {k: (v["valor"] if isinstance(v, dict) and "valor" in v else v) for k, v in raw.items()}
     if any(d not in DEFINITIONS for d in p["definiciones"]) or p["definicion_principal"] not in p["definiciones"]:
         raise ConfigError(f"{path.name}: definiciones válidas: {list(DEFINITIONS)}")
-    if p["caducada_referencia"] not in ("emision", "t_ref"):
-        raise ConfigError(f"{path.name}: caducada_referencia debe ser 'emision' o 't_ref'")
+    for k in ("caducada_referencia", "sensibilidad_caducada_referencia"):
+        if p[k] not in ("emision", "t_ref"):
+            raise ConfigError(f"{path.name}: {k} debe ser 'emision' o 't_ref'")
     for k in ("horizontes_h", "bandas_h"):
         if not p[k] or any(isinstance(x, bool) or not isinstance(x, (int, float)) or x < 0 for x in p[k]):
             raise ConfigError(f"{path.name}: {k} debe ser una lista de números positivos")
@@ -202,10 +205,19 @@ def _seen_in(times, a, b):
 
 # ------------------------------------------------------------ cálculo
 def compute(zone, calls, cfg, data_first, params):
-    """Filas de eta_obs para las escalas (diccionarios de port_call) de las terminales de contenedores."""
-    port_ring = pc._of_kind(cfg, "PORT_AREA")[0]["ring"]
+    """Filas de eta_obs para las escalas (diccionarios de port_call) de las terminales de contenedores:
+    una vez con la regla de caducidad principal y otra con la del análisis de sensibilidad."""
     mine = [c for c in calls if c["terminal_id"] in CONTAINER_TERMINALS]
-    own, seen, voy = load_inputs(zone, cfg["method"], {c["mmsi"] for c in mine})
+    inputs = load_inputs(zone, cfg["method"], {c["mmsi"] for c in mine})
+    rows = []
+    for rule, ref in ((MAIN, params["caducada_referencia"]), (SENS, params["sensibilidad_caducada_referencia"])):
+        rows += _compute_rule(mine, inputs, cfg, data_first, dict(params, caducada_referencia=ref), rule)
+    return rows
+
+
+def _compute_rule(mine, inputs, cfg, data_first, params, rule):
+    port_ring = pc._of_kind(cfg, "PORT_AREA")[0]["ring"]
+    own, seen, voy = inputs
     window = params["ventana_vista_h"] * 3600
     horizons = [str(h).rstrip("0").rstrip(".") if isinstance(h, float) else str(h) for h in params["horizontes_h"]]
     hours = dict(zip(horizons, params["horizontes_h"]))
@@ -246,7 +258,7 @@ def compute(zone, calls, cfg, data_first, params):
                     status = classify_eta(row, t_ref, params)
                 usable = status == "USABLE"
                 rows.append({
-                    "mmsi": c["mmsi"], "name": c["name"], "terminal_id": c["terminal_id"],
+                    "rule": rule, "mmsi": c["mmsi"], "name": c["name"], "terminal_id": c["terminal_id"],
                     "call_quality": c["quality"].split(":")[0], "t_start": c["t_start"], "definition": d,
                     "horizon": label, "t_arrival": t_arr, "t_ref": t_ref, "status": status,
                     "eta_utc": row[1] if row else None, "eta_raw": row[2] if row else None,
@@ -295,14 +307,14 @@ def indicators(errors, params, eta_raws=(), leads=(), n_with_eta=None, n_stale=N
     return out
 
 
-def summary(rows, params, variant="base"):
-    """Indicadores por definición, horizonte y terminal (y total).
+def summary(rows, params, variant="base", rule=MAIN):
+    """Indicadores por definición, horizonte y terminal (y total), con la regla de caducidad indicada.
     variant: 'base' (OK, dudosas y en curso con llegada vista), 'solo_ok' o 'con_caducadas'."""
     keep = {"USABLE", "ETA_CADUCADA"} if variant == "con_caducadas" else {"USABLE"}
     groups = defaultdict(list)
     counts = defaultdict(lambda: defaultdict(int))
     for o in rows:
-        if variant == "solo_ok" and o["call_quality"] != "OK":
+        if o.get("rule", MAIN) != rule or (variant == "solo_ok" and o["call_quality"] != "OK"):
             continue
         counts[(o["definition"], o["horizon"])][o["status"]] += 1
         for t in (o["terminal_id"], "TOTAL"):
@@ -334,14 +346,17 @@ def read(db_path):
     try:
         if not conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'eta_obs'").fetchone():
             return []
-        cur = conn.execute(f"SELECT {', '.join(OBS_COLS)} FROM eta_obs ORDER BY t_start, mmsi, definition, obs_id")
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(eta_obs)")}
+        if "rule" not in cols:                          # analysis.db anterior a la columna: se rehará
+            return []
+        cur = conn.execute(f"SELECT {', '.join(OBS_COLS)} FROM eta_obs ORDER BY rule, t_start, mmsi, definition, obs_id")
         return [dict(zip(OBS_COLS, r)) for r in cur]
     finally:
         conn.close()
 
 
 # ------------------------------------------------------------ CSV para Excel (';', coma decimal, UTF-8 con BOM)
-CASE_CSV = [("buque", "name"), ("mmsi", "mmsi"), ("terminal", "terminal_id"), ("calidad_escala", "call_quality"),
+CASE_CSV = [("regla", "rule"), ("buque", "name"), ("mmsi", "mmsi"), ("terminal", "terminal_id"), ("calidad_escala", "call_quality"),
             ("definicion", "definition"), ("horizonte", "horizon"), ("llegada_utc", "t_arrival"),
             ("t_ref_utc", "t_ref"), ("estado", "status"), ("eta_utc", "eta_utc"), ("eta_tal_cual", "eta_raw"),
             ("eta_recibida_utc", "eta_ts"), ("destino", "destination"), ("error_h", "error_h"),
@@ -372,6 +387,34 @@ def _csv(header, rows):
     w.writerow(header)
     w.writerows(rows)
     return "﻿" + out.getvalue()
+
+
+REVIEW_CSV = [("buque", "name"), ("mmsi", "mmsi"), ("terminal", "terminal_id"), ("calidad_escala", "call_quality"),
+              ("llegada_zona_espera_utc", "t_arrival"), ("eta_declarada_utc", "eta_utc"), ("eta_tal_cual", "eta_raw"),
+              ("eta_emitida_utc", "eta_ts"), ("destino", "destination"), ("error_h", "error_h"),
+              ("horizontes", "horizons"), ("revisado", "check"), ("conclusion", "note")]
+
+
+def review_list(rows, params):
+    """Casos con |error| > revision_umbral_h (regla principal, definición principal), uno por escala y ETA,
+    con los horizontes en que aparece. Para revisarlos a mano: ¿retraso real o ETA olvidada?"""
+    limit = params["revision_umbral_h"]
+    out = {}
+    for o in rows:
+        if (o["rule"] != MAIN or o["definition"] != params["definicion_principal"] or o["status"] != "USABLE"
+                or abs(o["error_h"]) <= limit):
+            continue
+        key = (o["mmsi"], o["t_start"], o["eta_ts"])
+        item = out.setdefault(key, {**o, "horizons": [], "check": "", "note": ""})
+        item["horizons"].append("última" if o["horizon"] == LAST else o["horizon"] + " h")
+    items = sorted(out.values(), key=lambda x: (-abs(x["error_h"]), x["name"] or ""))
+    for x in items:
+        x["horizons"] = ", ".join(x["horizons"])
+    return items
+
+
+def to_csv_review(items):
+    return _csv([h for h, _ in REVIEW_CSV], [[_cell(k, x[k]) for _, k in REVIEW_CSV] for x in items])
 
 
 def to_csv_cases(rows):

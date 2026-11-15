@@ -60,3 +60,4 @@ body.dash { display: block; height: auto; overflow-y: auto; }
 /* 7c.1: filas con pocos datos en gris */
 .stats.eta tr.few td { color: #9aa3ae; }
 .stats.eta { margin-bottom: 6px; }
+.stats.eta .sec { color: var(--muted); font-size: 11.5px; }

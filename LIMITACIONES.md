@@ -170,8 +170,9 @@ tribunal. Cada una indica cómo se mide o se mitiga.
   (ensayo del 15/11: 3 a 48 h, 7 a 24 h, 12 a 12 h), y ninguno a 72 h: a esa distancia el
   buque está fuera del rectángulo o donde no hay receptores.
 - **ETA caducadas.** Entre el 14 % y el 18 % de las ETA ya habían pasado cuando el buque
-  las emitió (tripulaciones que no la actualizan). La regla para decidir qué ETA es
-  «caducada» cambia mucho los resultados de los horizontes cortos y está pendiente de
-  decidir con el tutor (METODO.md, 7c.1, apartado 7).
+  las emitió (tripulaciones que no la actualizan) y se descartan. Una ETA olvidada que se
+  emitió cuando todavía era futura no se detecta con esta regla: cuenta como un retraso.
+  Por eso los errores de más de 24 h se revisan a mano, y la regla más estricta («t_ref»)
+  se da como análisis de sensibilidad (METODO.md, 7c.1, apartado 7).
 - **ETA redondeada.** El 62,5 % de las ETA utilizables acaban en :00: la precisión
   declarada es, en la práctica, de una hora.

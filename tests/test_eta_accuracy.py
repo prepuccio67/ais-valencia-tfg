@@ -17,8 +17,8 @@ from tests.test_port_calls import ANCHOR, ENTRY, MIN, MSC, SEA, Base
 H = 3600
 
 
-def obs(rows, d="ZONA_ESPERA", h="0"):
-    return next(o for o in rows if o["definition"] == d and o["horizon"] == h)
+def obs(rows, d="ZONA_ESPERA", h="0", rule=eta.MAIN):
+    return next(o for o in rows if o["definition"] == d and o["horizon"] == h and o["rule"] == rule)
 
 
 class EtaBase(Base):
@@ -123,6 +123,37 @@ class TestRules(EtaBase):
         self.assertEqual(obs(rows, "ATRAQUE")["status"], "SIN_ETA")          # la entrada sí se vio
 
 
+class TestMainRuleAndSensitivity(EtaBase):
+    def test_main_rule_is_emission_and_t_ref_is_kept_as_sensitivity(self):
+        self.assertEqual((self.params["caducada_referencia"], self.params["sensibilidad_caducada_referencia"]),
+                         ("emision", "t_ref"))
+        m = self.vessel()
+        self.long_call(m)
+        self.eta(m, T0 - 8 * H, T0 + 60 * MIN - 3 * H)       # llega 3 h tarde sin actualizar la ETA
+        rows = self.rows()
+        self.assertEqual((obs(rows)["status"], obs(rows)["error_h"]), ("USABLE", -3.0))
+        self.assertEqual(obs(rows, rule=eta.SENS)["status"], "ETA_CADUCADA")
+        p = dict(self.params, min_n=1)
+        main = eta.summary(rows, p)[0]
+        sens = eta.summary(rows, p, rule=eta.SENS)[0]
+        get = lambda st: next(x for x in st if x["definition"] == "ZONA_ESPERA" and x["horizon"] == "0"   # noqa: E731
+                              and x["terminal_id"] == "TOTAL")
+        self.assertEqual((get(main)["n"], get(sens)["n"]), (1, 0))
+
+    def test_review_list_over_24h(self):
+        a, b = self.vessel(1, name="TARDE"), self.vessel(2, name="BIEN")
+        for mmsi, err in ((a, -30), (b, 1)):
+            self.long_call(mmsi)
+            self.eta(mmsi, T0 - 40 * H, T0 + 60 * MIN + err * H)   # emitida cuando aún era futura
+        items = eta.review_list(self.rows(), self.params)
+        self.assertEqual([(x["name"], x["error_h"]) for x in items], [("TARDE", -30.0)])
+        self.assertIn("última", items[0]["horizons"])
+        self.assertIn("6 h", items[0]["horizons"])               # una sola fila con todos sus horizontes
+        text = eta.to_csv_review(items)
+        self.assertTrue(text.startswith("﻿buque;mmsi;terminal;"))
+        self.assertIn(";-30,00;", text)
+
+
 class TestIndicators(EtaBase):
     def test_rmse_mae_bias_and_bands(self):
         p = dict(self.params, min_n=1)
@@ -182,10 +213,15 @@ class TestStorageAndApi(AioHTTPTestCase):
         self.assertEqual((tot["n"], tot["pocos_datos"], tot["mediana_h"]), (1, True, 0.5))
         r = await self.client.get("/api/eta_accuracy?zone=VALENCIA&format=csv", headers=H_)
         text = await r.text()
-        self.assertTrue(text.startswith("﻿buque;mmsi;"))
+        self.assertTrue(text.startswith("﻿regla;buque;mmsi;"))
         self.assertIn(";0,50;", text)
         r = await self.client.get("/api/eta_accuracy?zone=VALENCIA&format=csv&tabla=indicadores", headers=H_)
         self.assertIn("rmse_h", (await r.text()).splitlines()[0])
+        self.assertEqual(data["sensitivity"]["rule"], "t_ref")
+        self.assertTrue(any(x["n"] for x in data["sensitivity"]["stats"]))
+        for tabla in ("sensibilidad", "revision"):
+            r = await self.client.get(f"/api/eta_accuracy?zone=VALENCIA&format=csv&tabla={tabla}", headers=H_)
+            self.assertEqual(r.status, 200, tabla)
         bad = await self.client.get("/api/eta_accuracy?zone=VALENCIA&variante=otra", headers=H_)
         self.assertEqual(bad.status, 400)
 

@@ -410,7 +410,18 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   de 1 h antes de *t_ref*) excluye a los buques que llegan con más de 1 h de retraso en
   los horizontes de 0–1 h y deja `ATRAQUE` casi sin casos (82–85 % caducadas). Está
   programada la alternativa «caducada si ya había pasado al emitirla»
-  (`caducada_referencia: "emision"`), que cambia 901 de 4104 casos. **Se mantiene la
-  regla aprobada hasta decidirlo con el tutor.**
-- **Pendiente:** visto bueno del tutor; decidir la regla de caducidad; desplegar; gráfico
-  del error por horizonte y capa del punto de embarque de prácticos en el visor.
+  (`caducada_referencia: "emision"`), que cambia 901 de 4104 casos.
+- **Decisión de Marcos del 15/11/2026, pendiente del tutor:**
+  - **Regla principal de caducidad: «emisión»** (caducada solo si la ETA ya había pasado
+    más de 1 h cuando el buque la emitió). No excluye los retrasos y es comparable con
+    Rosa et al. (2026) y Chu et al. (2024).
+  - **La regla anterior («t_ref») queda como análisis de sensibilidad**, calculada siempre
+    y visible en el cuadro de mando.
+  - **Cifras principales:** mediana y % dentro de ±0,5, ±1, ±2 y ±6 h. MAE y RMSE en
+    segundo plano.
+  - **Revisión manual** de los casos con error de más de 24 h (lista en el cuadro y en
+    `/api/eta_accuracy?format=csv&tabla=revision`), para ver si son retrasos reales o
+    ETA olvidadas.
+- **Pendiente:** visto bueno del tutor (método y regla de caducidad); revisar a mano los
+  casos de más de 24 h; gráfico del error por horizonte y capa del punto de embarque de
+  prácticos en el visor.

@@ -330,9 +330,14 @@ async def eta_accuracy(request):
     if meta.get("eta_error"):
         raise ValueError(f"no se pudo calcular la precisión de la ETA: {meta['eta_error']}")
     stats, counts = eta.summary(rows, params, variant)
+    sens, sens_counts = eta.summary(rows, params, variant, rule=eta.SENS)
+    review = eta.review_list(rows, params)
     if request.query.get("format") == "csv":
         tabla = request.query.get("tabla", "casos")
-        body = eta.to_csv_stats(stats) if tabla == "indicadores" else eta.to_csv_cases(rows)
+        if tabla not in ("casos", "indicadores", "sensibilidad", "revision"):
+            raise ValueError("tabla debe ser casos, indicadores, sensibilidad o revision")
+        body = {"indicadores": lambda: eta.to_csv_stats(stats), "sensibilidad": lambda: eta.to_csv_stats(sens),
+                "revision": lambda: eta.to_csv_review(review), "casos": lambda: eta.to_csv_cases(rows)}[tabla]()
         name = f"eta_{tabla}_{z.zone_id}_{iso(int(meta['computed_ts']))[:10]}.csv"
         return web.Response(body=body.encode("utf-8"), content_type="text/csv", charset="utf-8",
                             headers={"Content-Disposition": f'attachment; filename="{name}"'})
@@ -341,7 +346,10 @@ async def eta_accuracy(request):
         "data_from": iso(int(meta["data_first_ts"])) if meta.get("data_first_ts") else None,
         "escalas_method": json.loads(meta["method"])["version"] if meta.get("method") else None,
         "params": {k: v for k, v in params.items() if k != "fingerprint"}, "variant": variant,
-        "aviso": eta.AVISO, "statuses": list(eta.STATUSES), "counts": counts, "stats": stats})
+        "aviso": eta.AVISO, "statuses": list(eta.STATUSES), "counts": counts, "stats": stats,
+        "sensitivity": {"rule": params["sensibilidad_caducada_referencia"], "stats": sens, "counts": sens_counts},
+        "review": [{k: x[k] for k in ("name", "terminal_id", "t_arrival", "eta_utc", "eta_ts", "error_h", "horizons")}
+                   for x in review]})
 
 
 async def subzones(request):

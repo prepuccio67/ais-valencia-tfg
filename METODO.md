@@ -349,21 +349,28 @@ y se publican todos, no solo los utilizables.
 | `SIN_ETA` | No hay ETA, o es «no disponible» (mes 0, día 0, hora 24, minuto 60) | No |
 | `DESTINO_OTRO` | El último puerto del destino declarado no es València | No |
 | `DESTINO_DUDOSO` | València aparece, pero no como último puerto (`ESVLC-MACAS`), o el destino está vacío | No; se informa aparte |
-| `ETA_CADUCADA` | La ETA ya había pasado más de 1 h antes de *t_ref* (tripulación que no la actualizó) | No; se informa su porcentaje y se calcula una variante que la incluye |
+| `ETA_CADUCADA` | La ETA ya había pasado más de 1 h **cuando el buque la emitió** (tripulación que no la actualizó). Regla anterior: más de 1 h antes de *t_ref* (ver la nota de abajo) | No; se informa su porcentaje y se calcula una variante que la incluye |
 | `ETA_IMPOSIBLE` | ETA a más de 30 días de *t_ref* | No |
 | `ESCALA_EXCLUIDA` | Escala `EXCLUIDA` en `escalas-v1` (sin atraque o espera de más de 10 días) | No |
 | `LLEGADA_NO_VISTA` | No se observó el suceso de llegada de esa definición (p. ej., el buque apareció ya fondeado) | No |
 
-> **Regla de caducidad: punto a decidir con el tutor (ensayo del 15/11/2026).** Se ha
-> programado tal como está aprobada: caducada si la ETA ya había pasado más de 1 h antes
-> de *t_ref* (`caducada_referencia: "t_ref"`). Tiene un efecto no previsto: un buque que
-> llega con más de 1 h de **retraso** queda como «caducada» en los horizontes de 0–1 h,
-> así que los retrasos se excluyen justo donde más importan. Con `ATRAQUE` se nota mucho:
-> el 82–85 % de los casos sale «caducada», porque casi todos los buques atracan más tarde
-> de su ETA. La alternativa programada, `"emision"`, considera caducada la ETA solo si ya
-> había pasado cuando el buque la emitió (la misma idea que el diagnóstico del 04/11).
-> Cambia 901 de 4104 casos. Con ella, el MAE de `ZONA_ESPERA` a 0 h pasa de 2,1 h a 2,9 h
-> y la proporción en ±1 h baja del 72 % al 61 %. Cambiar de regla es editar un parámetro.
+> **Regla de caducidad: decisión de Marcos del 15/11/2026, pendiente del tutor (D-20).**
+> - **Regla principal, «emisión»** (`caducada_referencia: "emision"`): una ETA es caducada
+>   solo si ya había pasado más de 1 h cuando el buque la emitió. Así se quitan las ETA
+>   olvidadas (de un viaje anterior) sin quitar los retrasos. Un buque que llega 3 h tarde
+>   sin actualizar la ETA cuenta, con un error de −3 h. Es lo comparable con Rosa et al.
+>   (2026) y Chu et al. (2024), que no excluyen los retrasos.
+> - **Análisis de sensibilidad, «t_ref»** (la regla aprobada el 04/11,
+>   `sensibilidad_caducada_referencia: "t_ref"`): caducada si la ETA ya había pasado más de
+>   1 h en el momento de mirar (*t_ref*). Excluye a los buques que llegan con más de 1 h de
+>   retraso en los horizontes de 0–1 h, y con `ATRAQUE` deja el 82–85 % de los casos fuera.
+>   Se calcula siempre y se muestra al lado en el cuadro de mando.
+> - **Efecto medido (ensayo del 15/11/2026):** cambia 901 de 4104 casos. Última ETA
+>   (`ZONA_ESPERA`, total): 110 casos, mediana −0,05 h y 57 % en ±1 h con «emisión»,
+>   frente a 88 casos, mediana +0,1 h y 72 % en ±1 h con «t_ref».
+> - **Revisión manual:** los casos con error de más de 24 h (`revision_umbral_h`) se
+>   listan para revisarlos a mano (¿retraso real o ETA olvidada que la regla de
+>   «emisión» no detecta?). Si hay un patrón, se añadirá una regla concreta.
 
 **Reglas del destino.**
 - Se pasa a mayúsculas y se trocea por `>`, `=>`, `->`, `>>` y `-`. Se toma el
@@ -388,6 +395,10 @@ y se publican todos, no solo los utilizables.
 ### 8. Indicadores
 
 Por horizonte, por definición de llegada y por terminal (y en total):
+
+**Cifras principales** (decisión del 15/11/2026, D-20): la **mediana** y el **% dentro de
+±0,5, ±1, ±2 y ±6 h**, como Rosa et al. (2026). El sesgo, el MAE y el RMSE se dan en
+segundo plano, porque unos pocos errores muy grandes los mueven mucho.
 
 | Indicador | Fórmula | Explicación sencilla |
 |---|---|---|
@@ -438,7 +449,9 @@ fuente y fecha.
 | `destinos_valencia` | `ESVLC`, `ES VLC`, `VLC`, `VALENCIA`, `VALENCIA PORT` | — | Valores observados y UN/LOCODE |
 | `bootstrap_remuestreos` | 2000 | — | Habitual; con tan pocos datos el cálculo es instantáneo (semilla fija: resultado repetible) |
 | `ultima_eta` | sí | — | Indicador «última ETA» (15/11/2026) |
-| `caducada_referencia` | `t_ref` | — | La regla aprobada; alternativa `emision` pendiente de decidir (apartado 7) |
+| `caducada_referencia` | `emision` | — | Regla principal (decisión de Marcos del 15/11/2026, pendiente del tutor; apartado 7) |
+| `sensibilidad_caducada_referencia` | `t_ref` | — | Análisis de sensibilidad: la regla aprobada el 04/11 |
+| `revision_umbral_h` | 24 | h | Los casos con error mayor se listan para revisarlos a mano |
 | `bootstrap_min_n` | 10 | escalas | Intervalo de confianza de la mediana solo con 10 casos o más |
 | `llegada_vista_h` | 1 | h | La entrada en el recinto cuenta como vista si hay una posición fuera menos de 1 h antes |
 
@@ -463,8 +476,12 @@ fuente y fecha.
   lee `voyage_data`, `position` y `port_call`. **No se toca la captura.**
 - `eta_obs` se rehace en el mismo momento que las escalas, dentro del mismo archivo.
   Si el cálculo de la ETA fallara, las escalas se guardan igual y el error queda anotado.
-- La API admite `&variante=solo_ok` o `&variante=con_caducadas`, y `&tabla=indicadores`
-  para descargar los indicadores en CSV en lugar de los casos.
+- La API admite `&variante=solo_ok` o `&variante=con_caducadas`. Con `&format=csv`
+  descarga los casos, y con `&tabla=indicadores`, `&tabla=sensibilidad` o
+  `&tabla=revision`, los indicadores, los de la regla de sensibilidad o la lista de casos
+  con error de más de 24 h (con columnas para anotar la revisión).
+- `eta_obs` guarda cada caso dos veces, con la regla principal y con la de sensibilidad
+  (columna `rule`).
 
 ### 11. Cobertura: ampliar la captura con una zona de aproximación (requiere tu permiso)
 
