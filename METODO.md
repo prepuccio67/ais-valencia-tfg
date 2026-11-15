@@ -7,7 +7,7 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 
 | Módulo | Versión del método | Estado |
 |---|---|---|
-| 7c.1 Precisión de la ETA declarada | `eta-v1` | **Aprobado como provisional (15/11/2026), pendiente del tutor** (D-20); programado, pendiente de desplegar |
+| 7c.1 Precisión de la ETA declarada | `eta-v1` | **Aprobado como provisional (15/11/2026), pendiente del tutor** (D-20); desplegado el 15/11/2026 |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
 | Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y desplegado (11/11/2026, D-19)** |
@@ -455,7 +455,7 @@ fuente y fecha.
 | `bootstrap_min_n` | 10 | escalas | Intervalo de confianza de la mediana solo con 10 casos o más |
 | `llegada_vista_h` | 1 | h | La entrada en el recinto cuenta como vista si hay una posición fuera menos de 1 h antes |
 
-### 10. Resultados y dónde se verán (programado el 15/11/2026, pendiente de desplegar)
+### 10. Resultados y dónde se verán (desplegado el 15/11/2026)
 
 > **Estado de lo programado:** módulo, tabla, API y apartado del cuadro de mando hechos,
 > con 10 tests. **No se han hecho todavía:** el gráfico del error por horizonte (mediana y

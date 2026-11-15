@@ -91,8 +91,9 @@
 - **Fase 7c. Núcleo del TFG** (método en METODO.md; cada módulo se aprueba antes
   de programarlo):
   - 7c.1, precisión de la ETA declarada (`eta-v1`): **aprobado como provisional el
-    15/11/2026 (D-20), en programación**: código, tests (139) y ensayo con datos reales
-    hechos; pendiente de desplegar y de decidir con el tutor la regla de las ETA caducadas;
+    15/11/2026 (D-20) y desplegado** (141 tests). Regla de caducidad «emisión» con «t_ref»
+    como sensibilidad (decisión de Marcos, pendiente del tutor). Pendiente: revisar a mano
+    los 9 casos de más de 24 h, gráfico del error por horizonte y capa de prácticos;
   - 7c.2, combustible, CO₂ y coste EU ETS de la espera (`emisiones-v1`): pendiente;
   - 7c.3, escenarios de llegada *just in time* (`jit-v1`): pendiente;
   - `escalas-v2` (D-19), completar los huecos de VALENCIA con la zona de aproximación:

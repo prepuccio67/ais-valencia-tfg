@@ -422,6 +422,8 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   - **Revisión manual** de los casos con error de más de 24 h (lista en el cuadro y en
     `/api/eta_accuracy?format=csv&tabla=revision`), para ver si son retrasos reales o
     ETA olvidadas.
+- **Desplegado el 15/11/2026 a las 19:05 UTC** (reinicio ordenado; la captura sigue sin
+  errores). Lista de revisión guardada en `informes/eta_revision_24h_2026-11-15.csv`.
 - **Pendiente:** visto bueno del tutor (método y regla de caducidad); revisar a mano los
   casos de más de 24 h; gráfico del error por horizonte y capa del punto de embarque de
   prácticos en el visor.
