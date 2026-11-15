@@ -22,7 +22,9 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from . import eta_accuracy as eta
 from . import port_calls as pc
+from .config import ConfigError
 from .storage import connect, iso
 
 log = logging.getLogger("collector.analysis")
@@ -83,6 +85,15 @@ def recompute(zone, now=None):
         cfg = pc.load_config(zone)
         t0 = time.time()
         calls, (first, last) = pc.compute(zone, cfg, now)
+        # 7c.1 (eta-v1): si falla, las escalas se guardan igual y el error queda en meta
+        eta_rows, eta_meta = [], {}
+        try:
+            params = eta.load_params(zone)
+            eta_rows = eta.compute(zone, calls, cfg, first, params)
+            eta_meta = {"eta_fingerprint": params["fingerprint"], "eta_version": params["version"]}
+        except Exception as e:                       # noqa: BLE001 - nunca debe tumbar las escalas
+            log.exception("[%s] no se pudo calcular la precisión de la ETA", zone.zone_id)
+            eta_meta = {"eta_error": f"{type(e).__name__}: {e}"[:300]}
         path = db_path(zone)
         # historial de subzonas: si se redibujan, la versión anterior se conserva con su fecha de fin
         old_rows, old_meta = _old_subzones(path)
@@ -106,7 +117,8 @@ def recompute(zone, now=None):
                 conn.executemany(f"INSERT INTO port_call ({', '.join(CALL_COLS)}, computed_ts) "
                                  f"VALUES ({', '.join('?' * (len(CALL_COLS) + 1))})",
                                  [[c[k] for k in CALL_COLS] + [now] for c in calls])
-                meta = {"zone_id": zone.zone_id, "computed_ts": now, "fingerprint": cfg["fingerprint"],
+                eta.write(conn, eta_rows)
+                meta = {**eta_meta, "zone_id": zone.zone_id, "computed_ts": now, "fingerprint": cfg["fingerprint"],
                         "method": json.dumps(cfg["method"]), "data_first_ts": first or "", "data_last_ts": last or ""}
                 conn.executemany("INSERT INTO meta VALUES (?, ?)", [(k, str(v)) for k, v in meta.items()])
         finally:
@@ -121,7 +133,12 @@ def ensure_fresh(zone, now=None, max_age=MAX_AGE_S):
     now = now or int(time.time())
     cfg = pc.load_config(zone)
     _, meta = _old_subzones(db_path(zone))
-    if (meta.get("fingerprint") != cfg["fingerprint"] or now - int(meta.get("computed_ts") or 0) > max_age):
+    try:
+        eta_fp = eta.load_params(zone)["fingerprint"]
+    except ConfigError:
+        eta_fp = None                            # sin parámetros válidos: las escalas siguen funcionando
+    if (meta.get("fingerprint") != cfg["fingerprint"] or now - int(meta.get("computed_ts") or 0) > max_age
+            or (eta_fp and meta.get("eta_fingerprint") != eta_fp)):
         recompute(zone, now)
     return cfg
 

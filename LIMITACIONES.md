@@ -160,3 +160,18 @@ tribunal. Cada una indica cómo se mide o se mitiga.
 - **La hora de inicio de la espera** tiene una precisión de unos 10 minutos (un
   buque parado se guarda cada 10 min). Las horas de atraque y desatraque, de
   alrededor de 1 minuto, porque el cambio de movimiento se registra al momento.
+
+## Precisión de la ETA (7c.1, `eta-v1`)
+- **ETA del AIS frente a ETA oficial.** La ETA del AIS la teclea la tripulación; los
+  estudios de comparación (Rosa et al., 2026; Chu et al., 2024) usan la ETA comunicada
+  oficialmente al puerto. Las comparaciones son orientativas.
+- **Horizontes largos con pocos casos.** Hasta el 08/11/2026 solo se podían medir los
+  horizontes de 0–2 h. Con la zona de aproximación ya hay casos a 6–48 h, pero pocos
+  (ensayo del 15/11: 3 a 48 h, 7 a 24 h, 12 a 12 h), y ninguno a 72 h: a esa distancia el
+  buque está fuera del rectángulo o donde no hay receptores.
+- **ETA caducadas.** Entre el 14 % y el 18 % de las ETA ya habían pasado cuando el buque
+  las emitió (tripulaciones que no la actualizan). La regla para decidir qué ETA es
+  «caducada» cambia mucho los resultados de los horizontes cortos y está pendiente de
+  decidir con el tutor (METODO.md, 7c.1, apartado 7).
+- **ETA redondeada.** El 62,5 % de las ETA utilizables acaban en :00: la precisión
+  declarada es, en la práctica, de una hora.

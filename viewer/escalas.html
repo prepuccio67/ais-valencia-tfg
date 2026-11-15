@@ -58,6 +58,25 @@
     </div>
 
     <section class="card wide">
+      <h2>Precisión de la ETA declarada <span class="hint">módulo 7c.1 · eta-v1 provisional</span>
+        <select id="etaDef">
+          <option value="ZONA_ESPERA" selected>llegada a la zona de espera</option>
+          <option value="RECINTO">entrada en el recinto</option><option value="ATRAQUE">atraque</option>
+        </select>
+        <select id="etaTerm">
+          <option value="TOTAL" selected>todas las terminales</option><option value="T-MSC">MSC</option>
+          <option value="T-CSP">CSP</option><option value="T-APM">APM</option>
+        </select>
+        <select id="etaVariant">
+          <option value="base" selected>OK, dudosas y en curso</option><option value="solo_ok">solo OK</option>
+          <option value="con_caducadas">incluyendo ETA caducadas</option>
+        </select>
+        <button id="etaCsv" class="small">⬇ CSV</button>
+      </h2>
+      <div id="etaBody"><p class="hint">Calculando…</p></div>
+    </section>
+
+    <section class="card wide">
       <h2>Dónde atracaron <span class="hint">subzonas del análisis y punto de atraque de cada escala; sirve para revisar las terminales [VERIFICAR]</span></h2>
       <div id="map" class="dash-map"></div>
     </section>
@@ -78,6 +97,7 @@
 
   <script src="/static/vendor/leaflet/leaflet.js"></script>
   <script src="/static/charts.js"></script>
+  <script src="/static/eta.js"></script>
   <script src="/static/escalas.js"></script>
 </body>
 </html>

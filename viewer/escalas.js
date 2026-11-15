@@ -81,6 +81,7 @@ async function load() {
   $('computed').textContent = `Método ${S.data.method.version} · calculado ${fmtT(S.data.computed_utc)} UTC · ` +
     `datos desde ${fmtT(S.data.data_from)}`;
   renderAll();
+  loadEta();                                   // 7c.1 (viewer/eta.js): si falla, no afecta al resto
 }
 
 function renderAll() {
@@ -283,6 +284,7 @@ async function start() {
   });
   $('qualityFilter').addEventListener('change', renderTable);
   $('csv').addEventListener('click', downloadCsv);
+  setupEta();
   let t;
   window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => S.data && renderAll(), 200); });
   await load();

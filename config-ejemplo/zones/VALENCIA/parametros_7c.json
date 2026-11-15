@@ -1,0 +1,19 @@
+{
+  "eta": {
+    "version": {"valor": "eta-v1", "unidad": "—", "motivo": "Método de METODO.md, apartado 7c.1 (D-20)", "fecha": "2026-11-15"},
+    "horizontes_h": {"valor": [72, 48, 24, 12, 6, 2, 1, 0], "unidad": "h", "motivo": "Encargo del TFG más los horizontes cortos medibles con la zona VALENCIA", "fecha": "2026-11-04"},
+    "ultima_eta": {"valor": true, "unidad": "—", "motivo": "Indicador «última ETA» antes de la llegada, para comparar con Rosa et al. (2026) y Chu et al. (2024) (D-20)", "fecha": "2026-11-15"},
+    "definiciones": {"valor": ["ZONA_ESPERA", "RECINTO", "ATRAQUE"], "unidad": "—", "motivo": "METODO.md 7c.1, apartado 4", "fecha": "2026-11-11"},
+    "definicion_principal": {"valor": "ZONA_ESPERA", "unidad": "—", "motivo": "La misma que Rosa et al. (2026) y Chu et al. (2024): llegada antes de fondear (D-20)", "fecha": "2026-11-15"},
+    "ventana_vista_h": {"valor": 2, "unidad": "h", "motivo": "El buque debe verse en las 2 h anteriores: si no, pudo cambiar la ETA sin que la recibiéramos. Un buque parado se guarda cada 10 min (VALENCIA) o 60 min (APROXIMACION)", "fecha": "2026-11-04"},
+    "caducada_tolerancia_h": {"valor": 1, "unidad": "h", "motivo": "Una ETA que ya había pasado hace menos de 1 h puede ser simplemente un retraso", "fecha": "2026-11-04"},
+    "caducada_referencia": {"valor": "t_ref", "unidad": "—", "motivo": "Como en METODO.md (aprobado): la ETA es caducada si ya había pasado más de 1 h antes de t_ref. Alternativa «emision» (caducada solo si ya había pasado cuando el buque la emitió) pendiente de decidir con el tutor: cambia unos 900 de 4100 casos (ensayo del 15/11/2026)", "fecha": "2026-11-15"},
+    "eta_max_dias": {"valor": 30, "unidad": "días", "motivo": "La misma ventana que usa el Collector para deducir el año de la ETA", "fecha": "2026-11-04"},
+    "bandas_h": {"valor": [0.5, 1, 2, 6], "unidad": "h", "motivo": "±0,5 h = Rosa et al. (2026) y Michaelides et al. (2019); ±1 h = Chu et al. (2024); ±2 y ±6 h, encargo del TFG (D-20)", "fecha": "2026-11-15"},
+    "min_n": {"valor": 5, "unidad": "escalas", "motivo": "Por debajo no se muestran cifras, solo «pocos datos»", "fecha": "2026-11-04"},
+    "destinos_valencia": {"valor": ["ESVLC", "ES VLC", "VLC", "VALENCIA", "VALENCIA PORT"], "unidad": "—", "motivo": "Valores observados y UN/LOCODE; también se acepta una sola letra distinta de ESVLC (erratas como ESVLS)", "fecha": "2026-11-04"},
+    "bootstrap_remuestreos": {"valor": 2000, "unidad": "—", "motivo": "Habitual; con tan pocos datos el cálculo es instantáneo. Semilla fija para que el resultado sea repetible", "fecha": "2026-11-04"},
+    "bootstrap_min_n": {"valor": 10, "unidad": "escalas", "motivo": "Intervalo de confianza de la mediana solo con 10 casos o más", "fecha": "2026-11-04"},
+    "llegada_vista_h": {"valor": 1, "unidad": "h", "motivo": "La entrada en el recinto cuenta como vista si hay una posición fuera menos de 1 h antes (como en escalas-v1)", "fecha": "2026-11-15"}
+  }
+}

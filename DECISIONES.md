@@ -381,3 +381,36 @@ fuentes de la Fase 0 se consultaron el 28/10/2026.
   «Para la espera» y las terminales sin escalas en el periodo lo dicen expresamente.
 - **Pendiente:** decidir el umbral mínimo de 1 h para contar una espera; confirmar con
   el tutor el periodo de las esperas y la fecha de corte.
+
+## D-20 · 15/11/2026 · `eta-v1` aprobado como provisional, con 4 cambios
+- **Decisión (de Marcos, pendiente del visto bueno del tutor):** se aprueba el método
+  `eta-v1` de METODO.md (7c.1) como provisional y se programa, porque solo lee datos y
+  se puede recalcular. Cambios:
+  1. **Indicador «última ETA»:** la última ETA válida emitida antes de la llegada real,
+     con los mismos filtros, presentada junto a los horizontes fijos y con su antelación.
+  2. **Banda de ±0,5 h:** `bandas_h` pasa de [1, 2, 6] a [0,5, 1, 2, 6].
+  3. **RMSE** entre los indicadores.
+  4. **Signo explícito:** e = ETA − llegada real (positivo = llegó antes), como Rosa et
+     al. (2026); la fórmula del sesgo de Chu et al. (2024, ec. 5) usa el signo contrario.
+  - Se mantiene la definición principal `ZONA_ESPERA`.
+  - Comprobados en el BOE (BOE-A-2021-18011) el límite este de la Zona II
+    (0° 12,714′ W) y el punto recomendado de embarque de prácticos (39° 25,188′ N
+    0° 15,903′ W), que queda solo como referencia.
+- **Motivo:** revisión bibliográfica del 15/11/2026. Rosa et al. (2026) comparan la
+  última ETA con la entrada en la jurisdicción del puerto (antes de fondear) y usan
+  ±30 min (criterio de Michaelides et al., 2019) y porcentajes por categorías, porque la
+  media engaña con errores asimétricos. Chu et al. (2024) comparan con la llegada a aguas
+  de Hong Kong por tramos de antelación, con ±1 h, RMSE, MAE y sesgo. Las dos
+  definiciones coinciden con `ZONA_ESPERA`.
+- **Programación:** `collector/eta_accuracy.py`, tabla `eta_obs` en `analysis.db`,
+  `GET /api/eta_accuracy` (JSON y CSV) y apartado nuevo en `/escalas`; parámetros en
+  `parametros_7c.json`. 10 tests nuevos (139 en total). No toca la captura ni las tablas
+  existentes.
+- **Hallazgo del ensayo (15/11/2026):** la regla aprobada de «ETA caducada» (pasada más
+  de 1 h antes de *t_ref*) excluye a los buques que llegan con más de 1 h de retraso en
+  los horizontes de 0–1 h y deja `ATRAQUE` casi sin casos (82–85 % caducadas). Está
+  programada la alternativa «caducada si ya había pasado al emitirla»
+  (`caducada_referencia: "emision"`), que cambia 901 de 4104 casos. **Se mantiene la
+  regla aprobada hasta decidirlo con el tutor.**
+- **Pendiente:** visto bueno del tutor; decidir la regla de caducidad; desplegar; gráfico
+  del error por horizonte y capa del punto de embarque de prácticos en el visor.

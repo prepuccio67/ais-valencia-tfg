@@ -9,12 +9,14 @@ túnel SSH. Además, todas las rutas /api/ exigen el token:
 """
 import asyncio
 import hmac
+import json
 import shutil
 import time
 
 from aiohttp import web
 
 from . import VERSION, analysis, archive
+from . import eta_accuracy as eta
 from . import port_calls as pc
 from . import queries as q
 from . import viewer_queries as vq
@@ -310,6 +312,38 @@ async def port_calls(request):
         "calls": [analysis.to_json(c) for c in calls]})
 
 
+def _eta_data(z, now):
+    analysis.ensure_fresh(z, now)
+    params = eta.load_params(z)
+    _, meta = analysis._old_subzones(analysis.db_path(z))
+    return params, eta.read(analysis.db_path(z)), meta
+
+
+async def eta_accuracy(request):
+    """Precisión de la ETA declarada (7c.1, eta-v1). &format=csv descarga los casos;
+    &format=csv&tabla=indicadores, los indicadores. &variante=base|solo_ok|con_caducadas."""
+    z = _port_zone(request)
+    variant = request.query.get("variante", "base")
+    if variant not in ("base", "solo_ok", "con_caducadas"):
+        raise ValueError("variante debe ser base, solo_ok o con_caducadas")
+    params, rows, meta = await asyncio.to_thread(_eta_data, z, int(time.time()))
+    if meta.get("eta_error"):
+        raise ValueError(f"no se pudo calcular la precisión de la ETA: {meta['eta_error']}")
+    stats, counts = eta.summary(rows, params, variant)
+    if request.query.get("format") == "csv":
+        tabla = request.query.get("tabla", "casos")
+        body = eta.to_csv_stats(stats) if tabla == "indicadores" else eta.to_csv_cases(rows)
+        name = f"eta_{tabla}_{z.zone_id}_{iso(int(meta['computed_ts']))[:10]}.csv"
+        return web.Response(body=body.encode("utf-8"), content_type="text/csv", charset="utf-8",
+                            headers={"Content-Disposition": f'attachment; filename="{name}"'})
+    return web.json_response({
+        "zone": z.zone_id, "computed_utc": iso(int(meta["computed_ts"])),
+        "data_from": iso(int(meta["data_first_ts"])) if meta.get("data_first_ts") else None,
+        "escalas_method": json.loads(meta["method"])["version"] if meta.get("method") else None,
+        "params": {k: v for k, v in params.items() if k != "fingerprint"}, "variant": variant,
+        "aviso": eta.AVISO, "statuses": list(eta.STATUSES), "counts": counts, "stats": stats})
+
+
 async def subzones(request):
     """Subzonas del análisis (recinto, terminales, fondeadero) en GeoJSON, con los parámetros del método."""
     z = _port_zone(request)
@@ -352,6 +386,7 @@ def create_app(state):
     app.router.add_get("/api/catalog", catalog)
     app.router.add_get("/api/port_calls", port_calls)
     app.router.add_get("/api/subzones", subzones)
+    app.router.add_get("/api/eta_accuracy", eta_accuracy)
     app.router.add_post("/api/zones", zone_create)
     app.router.add_put("/api/zones/{zone_id}", zone_update)
     app.router.add_post("/api/zones/{zone_id}/activate", zone_activate)

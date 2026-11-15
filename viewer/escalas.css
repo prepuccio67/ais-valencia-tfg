@@ -56,3 +56,7 @@ body.dash { display: block; height: auto; overflow-y: auto; }
 .tip { position: fixed; z-index: 2000; pointer-events: none; background: #10263d; color: #fff; font-size: 12px;
   padding: 6px 9px; border-radius: 6px; box-shadow: 0 3px 10px rgba(0,0,0,.25); max-width: 280px; }
 .tip b { font-weight: 600; }
+
+/* 7c.1: filas con pocos datos en gris */
+.stats.eta tr.few td { color: #9aa3ae; }
+.stats.eta { margin-bottom: 6px; }
