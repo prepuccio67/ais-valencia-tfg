@@ -10,9 +10,174 @@ confirmar en la fuente original, con indicación de dónde comprobarlo.
 | 7c.1 Precisión de la ETA declarada | `eta-v1` | **Aprobado como provisional (15/11/2026), pendiente del tutor** (D-20); desplegado el 15/11/2026 |
 | 7c.2 Combustible, CO₂ y coste EU ETS de la espera | `emisiones-v1` | Pendiente |
 | 7c.3 Escenarios de llegada *just in time* | `jit-v1` | Pendiente |
+| Escalas: unir las esperas partidas | `escalas-v3` | **Propuesto (15/11/2026), pendiente de aprobación** (ensayo hecho) |
 | Escalas: completar con la zona de aproximación | `escalas-v2` | **Aprobado y desplegado (11/11/2026, D-19)** |
 
 ---
+
+## Escalas: unir las esperas partidas (`escalas-v3`, propuesta del 15/11/2026)
+
+### 1. Problema
+- La revisión manual de los 9 casos de ETA con error de más de 24 h
+  (`informes/revision_eta_24h_fichas_2026-11-15.md`) mostró que `escalas-v2` **parte en dos una
+  misma espera** cuando el buque no se queda quieto.
+- `escalas-v2` da por terminada una espera («se fue sin atracar») si el buque pasa más de 12 h
+  sin una posición por debajo de 1 nudo. Muchos portacontenedores **merodean** a 1–8 nudos por la
+  zona durante horas o se alejan a esperar más lejos.
+- Resultado: la primera parte sale «EXCLUIDA: sin atraque» y la segunda, con una espera muy
+  corta. Ejemplos: MSC ANZIO II, 0 h en lugar de 43 h; EVER GIFTED, 0,4 h en lugar de 77 h.
+  **Las esperas salen más cortas de lo real.**
+
+### 2. Cambios propuestos (todo lo demás, igual que `escalas-v2`)
+
+**(a) Umbral de espera calibrado y espera viva mientras el buque esté en el área.**
+- Fuera del recinto, un buque está «esperando» si va a menos de **V\* = 3,9 kn** y está **dentro
+  del área de espera**. Fuera del área, ir despacio no cuenta como espera en València.
+- La espera solo se da por terminada si el buque pasa **más de 12 h fuera del área de espera**,
+  aunque dentro se mueva más deprisa que V\*. Mientras siga en el área, la espera sigue viva.
+- El fin de la espera sigue siendo el momento en que el buque arranca definitivamente hacia el
+  puerto (D-15).
+
+**Cómo se ha calibrado V\* (método de Ma et al., 2023).** Ma et al. calculan la distribución de
+la velocidad de los buques fuera del puerto. Esa distribución tiene dos picos: los que esperan,
+cerca de 0 kn, y los que navegan. El umbral es el **punto de silla** entre los dos picos (en
+Qingdao, 2,45 kn para portacontenedores). Con nuestros datos (15/11/2026, solo lectura):
+- 127 portacontenedores con atraque en MSC, CSP o APM; posiciones fuera del recinto a menos de
+  30 NM, de las dos zonas.
+- Cada posición se **pondera por el tiempo que representa** (hasta la siguiente, como mucho
+  60 min). Así se corrige que se guarden más posiciones de los buques en marcha que de los parados.
+  Es una adaptación nuestra al muestreo, no un paso del artículo.
+- Con la velocidad declarada (SOG): pico de espera en 0–0,25 kn (61 % del tiempo), pico de
+  navegación en 11 kn y **punto de silla en 3,75–4,00 kn**, es decir, **3,9 kn**.
+- Con la velocidad media entre posiciones (la variante del artículo), el tramo de 3 a 9 kn es
+  casi plano y el mínimo cae en 8,4 kn, sin una silla clara. Por eso se usa la SOG.
+- **Cautela:** entre 3 y 9 kn la distribución es casi plana; la silla existe, pero es poco marcada.
+
+**Sensibilidad al umbral (ensayo del 15/11/2026).**
+
+| V\* | Esperan ≥ 1 h | Mediana | Media | P90 |
+|---|---|---|---|---|
+| 1,0 kn (el de `escalas-v2`, con las reglas (a) y (b)) | 57,7 % | 2,7 h | 12,4 h | 36,7 h |
+| 2,45 kn (el valor de Ma et al. para Qingdao) | 68,0 % | 5,5 h | 14,0 h | 41,0 h |
+| **3,9 kn (calibrado con nuestros datos)** | **68,0 %** | **5,6 h** | **14,3 h** | **43,0 h** |
+
+*Escalas OK de portacontenedores iniciadas desde el 08/11 a las 17:05 (opción A).* Entre 2,45 y
+3,9 kn casi no cambia nada. El salto está entre 1 y 2,45 kn: con un umbral más alto, la espera
+empieza cuando el buque reduce por debajo de esa velocidad al llegar, no cuando se queda casi
+quieto. **Hay que decidir qué se considera «empezar a esperar».**
+
+**Área de espera (hasta dónde llega).**
+- Mar a menos de **25 NM de la bocana del puerto** (39,44 N; 0,31 W), fuera del recinto portuario,
+  quitando un círculo de **3 NM alrededor del puerto de Sagunto** (está a 12,7 NM).
+- **Por qué 25 NM:** el 99 % del tiempo que los portacontenedores pasan por debajo de V\* en las
+  96 h anteriores a atracar ocurre a menos de 25 NM (el 97 %, a menos de 20 NM; mediana, 3,8 NM).
+  25 NM deja fuera los puertos de Gandía (27,7 NM), Castellón (35,1 NM) y Dénia (40,8 NM). No se
+  registró ningún tiempo de espera a menos de 3 NM de ellos ni de Sagunto.
+- Sustituye al «área de espera ampliada» de `escalas-v2` (39,25–39,60 N; 0,36 W–0,25 E), que no
+  llegaba a los buques que esperan al sur o algo más lejos, como TRADEWIND a 25–31 NM al SE.
+
+**(b) Unir una escala «sin atraque» con la siguiente del mismo buque.**
+- Si una escala acaba sin atraque y la siguiente del mismo buque empieza **en menos de 72 h**, se
+  unen en una sola, **salvo que haya indicios de escala en otro puerto** entre medias:
+  - un destino declarado de otro puerto (`voyage_data`, con las mismas reglas de destino que
+    `eta-v1`); o
+  - posiciones de la zona de aproximación con el buque parado (< 0,5 kn) y el estado AIS
+    «fondeado» o «amarrado» fuera del área de espera.
+- La escala unida conserva la llegada de la primera parte y el atraque de la segunda. El hueco
+  entre las dos no cuenta como «buque sin señal», porque se sabe que estaba fuera del área. Se
+  anota cuántas horas duró el hueco (`joined_gap_h`).
+
+### 3. Ensayo de `escalas-v2` frente a `escalas-v3` (15/11/2026, solo lectura)
+Datos del 29/10 a las 19:18 al 15/11 a las 19:35 UTC; V\* = 3,9 kn; área de 25 NM.
+
+**Qué cambia.**
+- Escalas: 203 con v2 y 197 con v3. Escalas «sin atraque»: de 12 a 6. **3 uniones** (entre ellas
+  TRADEWIND y MIMMI SCHULTE) y **ninguna rechazada** por indicios de otro puerto. Las demás esperas
+  partidas (MSC ANZIO II, EVER GIFTED, CMA CGM HARMONY, PAOLO…) ya se arreglan con la regla (a).
+- De las 152 escalas con atraque en contenedores, cambia la espera en 118. La mayoría cambia
+  poco: unos minutos más al empezar la espera al bajar de 3,9 kn. Cambia la calidad en 9, todas de
+  OK a DUDOSA.
+- **Por qué esas 9 pasan a DUDOSA:** la espera empieza ahora antes, más lejos o con menos
+  posiciones, y aparecen «llegada no observada» o «buque sin señal». Algunas suben mucho
+  (MSC JASPER VIII de 0,6 a 26,3 h, con un hueco de 11 h; OOCL HONG KONG de 0 a 9,5 h, con un hueco
+  de 6 h). Al ser dudosas no entran en las estadísticas, pero conviene revisarlas a mano.
+
+**Mayores cambios de espera (v2 → v3):** TRADEWIND 37,5 → 201 h (unida); EVER GIFTED 0,4 → 77 h;
+PAOLO 6,4 → 68,7 h; MSC ANZIO II 0 → 43 h; MIMMI SCHULTE 18,8 → 56,7 h (unida); CMA CGM HARMONY
+18,8 → 55,2 h.
+
+**Estadísticas de espera** (escalas OK de portacontenedores iniciadas desde el 08/11 a las 17:05):
+
+| Grupo | n (v2 / v3) | Esperan ≥ 1 h (v2 / v3) | Mediana (v2 / v3) | Media (v2 / v3) | P90 (v2 / v3) |
+|---|---|---|---|---|---|
+| **Total** | 28 / 25 | 53,6 % / **68,0 %** | 2,1 / **5,6 h** | 8,6 / **14,3 h** | 21,2 / **43,0 h** |
+| MSC | 16 / 15 | 62,5 % / 73,3 % | 4,1 / 8,5 h | 11,1 / 15,6 h | 36,7 / 43,0 h |
+| CSP | 4 / 4 | 75 % / 100 % | 4,2 / 21,4 h | 12,2 / 28,2 h | 40,1 / 68,7 h |
+| APM | 8 / 6 | 25 % / 33 % | 0,0 / 0,3 h | 1,9 / 1,6 h | 3,3 / 3,5 h |
+| < 150 m | 5 / 4 | 40 % / 50 % | 0,0 / 4,3 h | 5,0 / 7,1 h | 19,7 / 19,8 h |
+| 150–200 m | 5 / 5 | 20 % / 80 % | 0,0 / 9,3 h | 13,0 / 23,7 h | 64,5 / 64,6 h |
+| 200–300 m | 11 / 10 | 64 % / 60 % | 5,1 / 4,8 h | 8,8 / 15,0 h | 21,2 / 37,3 h |
+| ≥ 300 m | 7 / 6 | 71 % / 83 % | 2,3 / 5,0 h | 7,8 / 10,1 h | 7,1 / 7,1 h |
+
+- Media entre los que esperan ≥ 1 h: 16,1 h con v2 y **20,9 h con v3**.
+- Añadiendo las escalas en curso que ya han atracado (su espera está cerrada): n = 34, el 70,6 %
+  espera ≥ 1 h, y la media entre los que esperan es de 22,5 h.
+- **Cautela:** son 25 escalas de una semana, con grupos de 4 a 15. Además, las esperas más largas
+  todavía no han terminado (TRADEWIND 201 h, EVER GIFTED 77 h y CMA CGM HARMONY 55 h siguen «en
+  curso»), así que las cifras están **sesgadas hacia esperas cortas**.
+
+**Los 9 casos revisados con `escalas-v3`.**
+
+| Buque | `escalas-v2` | `escalas-v3` |
+|---|---|---|
+| TRADEWIND | 135,8 h (excluida) + 37,5 h | **201,0 h, una sola escala** (unida; hueco de 25 h) |
+| EVER GIFTED | 47,0 h (excluida) + 0,4 h | **77,0 h, una sola** |
+| MSC ANZIO II | 31,6 h (excluida) + 0 h | **43,0 h, una sola** |
+| CMA CGM HARMONY | 19,9 h (excluida) + 18,8 h | **55,2 h, una sola** |
+| MSC YUXIN | 64,5 h + reatraque con 0 h | 64,6 h + reatraque con 9,3 h (son dos estancias distintas: está bien que sigan separadas) |
+| WEC CORNEILLE | 17,3 h + 24,9 h | 20,7 h + 25,0 h (dos estancias, separadas) |
+| TROUPER | sin cambios (escalas distintas, con Barcelona entre medias) | sin cambios |
+| MSC FEBE, ONE MANEUVER | 48,6 h y 29,7 h | 52,0 h y 30,1 h |
+
+### 4. Comparación con la referencia oficial de la APV (1.er semestre de 2026)
+Fuente: Autoridad Portuaria de Valencia, «Tiempos medios de escala» (consultado el 15/11/2026;
+`md/notas/2026-11-15_APV_tiempos_escala_1S2026.md`).
+
+| Indicador | APV, 1.er semestre de 2026 | AIS `escalas-v3`, 08–15/11/2026 |
+|---|---|---|
+| Escalas de portacontenedores | 1.347 | 25 (OK) |
+| % que fondea (APV) / que espera ≥ 1 h (AIS) | 37,8 % | 68,0 % |
+| Espera media de los que fondean (APV) / esperan (AIS) | ≈ 44,8 h | 20,9 h |
+| Buques pequeños (APV: < 2.000 TEU; AIS: < 200 m) | fondean el 63–72 % | esperan ≥ 1 h el 67 % (6 de 9) |
+| Buques grandes (APV: ≥ 10.000 TEU; AIS: ≥ 300 m) | fondean el 8–12 % | esperan ≥ 1 h el 83 % (5 de 6) |
+
+**No son la misma medida, y no se pueden comparar directamente:**
+1. **Dónde se espera.** La fase «entrada en aguas portuarias» de la APV empieza al entrar en la
+   Zona II, y solo «con fondeo» incluye la espera en el fondeadero. **Los buques que esperan a la
+   deriva fuera de la Zona II** (al este de 0° 12,714′ W, como la mayoría de los casos revisados) no
+   aparecen en esa fase [VERIFICAR en la metodología de la APV, T10]. El AIS sí cuenta esa espera.
+   Esto podría explicar por qué los buques grandes «fondean» poco según la APV pero esperan
+   según el AIS.
+2. **Qué es «esperar».** Para la APV es fondear; para nosotros, estar por debajo de V\* en el área de
+   espera, contando también la reducción de velocidad al llegar. Con «≥ 1 h» se quitan las
+   maniobras cortas, pero no todas.
+3. **Periodo y tamaño de la muestra:** un semestre frente a una semana; meses distintos.
+4. **Censura:** la APV mide escalas terminadas; las nuestras más largas aún no han acabado. Por eso
+   nuestra media sale más baja, y por eso conviene un análisis de supervivencia (Kaplan-Meier).
+5. **Tamaño del buque:** la APV clasifica por TEU y nosotros por eslora. La correspondencia es
+   aproximada [VERIFICAR]. Además, nuestro filtro de 100 m o más deja fuera parte de los «Small
+   Feeder».
+
+**Conclusión del contraste:** las cifras no contradicen a la APV, porque miden cosas distintas.
+Para la memoria convendría presentar dos esperas: «en el fondeadero», comparable con la APV, y
+«total en el área de espera», la que interesa para el JIT y las emisiones.
+
+### 5. Decisiones pendientes antes de programar
+1. **V\*:** 3,9 kn (calibrado), con 1,0 kn como análisis de sensibilidad; o 1,0 kn.
+2. **Radio del área de espera:** 25 NM (P99) o 20 NM (P97).
+3. **Umbral mínimo de 1 h** para contar una espera (sigue pendiente desde el 11/11).
+4. **Revisar a mano las 9 escalas que pasan a DUDOSA.**
+5. **Desdoblar la espera** en «fondeadero» y «total en el área de espera» para comparar con la APV.
 
 ## Escalas: completar los huecos con la zona de aproximación (`escalas-v2`)
 
@@ -353,6 +518,7 @@ y se publican todos, no solo los utilizables.
 | `ETA_IMPOSIBLE` | ETA a más de 30 días de *t_ref* | No |
 | `ESCALA_EXCLUIDA` | Escala `EXCLUIDA` en `escalas-v1` (sin atraque o espera de más de 10 días) | No |
 | `LLEGADA_NO_VISTA` | No se observó el suceso de llegada de esa definición (p. ej., el buque apareció ya fondeado) | No |
+| `ESCALA_ANTERIOR` *(propuesto el 15/11/2026, sin programar)* | La ETA se emitió antes de que terminara la escala anterior del mismo buque, o *t_ref* cae antes de ese final: la ETA es de la escala anterior | No |
 
 > **Regla de caducidad: decisión de Marcos del 15/11/2026, pendiente del tutor (D-20).**
 > - **Regla principal, «emisión»** (`caducada_referencia: "emision"`): una ETA es caducada
@@ -413,6 +579,24 @@ segundo plano, porque unos pocos errores muy grandes los mueven mucho.
 | % de ETA caducadas | casos `ETA_CADUCADA` / casos con ETA | Cuántas tripulaciones no actualizan la ETA |
 | % de ETA en punto (minuto 00) | — | Precisión con la que se declara: si casi todas acaban en :00, la ETA se redondea a la hora |
 | Antelación mediana (solo «última ETA») | mediana de *T* − hora de emisión | Con cuánto tiempo se emitió la última ETA válida |
+
+**Categoría «ETA de atraque»** *(propuesta el 15/11/2026, sin programar; contada, no
+descartada)*. En las escalas con al menos 3 h de espera, un caso utilizable de `ZONA_ESPERA` se
+marca como «ETA de atraque» si la ETA está más cerca del atraque que de la llegada a la zona de
+espera. Entra en las estadísticas igual que los demás, y se informa de qué porcentaje de buques
+declara la hora de atraque en lugar de la de llegada (como MSC FEBE y ONE MANEUVER).
+
+**Ensayo de las dos reglas (15/11/2026, solo lectura, sobre `escalas-v3`):**
+- 32 casos utilizables pasan a `ESCALA_ANTERIOR` (MSC YUXIN, TROUPER, WEC CORNEILLE…).
+- «ETA de atraque»: 6 de 69 escalas con espera de 3 h o más (9 %): ANTIBES EXPRESS,
+  MSC CATHERINE VI, MSC FEBE, NICARAGUA EXPRESS, ONE MANEUVER y ZIM VIRGINIA.
+- Última ETA (`ZONA_ESPERA`, total): n = 99, mediana +0,4 h, 40 % en ±0,5 h, **66 % en ±1 h**,
+  84 % en ±2 h, 94 % en ±6 h; MAE 2,2 h. Antes (v2, sin las reglas): n = 110, mediana −0,1 h, 57 % en
+  ±1 h, MAE 5,7 h.
+- De los 9 casos de más de 24 h solo quedan **MSC FEBE (+46,8 h) y ONE MANEUVER (+30,6 h)**, las dos
+  «ETA de atraque». Las otras 7 ETA aciertan la llegada real con un error de −0,9 a +1,5 h.
+- Los horizontes largos se quedan con muy pocos casos (24 h: 3; 48 h: 1; 72 h: 0), porque los
+  casos que había eran casi todos de la escala anterior. Hacen falta semanas de datos.
 
 > **Por qué no basta la media (Rosa et al., 2026):** los errores son asimétricos (pocos
 > retrasos muy grandes), así que la media puede engañar. Por eso se dan también la
@@ -606,11 +790,17 @@ semanas de datos.
   an automatic identification system using time division multiple access in the
   VHF maritime mobile frequency band* (Recomendación ITU-R M.1371-5).
   https://www.itu.int/rec/R-REC-M.1371 [VERIFICAR el año en la ficha de la ITU]
+- Ma, J., Zhou, Y., & Zhu, Z. (2023). Identification and analysis of ship waiting behavior outside
+  the port based on AIS data. *Scientific Reports, 13*(1), Artículo 11267.
+  https://doi.org/10.1038/s41598-023-38080-2
 - Michaelides, M. P., Herodotou, H., Lind, M., & Watson, R. T. (2019). Port-2-port
   communication enhancing short sea shipping performance: The case study of Cyprus
   and the Eastern Mediterranean. *Sustainability, 11*(7), Artículo 1912.
   https://doi.org/10.3390/su11071912 [VERIFICAR: datos tomados de la bibliografía de
   Rosa et al. (2026), sin comprobar en el original]
+- Autoridad Portuaria de Valencia. (2026). *Tiempos medios de escala en el Puerto de Valencia*
+  [Panel de datos, 1.er semestre de 2026]. Recuperado el 15 de noviembre de 2026, de
+  https://www.valenciaport.com/datos/indices/tiempos-medios-escala-puerto-valencia/
 - Resolución de 19 de octubre de 2021, de la Autoridad Portuaria de Valencia, por la que
   se aprueba el Pliego de prescripciones particulares del servicio de practicaje en el
   Puerto de Valencia. *Boletín Oficial del Estado*, 4 de noviembre de 2021
