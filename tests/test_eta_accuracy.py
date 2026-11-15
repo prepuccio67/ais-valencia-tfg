@@ -145,10 +145,12 @@ class TestMainRuleAndSensitivity(EtaBase):
         for mmsi, err in ((a, -30), (b, 1)):
             self.long_call(mmsi)
             self.eta(mmsi, T0 - 40 * H, T0 + 60 * MIN + err * H)   # emitida cuando aún era futura
+        self.eta(a, T0 - 20 * H, T0 + 60 * MIN - 30 * H, dest="VALENCIA")   # la misma ETA, reenviada con otro texto
         items = eta.review_list(self.rows(), self.params)
         self.assertEqual([(x["name"], x["error_h"]) for x in items], [("TARDE", -30.0)])
         self.assertIn("última", items[0]["horizons"])
         self.assertIn("6 h", items[0]["horizons"])               # una sola fila con todos sus horizontes
+        self.assertEqual(items[0]["eta_ts"], T0 - 40 * H)          # cuándo la emitió por primera vez
         text = eta.to_csv_review(items)
         self.assertTrue(text.startswith("﻿buque;mmsi;terminal;"))
         self.assertIn(";-30,00;", text)

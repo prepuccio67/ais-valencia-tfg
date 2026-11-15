@@ -404,9 +404,13 @@ def review_list(rows, params):
         if (o["rule"] != MAIN or o["definition"] != params["definicion_principal"] or o["status"] != "USABLE"
                 or abs(o["error_h"]) <= limit):
             continue
-        key = (o["mmsi"], o["t_start"], o["eta_ts"])
+        key = (o["mmsi"], o["t_start"], o["eta_utc"])      # la misma ETA reenviada cuenta una vez
         item = out.setdefault(key, {**o, "horizons": [], "check": "", "note": ""})
-        item["horizons"].append("última" if o["horizon"] == LAST else o["horizon"] + " h")
+        if o["eta_ts"] < item["eta_ts"]:
+            item["eta_ts"] = o["eta_ts"]                       # se muestra cuándo la emitió por primera vez
+        h = "última" if o["horizon"] == LAST else o["horizon"] + " h"
+        if h not in item["horizons"]:
+            item["horizons"].append(h)
     items = sorted(out.values(), key=lambda x: (-abs(x["error_h"]), x["name"] or ""))
     for x in items:
         x["horizons"] = ", ".join(x["horizons"])
