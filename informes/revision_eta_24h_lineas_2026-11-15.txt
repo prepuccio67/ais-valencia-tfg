@@ -1,0 +1,439 @@
+==============================================================================================================
+TRADEWIND (MMSI 374629000) · ETA de la lista 06/11 18:00 · llegada de la lista 13/11 12:37
+  Escalas (escalas-v2):
+    inicio 06/11 17:41 · fondeo 06/11 17:41→12/11 09:26 (FONDEO) · atraque — None · desatraque — · salida — · espera 135.8 h · EXCLUIDA: sin atraque · puntos_aprox 0 · max sin señal 2.3 h
+    inicio 13/11 12:37 · fondeo 13/11 12:37→15/11 02:04 (FONDEO) · atraque 15/11 03:01 T-CSP · desatraque — · salida — · espera 37.5 h · EN CURSO · puntos_aprox 0 · max sin señal 1.7 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    06/11 17:08 [VAL] destino «ESVLC» · ETA 11-06 18:00 (06/11 18:00) · calado 5.8
+  Primera posición registrada: 06/11 16:34 · última: 15/11 19:19 · total 531
+  Línea temporal 06/11 06:00 → 13/11 20:37 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    06/11 16:34 → 06/11 17:14 ( 0.7 h) VALENCIA-mar             EN MARCHA 7.7–11.5 kn   AIS «navegando» · 7 pos (VAL) · 39.361N -0.162
+    06/11 17:20 → 06/11 17:24 ( 0.1 h) FONDEADERO               EN MARCHA 4.0–6.2 kn    AIS «navegando» · 3 pos (VAL) · 39.377N -0.236
+    06/11 17:41 → 06/11 17:46 ( 0.1 h) FONDEADERO               parado    0.8–0.9 kn    AIS «navegando» · 2 pos (VAL) · 39.384N -0.250
+    06/11 18:27 → 10/11 05:21 (82.9 h) FONDEADERO               parado    0.0–0.7 kn    AIS «fondeado» · 232 pos (APR+VAL) · 39.384N -0.246
+    10/11 05:21 → 10/11 07:39   ··· SIN SEÑAL 2.3 h ···
+    10/11 07:39 → 12/11 09:20 (49.7 h) FONDEADERO               parado    0.0–0.5 kn    AIS «fondeado» · 110 pos (APR+VAL) · 39.385N -0.245
+    12/11 09:26 → 12/11 09:26 ( 0.0 h) FONDEADERO               EN MARCHA 1.1–1.1 kn    AIS «fondeado» · 1 pos (VAL) · 39.385N -0.243
+    12/11 09:49 → 12/11 09:50 ( 0.0 h) FONDEADERO               EN MARCHA 3.1–3.2 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.379N -0.242
+    12/11 10:01 → 12/11 10:44 ( 0.7 h) VALENCIA-mar             EN MARCHA 7.8–11.8 kn   AIS «navegando» · 7 pos (APR+VAL) · 39.324N -0.189
+    12/11 11:01 → 12/11 11:01 ( 0.0 h) lejos 16 NM SE           EN MARCHA 11.7–11.7 kn  AIS «navegando» · 1 pos (APR) · 39.238N -0.077
+    12/11 11:33 → 12/11 11:33 ( 0.0 h) lejos 23 NM SE           EN MARCHA 11.3–11.3 kn  AIS «navegando» · 1 pos (APR) · 39.171N +0.032
+    12/11 12:05 → 12/11 12:05 ( 0.0 h) lejos 25 NM SE           parado    0.7–0.7 kn    AIS «navegando» · 1 pos (APR) · 39.135N +0.072
+    12/11 12:35 → 12/11 12:35 ( 0.0 h) lejos 26 NM SE           EN MARCHA 2.6–2.6 kn    AIS «navegando» · 1 pos (APR) · 39.139N +0.097
+    12/11 13:05 → 12/11 13:05 ( 0.0 h) lejos 27 NM SE           EN MARCHA 2.5–2.5 kn    AIS «navegando» · 1 pos (APR) · 39.140N +0.122
+    12/11 13:40 → 12/11 13:40 ( 0.0 h) lejos 28 NM SE           EN MARCHA 2.1–2.1 kn    AIS «navegando» · 1 pos (APR) · 39.140N +0.149
+    12/11 13:40 → 12/11 15:52   ··· SIN SEÑAL 2.2 h ···
+    12/11 15:52 → 12/11 15:52 ( 0.0 h) lejos 31 NM SE           EN MARCHA 1.8–1.8 kn    AIS «navegando» · 1 pos (APR) · 39.144N +0.246
+    12/11 16:49 → 12/11 17:25 ( 0.6 h) lejos 26 NM SE           EN MARCHA 1.7–7.7 kn    AIS «navegando» · 2 pos (APR) · 39.127N +0.073
+    12/11 17:25 → 12/11 20:21   ··· SIN SEÑAL 2.9 h ···
+    12/11 20:21 → 12/11 20:21 ( 0.0 h) lejos 30 NM SE           EN MARCHA 1.4–1.4 kn    AIS «navegando» · 1 pos (APR) · 39.084N +0.144
+    12/11 20:21 → 13/11 09:18   ··· SIN SEÑAL 13.0 h ···
+    13/11 09:18 → 13/11 09:18 ( 0.0 h) lejos 30 NM SE           EN MARCHA 10.2–10.2 kn  AIS «navegando» · 1 pos (APR) · 39.105N +0.166
+    13/11 09:49 → 13/11 09:49 ( 0.0 h) lejos 25 NM SE           EN MARCHA 10.0–10.0 kn  AIS «navegando» · 1 pos (APR) · 39.160N +0.083
+    13/11 10:26 → 13/11 10:26 ( 0.0 h) lejos 19 NM SE           EN MARCHA 10.2–10.2 kn  AIS «navegando» · 1 pos (APR) · 39.242N -0.004
+    13/11 10:42 → 13/11 11:34 ( 0.9 h) VALENCIA-mar             EN MARCHA 10.3–11.1 kn  AIS «navegando» · 5 pos (APR+VAL) · 39.332N -0.133
+    13/11 11:41 → 13/11 11:59 ( 0.3 h) FONDEADERO               EN MARCHA 4.1–7.7 kn    AIS «navegando» · 5 pos (APR+VAL) · 39.380N -0.239
+    13/11 12:37 → 13/11 19:07 ( 6.5 h) FONDEADERO               parado    0.0–0.2 kn    AIS «fondeado» · 15 pos (APR+VAL) · 39.385N -0.269
+==============================================================================================================
+MSC YUXIN (MMSI 636023314) · ETA de la lista 10/11 18:00 · llegada de la lista 14/11 06:14
+  Escalas (escalas-v2):
+    inicio 02/11 18:17 · fondeo 02/11 18:17→02/11 18:42 (DERIVA) · atraque 02/11 19:55 T-MSC · desatraque 03/11 09:43 · salida 03/11 10:07 · espera 0.4 h · OK · puntos_aprox 0 · max sin señal 1.2 h
+    inicio 10/11 17:48 · fondeo 10/11 17:48→13/11 10:16 (DERIVA) · atraque 13/11 11:33 T-MSC · desatraque 13/11 18:10 · salida 13/11 18:34 · espera 64.5 h · OK · puntos_aprox 88 · max sin señal 1.6 h
+    inicio 14/11 06:46 · fondeo —→— (None) · atraque 14/11 06:46 T-MSC · desatraque 14/11 15:31 · salida 14/11 15:56 · espera 0.0 h · OK · puntos_aprox 0 · max sin señal 0.75 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    02/11 14:17 [VAL] destino «ESVLC» · ETA 11-02 11:00 (02/11 11:00) · calado 6.8
+    03/11 08:24 [VAL] destino «ESBCN» · ETA 11-04 08:00 (04/11 08:00) · calado 6.8
+    10/11 18:06 [APR] destino «ESVLC» · ETA 11-10 18:00 (10/11 18:00) · calado 6.9
+    13/11 17:13 [APR] destino «ESVLC» · ETA 11-10 18:00 (10/11 18:00) · calado 6.7
+    14/11 13:18 [APR] destino «ESBCN» · ETA 11-10 18:00 (10/11 18:00) · calado 6.7
+    14/11 13:18 [APR] destino «ESBCN» · ETA 11-15 18:00 (15/11 18:00) · calado 6.7
+    14/11 13:20 [APR] destino «ESBCN» · ETA 11-15 15:00 (15/11 15:00) · calado 7.9
+    14/11 13:32 [APR] destino «ESBCN» · ETA 11-15 14:00 (15/11 14:00) · calado 7.9
+  Primera posición registrada: 02/11 14:17 · última: 15/11 19:21 · total 601
+  Línea temporal 10/11 06:00 → 14/11 14:14 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    10/11 13:06 → 10/11 13:06 ( 0.0 h) lejos 45 NM SE           EN MARCHA 10.0–10.0 kn  AIS «navegando» · 1 pos (APR) · 38.959N +0.436
+    10/11 14:02 → 10/11 14:02 ( 0.0 h) lejos 36 NM SE           EN MARCHA 9.6–9.6 kn    AIS «navegando» · 1 pos (APR) · 39.073N +0.301
+    10/11 14:48 → 10/11 14:48 ( 0.0 h) lejos 28 NM SE           EN MARCHA 9.7–9.7 kn    AIS «navegando» · 1 pos (APR) · 39.157N +0.181
+    10/11 15:19 → 10/11 15:19 ( 0.0 h) lejos 24 NM SE           EN MARCHA 9.6–9.6 kn    AIS «navegando» · 1 pos (APR) · 39.211N +0.103
+    10/11 15:49 → 10/11 15:49 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 9.9–9.9 kn    AIS «navegando» · 1 pos (APR) · 39.266N +0.025
+    10/11 16:00 → 10/11 16:59 ( 1.0 h) VALENCIA-mar             EN MARCHA 8.7–10.0 kn   AIS «navegando» · 10 pos (APR+VAL) · 39.353N -0.036
+    10/11 17:07 → 10/11 17:07 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 7.0–7.0 kn    AIS «navegando» · 1 pos (APR) · 39.407N +0.011
+    10/11 17:48 → 10/11 21:53 ( 4.1 h) ESPERA-ampliada(este)    parado    0.3–0.5 kn    AIS «navegando» · 7 pos (APR) · 39.433N +0.058
+    10/11 22:23 → 10/11 22:56 ( 0.6 h) ESPERA-ampliada(este)    EN MARCHA 1.1–6.4 kn    AIS «navegando» · 2 pos (APR) · 39.415N +0.053
+    10/11 23:32 → 11/11 01:09 ( 1.6 h) ESPERA-ampliada(este)    parado    0.9–0.9 kn    AIS «navegando» · 2 pos (APR) · 39.394N +0.057
+    11/11 01:41 → 11/11 04:58 ( 3.3 h) ESPERA-ampliada(este)    EN MARCHA 1.1–5.3 kn    AIS «navegando» · 7 pos (APR) · 39.417N +0.041
+    11/11 05:29 → 11/11 06:06 ( 0.6 h) ESPERA-ampliada(este)    parado    0.5–0.8 kn    AIS «navegando» · 2 pos (APR) · 39.429N +0.005
+    11/11 06:48 → 11/11 07:02 ( 0.2 h) VALENCIA-mar             EN MARCHA 1.2–3.1 kn    AIS «navegando» · 4 pos (APR+VAL) · 39.376N -0.000
+    11/11 07:30 → 11/11 08:03 ( 0.5 h) ESPERA-ampliada(este)    EN MARCHA 1.0–1.0 kn    AIS «navegando» · 2 pos (APR) · 39.367N +0.015
+    11/11 08:52 → 11/11 10:49 ( 1.9 h) ESPERA-ampliada(este)    parado    0.6–0.8 kn    AIS «navegando» · 4 pos (APR) · 39.367N +0.051
+    11/11 11:25 → 11/11 11:25 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 6.1–6.1 kn    AIS «navegando» · 1 pos (APR) · 39.384N +0.041
+    11/11 12:02 → 11/11 15:03 ( 3.0 h) ESPERA-ampliada(este)    parado    0.1–0.6 kn    AIS «navegando» · 5 pos (APR) · 39.408N +0.010
+    11/11 15:45 → 11/11 16:24 ( 0.7 h) ESPERA-ampliada(este)    EN MARCHA 1.0–5.3 kn    AIS «navegando» · 2 pos (APR) · 39.399N +0.035
+    11/11 16:50 → 11/11 22:22 ( 5.5 h) ESPERA-ampliada(este)    parado    0.2–0.9 kn    AIS «navegando» · 10 pos (APR) · 39.400N +0.052
+    11/11 22:56 → 11/11 22:56 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 1.0–1.0 kn    AIS «navegando» · 1 pos (APR) · 39.418N +0.024
+    11/11 23:27 → 12/11 01:40 ( 2.2 h) ESPERA-ampliada(este)    parado    0.3–0.9 kn    AIS «navegando» · 5 pos (APR) · 39.438N +0.020
+    12/11 02:11 → 12/11 02:44 ( 0.6 h) ESPERA-ampliada(este)    EN MARCHA 3.1–6.3 kn    AIS «navegando» · 2 pos (APR) · 39.431N +0.029
+    12/11 03:17 → 12/11 04:54 ( 1.6 h) ESPERA-ampliada(este)    parado    0.3–0.5 kn    AIS «navegando» · 4 pos (APR) · 39.403N +0.038
+    12/11 05:31 → 12/11 14:52 ( 9.3 h) ESPERA-ampliada(este)    EN MARCHA 1.6–8.3 kn    AIS «navegando» · 17 pos (APR) · 39.373N +0.067
+    12/11 15:12 → 12/11 15:31 ( 0.3 h) VALENCIA-mar             EN MARCHA 3.3–7.0 kn    AIS «navegando» · 4 pos (APR+VAL) · 39.293N -0.017
+    12/11 15:37 → 12/11 15:38 ( 0.0 h) VALENCIA-mar             parado    0.5–0.7 kn    AIS «navegando» · 2 pos (VAL) · 39.297N -0.036
+    12/11 15:39 → 12/11 16:32 ( 0.9 h) VALENCIA-mar             EN MARCHA 1.1–2.0 kn    AIS «navegando» · 14 pos (APR+VAL) · 39.298N -0.023
+    12/11 17:02 → 12/11 17:02 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 2.7–2.7 kn    AIS «navegando» · 1 pos (APR) · 39.298N +0.016
+    12/11 17:23 → 12/11 17:23 ( 0.0 h) VALENCIA-mar             EN MARCHA 4.6–4.6 kn    AIS «navegando» · 1 pos (VAL) · 39.296N -0.011
+    12/11 17:41 → 12/11 17:43 ( 0.0 h) VALENCIA-mar             parado    0.7–0.8 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.294N -0.033
+    12/11 17:51 → 12/11 18:42 ( 0.9 h) VALENCIA-mar             EN MARCHA 1.3–1.6 kn    AIS «navegando» · 7 pos (APR+VAL) · 39.290N -0.013
+    12/11 18:51 → 12/11 21:18 ( 2.4 h) ESPERA-ampliada(este)    EN MARCHA 1.3–4.3 kn    AIS «navegando» · 5 pos (APR) · 39.290N +0.031
+    12/11 21:55 → 12/11 22:03 ( 0.1 h) VALENCIA-mar             EN MARCHA 1.5–4.5 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.274N -0.022
+    12/11 22:07 → 12/11 22:07 ( 0.0 h) VALENCIA-mar             parado    0.0–0.0 kn    AIS «navegando» · 1 pos (APR) · 39.274N -0.028
+    12/11 22:18 → 12/11 23:01 ( 0.7 h) VALENCIA-mar             EN MARCHA 1.3–1.6 kn    AIS «navegando» · 12 pos (APR+VAL) · 39.274N -0.011
+    12/11 23:23 → 13/11 00:53 ( 1.5 h) ESPERA-ampliada(este)    EN MARCHA 1.5–2.7 kn    AIS «navegando» · 3 pos (APR) · 39.280N +0.034
+    13/11 01:17 → 13/11 02:33 ( 1.3 h) VALENCIA-mar             EN MARCHA 1.5–8.0 kn    AIS «navegando» · 11 pos (APR+VAL) · 39.282N -0.020
+    13/11 03:01 → 13/11 04:18 ( 1.3 h) ESPERA-ampliada(este)    EN MARCHA 1.9–3.6 kn    AIS «navegando» · 3 pos (APR) · 39.277N +0.030
+    13/11 04:33 → 13/11 05:46 ( 1.2 h) VALENCIA-mar             EN MARCHA 2.0–3.8 kn    AIS «navegando» · 18 pos (APR+VAL) · 39.275N -0.016
+    13/11 05:52 → 13/11 06:58 ( 1.1 h) ESPERA-ampliada(este)    EN MARCHA 2.3–3.6 kn    AIS «navegando» · 3 pos (APR) · 39.284N +0.020
+    13/11 07:30 → 13/11 08:37 ( 1.1 h) VALENCIA-mar             EN MARCHA 4.1–10.4 kn   AIS «navegando» · 12 pos (APR+VAL) · 39.331N -0.070
+    13/11 08:39 → 13/11 09:15 ( 0.6 h) FONDEADERO               EN MARCHA 1.8–8.1 kn    AIS «navegando» · 3 pos (APR+VAL) · 39.413N -0.154
+    13/11 09:33 → 13/11 09:33 ( 0.0 h) VALENCIA-mar             EN MARCHA 7.0–7.0 kn    AIS «navegando» · 1 pos (VAL) · 39.429N -0.166
+    13/11 09:45 → 13/11 09:59 ( 0.2 h) FONDEADERO               EN MARCHA 4.1–7.9 kn    AIS «navegando» · 4 pos (APR+VAL) · 39.423N -0.209
+    13/11 10:02 → 13/11 10:04 ( 0.0 h) FONDEADERO               parado    0.2–0.6 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.422N -0.231
+    13/11 10:16 → 13/11 10:16 ( 0.0 h) FONDEADERO               EN MARCHA 1.6–1.6 kn    AIS «navegando» · 1 pos (APR) · 39.424N -0.228
+    13/11 10:19 → 13/11 10:22 ( 0.1 h) VALENCIA-mar             EN MARCHA 2.7–4.3 kn    AIS «navegando» · 3 pos (VAL) · 39.426N -0.225
+    13/11 10:29 → 13/11 10:56 ( 0.5 h) FONDEADERO               EN MARCHA 4.9–7.8 kn    AIS «navegando» · 7 pos (APR+VAL) · 39.423N -0.249
+    13/11 10:59 → 13/11 10:59 ( 0.0 h) VALENCIA-mar             EN MARCHA 6.4–6.4 kn    AIS «navegando» · 1 pos (VAL) · 39.426N -0.290
+    13/11 11:03 → 13/11 11:21 ( 0.3 h) RECINTO                  EN MARCHA 3.2–5.9 kn    AIS «navegando» · 6 pos (APR+VAL) · 39.434N -0.309
+    13/11 11:24 → 13/11 11:24 ( 0.0 h) T-MSC                    EN MARCHA 2.0–2.0 kn    AIS «navegando» · 1 pos (VAL) · 39.438N -0.324
+    13/11 11:33 → 13/11 11:33 ( 0.0 h) T-MSC                    parado    0.0–0.0 kn    AIS «navegando» · 1 pos (APR) · 39.439N -0.325
+    13/11 11:54 → 13/11 18:03 ( 6.2 h) T-MSC                    parado    0.0–0.0 kn    AIS «amarrado» · 21 pos (APR+VAL) · 39.439N -0.325
+    13/11 18:10 → 13/11 18:12 ( 0.0 h) T-MSC                    EN MARCHA 1.6–1.7 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.438N -0.325
+    13/11 18:13 → 13/11 18:13 ( 0.0 h) T-MSC                    parado    0.8–0.8 kn    AIS «navegando» · 1 pos (VAL) · 39.437N -0.326
+    13/11 18:21 → 13/11 18:25 ( 0.1 h) RECINTO                  EN MARCHA 4.6–5.5 kn    AIS «navegando» · 2 pos (VAL) · 39.436N -0.313
+    13/11 18:34 → 13/11 18:34 ( 0.0 h) VALENCIA-mar             EN MARCHA 7.1–7.1 kn    AIS «navegando» · 1 pos (VAL) · 39.425N -0.294
+    13/11 18:38 → 13/11 19:17 ( 0.7 h) FONDEADERO               EN MARCHA 9.2–10.1 kn   AIS «navegando» · 12 pos (APR+VAL) · 39.417N -0.219
+    13/11 19:19 → 13/11 19:43 ( 0.4 h) VALENCIA-mar             EN MARCHA 9.8–9.9 kn    AIS «navegando» · 7 pos (VAL) · 39.410N -0.095
+    13/11 20:01 → 13/11 20:01 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 6.1–6.1 kn    AIS «navegando» · 1 pos (APR) · 39.409N +0.008
+    13/11 20:26 → 13/11 20:35 ( 0.1 h) VALENCIA-mar             EN MARCHA 1.3–1.4 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.394N -0.001
+    13/11 21:37 → 13/11 21:37 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 3.2–3.2 kn    AIS «navegando» · 1 pos (APR) · 39.395N +0.033
+    13/11 22:10 → 14/11 01:40 ( 3.5 h) VALENCIA-mar             EN MARCHA 1.1–4.7 kn    AIS «navegando» · 42 pos (APR+VAL) · 39.424N -0.023
+    14/11 01:44 → 14/11 01:44 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 1.8–1.8 kn    AIS «navegando» · 1 pos (APR) · 39.446N +0.001
+    14/11 02:09 → 14/11 05:09 ( 3.0 h) VALENCIA-mar             EN MARCHA 1.5–9.8 kn    AIS «navegando» · 35 pos (APR+VAL) · 39.448N -0.048
+    14/11 05:19 → 14/11 06:04 ( 0.8 h) FONDEADERO               EN MARCHA 2.9–9.2 kn    AIS «navegando» · 10 pos (APR+VAL) · 39.422N -0.239
+    14/11 06:09 → 14/11 06:11 ( 0.0 h) VALENCIA-mar             EN MARCHA 6.3–6.4 kn    AIS «navegando» · 3 pos (VAL) · 39.428N -0.293
+    14/11 06:12 → 14/11 06:27 ( 0.2 h) RECINTO                  EN MARCHA 1.9–6.5 kn    AIS «navegando» · 8 pos (APR+VAL) · 39.434N -0.310
+    14/11 06:35 → 14/11 06:37 ( 0.0 h) T-MSC                    EN MARCHA 1.0–2.1 kn    AIS «navegando» · 2 pos (VAL) · 39.437N -0.327
+    14/11 06:46 → 14/11 12:44 ( 6.0 h) T-MSC                    parado    0.0–0.0 kn    AIS «navegando» · 30 pos (APR+VAL) · 39.437N -0.330
+    14/11 12:52 → 14/11 14:01 ( 1.2 h) T-MSC                    parado    0.0–0.0 kn    AIS «amarrado» · 5 pos (APR+VAL) · 39.437N -0.330
+==============================================================================================================
+EVER GIFTED (MMSI 563068900) · ETA de la lista 10/11 14:30 · llegada de la lista 13/11 19:33
+  Escalas (escalas-v2):
+    inicio 10/11 15:40 · fondeo 10/11 15:40→12/11 14:42 (DERIVA) · atraque — None · desatraque — · salida — · espera 47.0 h · EXCLUIDA: sin atraque · puntos_aprox 26 · max sin señal 4.79 h
+    inicio 13/11 19:33 · fondeo 13/11 19:33→13/11 20:00 (DERIVA) · atraque 13/11 21:43 T-CSP · desatraque — · salida — · espera 0.4 h · EN CURSO · puntos_aprox 0 · max sin señal 1.75 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    10/11 01:36 [APR] destino «FRFOS > ESVLC» · ETA 11-10 14:30 (10/11 14:30) · calado 12.7
+    13/11 12:06 [APR] destino «FRFOS > ESVLC» · ETA 11-10 14:30 (10/11 14:30) · calado 13.2
+    13/11 12:54 [APR] destino «FRFOS > ESVLC» · ETA 11-13 17:00 (13/11 17:00) · calado 13.2
+  Primera posición registrada: 10/11 01:13 · última: 15/11 19:06 · total 397
+  Línea temporal 10/11 02:30 → 14/11 03:33 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    10/11 03:01 → 10/11 03:01 ( 0.0 h) lejos 159 NM NE          EN MARCHA 12.9–12.9 kn  AIS «navegando» · 1 pos (APR) · 40.975N +2.509
+    10/11 03:41 → 10/11 03:41 ( 0.0 h) lejos 150 NM NE          EN MARCHA 13.1–13.1 kn  AIS «navegando» · 1 pos (APR) · 40.878N +2.367
+    10/11 03:41 → 10/11 07:30   ··· SIN SEÑAL 3.8 h ···
+    10/11 07:30 → 10/11 07:30 ( 0.0 h) lejos 100 NM NE          EN MARCHA 13.7–13.7 kn  AIS «navegando» · 1 pos (APR) · 40.302N +1.550
+    10/11 08:09 → 10/11 08:09 ( 0.0 h) lejos 92 NM NE           EN MARCHA 13.3–13.3 kn  AIS «navegando» · 1 pos (APR) · 40.196N +1.419
+    10/11 08:09 → 10/11 12:25   ··· SIN SEÑAL 4.3 h ···
+    10/11 12:25 → 10/11 12:25 ( 0.0 h) lejos 38 NM E            EN MARCHA 12.9–12.9 kn  AIS «navegando» · 1 pos (APR) · 39.626N +0.484
+    10/11 13:03 → 10/11 13:03 ( 0.0 h) lejos 31 NM E            EN MARCHA 12.8–12.8 kn  AIS «navegando» · 1 pos (APR) · 39.553N +0.342
+    10/11 13:44 → 10/11 13:44 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 13.1–13.1 kn  AIS «navegando» · 1 pos (APR) · 39.489N +0.169
+    10/11 14:24 → 10/11 15:37 ( 1.2 h) VALENCIA-mar             EN MARCHA 2.2–13.5 kn   AIS «navegando» · 16 pos (APR+VAL) · 39.457N -0.170
+    10/11 15:40 → 10/11 15:44 ( 0.1 h) VALENCIA-mar             parado    0.4–0.7 kn    AIS «navegando» · 2 pos (VAL) · 39.449N -0.218
+    10/11 16:03 → 12/11 09:25 (41.4 h) VALENCIA-mar             parado    0.0–0.9 kn    AIS «fondeado» · 110 pos (APR+VAL) · 39.451N -0.215
+    12/11 09:46 → 12/11 10:49 ( 1.1 h) VALENCIA-mar             EN MARCHA 1.0–13.5 kn   AIS «navegando» · 17 pos (APR+VAL) · 39.464N -0.143
+    12/11 11:20 → 12/11 13:41 ( 2.3 h) ESPERA-ampliada(este)    EN MARCHA 2.3–8.9 kn    AIS «navegando» · 5 pos (APR) · 39.497N +0.074
+    12/11 14:18 → 12/11 14:20 ( 0.0 h) VALENCIA-mar             EN MARCHA 1.7–2.1 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.417N -0.010
+    12/11 14:28 → 12/11 14:33 ( 0.1 h) VALENCIA-mar             parado    0.6–0.7 kn    AIS «navegando» · 3 pos (VAL) · 39.414N -0.012
+    12/11 14:42 → 12/11 14:48 ( 0.1 h) VALENCIA-mar             EN MARCHA 1.5–1.8 kn    AIS «navegando» · 3 pos (APR+VAL) · 39.412N -0.007
+    12/11 15:19 → 13/11 02:09 (10.8 h) ESPERA-ampliada(este)    EN MARCHA 2.1–10.6 kn   AIS «navegando» · 20 pos (APR) · 39.352N +0.125
+    13/11 02:40 → 13/11 02:40 ( 0.0 h) lejos 27 NM E            EN MARCHA 3.0–3.0 kn    AIS «navegando» · 1 pos (APR) · 39.329N +0.254
+    13/11 03:15 → 13/11 03:15 ( 0.0 h) lejos 29 NM E            EN MARCHA 2.8–2.8 kn    AIS «navegando» · 1 pos (APR) · 39.319N +0.287
+    13/11 03:53 → 13/11 03:53 ( 0.0 h) lejos 31 NM E            EN MARCHA 3.1–3.1 kn    AIS «navegando» · 1 pos (APR) · 39.308N +0.325
+    13/11 04:32 → 13/11 04:32 ( 0.0 h) lejos 32 NM E            EN MARCHA 3.3–3.3 kn    AIS «navegando» · 1 pos (APR) · 39.295N +0.364
+    13/11 05:06 → 13/11 05:06 ( 0.0 h) lejos 34 NM E            EN MARCHA 3.3–3.3 kn    AIS «navegando» · 1 pos (APR) · 39.282N +0.401
+    13/11 05:39 → 13/11 05:39 ( 0.0 h) lejos 35 NM E            EN MARCHA 4.0–4.0 kn    AIS «navegando» · 1 pos (APR) · 39.287N +0.426
+    13/11 06:24 → 13/11 06:24 ( 0.0 h) lejos 30 NM E            EN MARCHA 11.1–11.1 kn  AIS «navegando» · 1 pos (APR) · 39.325N +0.313
+    13/11 06:57 → 13/11 07:27 ( 0.5 h) ESPERA-ampliada(este)    EN MARCHA 11.1–11.3 kn  AIS «navegando» · 2 pos (APR) · 39.372N +0.133
+    13/11 07:48 → 13/11 08:47 ( 1.0 h) VALENCIA-mar             EN MARCHA 1.7–10.0 kn   AIS «navegando» · 16 pos (APR+VAL) · 39.421N -0.017
+    13/11 09:03 → 13/11 18:00 ( 8.9 h) ESPERA-ampliada(este)    EN MARCHA 1.5–9.8 kn    AIS «navegando» · 16 pos (APR) · 39.403N +0.098
+    13/11 18:41 → 13/11 19:24 ( 0.7 h) VALENCIA-mar             EN MARCHA 3.3–14.8 kn   AIS «navegando» · 9 pos (APR+VAL) · 39.440N -0.116
+    13/11 19:33 → 13/11 19:58 ( 0.4 h) VALENCIA-mar             parado    0.4–0.9 kn    AIS «navegando» · 7 pos (APR+VAL) · 39.442N -0.187
+    13/11 20:00 → 13/11 20:55 ( 0.9 h) VALENCIA-mar             EN MARCHA 1.1–7.3 kn    AIS «navegando» · 18 pos (APR+VAL) · 39.440N -0.208
+    13/11 21:00 → 13/11 21:08 ( 0.1 h) FONDEADERO               EN MARCHA 6.8–7.6 kn    AIS «navegando» · 5 pos (VAL) · 39.424N -0.281
+    13/11 21:12 → 13/11 21:33 ( 0.4 h) RECINTO                  EN MARCHA 1.0–6.5 kn    AIS «navegando» · 6 pos (APR+VAL) · 39.433N -0.310
+    13/11 21:34 → 13/11 21:34 ( 0.0 h) T-CSP                    parado    0.9–0.9 kn    AIS «navegando» · 1 pos (VAL) · 39.434N -0.321
+    13/11 21:37 → 13/11 21:37 ( 0.0 h) T-CSP                    EN MARCHA 1.1–1.1 kn    AIS «navegando» · 1 pos (VAL) · 39.434N -0.323
+    13/11 21:43 → 13/11 21:43 ( 0.0 h) T-CSP                    parado    0.4–0.4 kn    AIS «navegando» · 1 pos (VAL) · 39.434N -0.324
+    13/11 21:54 → 14/11 03:18 ( 5.4 h) T-CSP                    parado    0.0–0.0 kn    AIS «amarrado» · 17 pos (APR+VAL) · 39.433N -0.324
+==============================================================================================================
+TROUPER (MMSI 255805844) · ETA de la lista 12/11 04:30 · llegada de la lista 15/11 08:38
+  Escalas (escalas-v2):
+    inicio 30/10 05:34 · fondeo 30/10 05:34→30/10 06:53 (DERIVA) · atraque 30/10 07:36 T-MSC · desatraque 30/10 19:36 · salida 30/10 19:51 · espera 1.3 h · OK · puntos_aprox 0 · max sin señal 1.1 h
+    inicio 01/11 13:05 · fondeo 01/11 13:05→02/11 01:05 (DERIVA) · atraque 02/11 01:58 T-MSC · desatraque 02/11 12:11 · salida 02/11 12:28 · espera 12.0 h · DUDOSA: llegada no observada, buque sin señal 6 h · puntos_aprox 0 · max sin señal 6.35 h
+    inicio 12/11 05:11 · fondeo —→— (None) · atraque 12/11 05:11 T-MSC · desatraque 13/11 01:46 · salida 13/11 02:04 · espera 0.0 h · OK · puntos_aprox 0 · max sin señal 1.45 h
+    inicio 15/11 08:38 · fondeo 15/11 08:38→15/11 17:52 (FONDEO) · atraque 15/11 18:34 T-MSC · desatraque — · salida — · espera 9.2 h · EN CURSO · puntos_aprox 0 · max sin señal 0.95 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    30/10 02:52 [VAL] destino «ESVLC» · ETA 10-30 04:00 (30/10 04:00) · calado 8.6
+    30/10 03:43 [VAL] destino «ESVLC» · ETA 10-30 05:00 (30/10 05:00) · calado 8.6
+    30/10 17:30 [VAL] destino «ESBCN» · ETA 10-31 07:00 (31/10 07:00) · calado 7.8
+    01/11 14:28 [VAL] destino «ESVLC» · ETA 11-01 13:30 (01/11 13:30) · calado 7.3
+    02/11 12:07 [VAL] destino «ESLPA» · ETA 11-05 12:00 (05/11 12:00) · calado 8.4
+    10/11 20:10 [APR] destino «ESCAR» · ETA 11-10 23:00 (10/11 23:00) · calado 7.1
+    11/11 17:04 [APR] destino «ESVLC» · ETA 11-12 05:00 (12/11 05:00) · calado 8.5
+    11/11 18:25 [APR] destino «ESVLC» · ETA 11-12 04:00 (12/11 04:00) · calado 8.5
+    12/11 02:41 [APR] destino «ESVLC» · ETA 11-12 04:30 (12/11 04:30) · calado 8.5
+    13/11 00:40 [APR] destino «ESBCN» · ETA 11-13 11:30 (13/11 11:30) · calado 6.9
+    13/11 01:26 [APR] destino «ESBCN» · ETA 11-13 12:00 (13/11 12:00) · calado 6.9
+    14/11 03:26 [APR] destino «ESBCN» · ETA 11-14 04:00 (14/11 04:00) · calado 6.9
+    14/11 16:37 [APR] destino «ESVLC» · ETA 11-15 06:00 (15/11 06:00) · calado 8.2
+    14/11 19:03 [APR] destino «ESVLC» · ETA 11-15 08:00 (15/11 08:00) · calado 8.2
+  Primera posición registrada: 30/10 02:53 · última: 15/11 19:03 · total 506
+  Línea temporal 11/11 16:30 → 15/11 16:38 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    11/11 17:03 → 11/11 18:14 ( 1.2 h) lejos 115 NM S           parado    0.0–0.0 kn    AIS «amarrado» · 2 pos (APR) · 37.593N -0.974
+    11/11 18:39 → 11/11 18:39 ( 0.0 h) lejos 115 NM S           EN MARCHA 3.9–3.9 kn    AIS «amarrado» · 1 pos (APR) · 37.594N -0.977
+    11/11 18:43 → 11/11 18:43 ( 0.0 h) lejos 115 NM S           EN MARCHA 5.9–5.9 kn    AIS «navegando» · 1 pos (APR) · 37.591N -0.983
+    11/11 19:07 → 11/11 19:07 ( 0.0 h) lejos 119 NM S           EN MARCHA 17.0–17.0 kn  AIS «navegando» · 1 pos (APR) · 37.526N -0.969
+    11/11 19:37 → 11/11 19:37 ( 0.0 h) lejos 117 NM S           EN MARCHA 18.1–18.1 kn  AIS «navegando» · 1 pos (APR) · 37.523N -0.778
+    11/11 20:07 → 11/11 20:07 ( 0.0 h) lejos 116 NM S           EN MARCHA 17.7–17.7 kn  AIS «navegando» · 1 pos (APR) · 37.524N -0.589
+    11/11 20:38 → 11/11 20:38 ( 0.0 h) lejos 110 NM S           EN MARCHA 17.8–17.8 kn  AIS «navegando» · 1 pos (APR) · 37.619N -0.456
+    11/11 21:23 → 11/11 21:23 ( 0.0 h) lejos 98 NM S            EN MARCHA 17.1–17.1 kn  AIS «navegando» · 1 pos (APR) · 37.807N -0.315
+    11/11 21:23 → 12/11 00:26   ··· SIN SEÑAL 3.1 h ···
+    12/11 00:26 → 12/11 00:26 ( 0.0 h) lejos 62 NM SE           EN MARCHA 17.4–17.4 kn  AIS «navegando» · 1 pos (APR) · 38.525N +0.303
+    12/11 02:01 → 12/11 02:01 ( 0.0 h) lejos 43 NM SE           EN MARCHA 17.3–17.3 kn  AIS «navegando» · 1 pos (APR) · 38.902N +0.287
+    12/11 02:38 → 12/11 02:38 ( 0.0 h) lejos 32 NM SE           EN MARCHA 16.9–16.9 kn  AIS «navegando» · 1 pos (APR) · 39.047N +0.157
+    12/11 03:11 → 12/11 03:11 ( 0.0 h) lejos 23 NM SE           EN MARCHA 16.8–16.8 kn  AIS «navegando» · 1 pos (APR) · 39.174N +0.047
+    12/11 03:34 → 12/11 04:03 ( 0.5 h) VALENCIA-mar             EN MARCHA 16.8–17.1 kn  AIS «navegando» · 12 pos (APR+VAL) · 39.321N -0.083
+    12/11 04:09 → 12/11 04:41 ( 0.5 h) FONDEADERO               EN MARCHA 6.2–17.2 kn   AIS «navegando» · 10 pos (APR+VAL) · 39.418N -0.251
+    12/11 04:45 → 12/11 04:57 ( 0.2 h) RECINTO                  EN MARCHA 4.1–7.3 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.432N -0.309
+    12/11 05:05 → 12/11 05:05 ( 0.0 h) T-MSC                    EN MARCHA 1.2–1.2 kn    AIS «navegando» · 1 pos (VAL) · 39.439N -0.327
+    12/11 05:11 → 12/11 05:11 ( 0.0 h) T-MSC                    parado    0.2–0.2 kn    AIS «navegando» · 1 pos (APR) · 39.439N -0.328
+    12/11 05:20 → 13/11 01:26 (20.1 h) T-MSC                    parado    0.0–0.1 kn    AIS «amarrado» · 48 pos (APR+VAL) · 39.439N -0.328
+    13/11 01:45 → 13/11 01:45 ( 0.0 h) T-MSC                    parado    0.5–0.5 kn    AIS «navegando» · 1 pos (APR) · 39.439N -0.328
+    13/11 01:46 → 13/11 01:46 ( 0.0 h) T-MSC                    EN MARCHA 1.8–1.8 kn    AIS «navegando» · 1 pos (VAL) · 39.439N -0.328
+    13/11 01:50 → 13/11 02:01 ( 0.2 h) RECINTO                  EN MARCHA 5.3–12.5 kn   AIS «navegando» · 4 pos (VAL) · 39.434N -0.310
+    13/11 02:04 → 13/11 02:26 ( 0.4 h) FONDEADERO               EN MARCHA 14.8–18.0 kn  AIS «navegando» · 5 pos (APR+VAL) · 39.422N -0.217
+    13/11 02:32 → 13/11 02:43 ( 0.2 h) VALENCIA-mar             EN MARCHA 18.0–18.0 kn  AIS «navegando» · 3 pos (VAL) · 39.436N -0.077
+    13/11 02:55 → 13/11 03:29 ( 0.6 h) ESPERA-ampliada(este)    EN MARCHA 17.8–17.8 kn  AIS «navegando» · 2 pos (APR) · 39.470N +0.140
+    13/11 03:29 → 13/11 10:14   ··· SIN SEÑAL 6.8 h ···
+    13/11 10:14 → 13/11 10:14 ( 0.0 h) lejos 137 NM NE          EN MARCHA 17.4–17.4 kn  AIS «navegando» · 1 pos (APR) · 40.780N +2.092
+    13/11 10:56 → 13/11 10:56 ( 0.0 h) lejos 145 NM NE          EN MARCHA 17.0–17.0 kn  AIS «navegando» · 1 pos (APR) · 40.962N +2.156
+    13/11 11:32 → 13/11 11:32 ( 0.0 h) lejos 153 NM NE          EN MARCHA 16.9–16.9 kn  AIS «navegando» · 1 pos (APR) · 41.135N +2.172
+    13/11 12:13 → 13/11 12:13 ( 0.0 h) lejos 160 NM NE          EN MARCHA 5.7–5.7 kn    AIS «navegando» · 1 pos (APR) · 41.306N +2.202
+    13/11 12:34 → 14/11 02:44 (14.2 h) lejos 160 NM NE          parado    0.0–0.9 kn    AIS «fondeado» · 15 pos (APR) · 41.308N +2.195
+    14/11 03:31 → 14/11 03:31 ( 0.0 h) lejos 160 NM NE          parado    0.6–0.6 kn    AIS «navegando» · 1 pos (APR) · 41.307N +2.193
+    14/11 04:03 → 14/11 04:03 ( 0.0 h) lejos 160 NM NE          EN MARCHA 3.5–3.5 kn    AIS «navegando» · 1 pos (APR) · 41.303N +2.179
+    14/11 04:24 → 14/11 04:24 ( 0.0 h) lejos 159 NM NE          EN MARCHA 4.7–4.7 kn    AIS «amarrado» · 1 pos (APR) · 41.312N +2.155
+    14/11 04:45 → 14/11 17:09 (12.4 h) lejos 159 NM NE          parado    0.0–0.1 kn    AIS «amarrado» · 12 pos (APR) · 41.310N +2.150
+    14/11 17:56 → 14/11 17:56 ( 0.0 h) lejos 159 NM NE          parado    0.0–0.0 kn    AIS «navegando» · 1 pos (APR) · 41.310N +2.150
+    14/11 18:08 → 14/11 18:08 ( 0.0 h) lejos 159 NM NE          EN MARCHA 6.5–6.5 kn    AIS «navegando» · 1 pos (APR) · 41.311N +2.154
+    14/11 18:41 → 14/11 18:41 ( 0.0 h) lejos 157 NM NE          EN MARCHA 13.0–13.0 kn  AIS «navegando» · 1 pos (APR) · 41.242N +2.173
+    14/11 19:11 → 14/11 19:11 ( 0.0 h) lejos 152 NM NE          EN MARCHA 13.1–13.1 kn  AIS «navegando» · 1 pos (APR) · 41.132N +2.160
+    14/11 19:41 → 14/11 19:41 ( 0.0 h) lejos 148 NM NE          EN MARCHA 13.3–13.3 kn  AIS «navegando» · 1 pos (APR) · 41.021N +2.155
+    14/11 20:11 → 14/11 20:11 ( 0.0 h) lejos 143 NM NE          EN MARCHA 13.5–13.5 kn  AIS «navegando» · 1 pos (APR) · 40.909N +2.147
+    14/11 20:11 → 15/11 06:46   ··· SIN SEÑAL 10.6 h ···
+    15/11 06:46 → 15/11 07:20 ( 0.6 h) ESPERA-ampliada(este)    EN MARCHA 12.2–12.2 kn  AIS «navegando» · 2 pos (APR) · 39.452N +0.082
+    15/11 07:30 → 15/11 07:50 ( 0.3 h) VALENCIA-mar             EN MARCHA 12.1–13.1 kn  AIS «navegando» · 6 pos (APR+VAL) · 39.417N -0.080
+    15/11 08:04 → 15/11 08:33 ( 0.5 h) FONDEADERO               EN MARCHA 2.0–10.9 kn   AIS «navegando» · 11 pos (APR+VAL) · 39.389N -0.220
+    15/11 08:38 → 15/11 10:52 ( 2.2 h) FONDEADERO               parado    0.0–0.7 kn    AIS «navegando» · 13 pos (APR+VAL) · 39.388N -0.249
+    15/11 11:09 → 15/11 16:34 ( 5.4 h) FONDEADERO               parado    0.0–0.2 kn    AIS «fondeado» · 16 pos (APR+VAL) · 39.387N -0.249
+==============================================================================================================
+MSC FEBE (MMSI 372729000) · ETA de la lista 03/11 07:00 · llegada de la lista 01/11 08:23
+  Escalas (escalas-v2):
+    inicio 01/11 08:23 · fondeo 01/11 08:23→03/11 09:01 (FONDEO) · atraque 03/11 13:37 T-MSC · desatraque 05/11 20:19 · salida 05/11 21:07 · espera 48.6 h · OK · puntos_aprox 0 · max sin señal 1.4 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    01/11 06:53 [VAL] destino «VALENCIA» · ETA 11-03 07:00 (03/11 07:00) · calado 16.5
+    01/11 14:56 [VAL] destino «VALENCIA» · ETA 11-04 01:00 (04/11 01:00) · calado 16.5
+    05/11 09:32 [VAL] destino «ESBCN» · ETA 11-07 19:00 (07/11 19:00) · calado 15.3
+    05/11 18:28 [VAL] destino «ESBCN» · ETA 11-07 13:00 (07/11 13:00) · calado 15.4
+    08/11 17:22 [APR] destino «ESBCN» · ETA 11-07 01:00 (07/11 01:00) · calado 15.4
+    09/11 07:38 [APR] destino «FRFOS» · ETA 11-10 09:00 (10/11 09:00) · calado 14.2
+  Primera posición registrada: 01/11 06:53 · última: 09/11 17:56 · total 434
+  Línea temporal 31/10 20:23 → 03/11 15:00 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    01/11 06:53 → 01/11 07:22 ( 0.5 h) VALENCIA-mar             EN MARCHA 10.2–11.4 kn  AIS «navegando» · 5 pos (VAL) · 39.407N -0.065
+    01/11 07:25 → 01/11 08:19 ( 0.9 h) FONDEADERO               EN MARCHA 1.3–9.7 kn    AIS «navegando» · 11 pos (VAL) · 39.392N -0.204
+    01/11 08:23 → 01/11 08:23 ( 0.0 h) FONDEADERO               parado    0.5–0.5 kn    AIS «navegando» · 1 pos (VAL) · 39.402N -0.233
+    01/11 08:24 → 03/11 08:57 (48.5 h) FONDEADERO               parado    0.0–0.5 kn    AIS «fondeado» · 142 pos (VAL) · 39.402N -0.234
+    03/11 08:59 → 03/11 08:59 ( 0.0 h) FONDEADERO               parado    0.6–0.6 kn    AIS «navegando» · 1 pos (VAL) · 39.401N -0.234
+    03/11 09:01 → 03/11 09:16 ( 0.2 h) FONDEADERO               EN MARCHA 1.2–6.8 kn    AIS «navegando» · 6 pos (VAL) · 39.407N -0.228
+    03/11 09:39 → 03/11 12:22 ( 2.7 h) VALENCIA-mar             EN MARCHA 1.2–6.8 kn    AIS «navegando» · 38 pos (VAL) · 39.447N -0.161
+    03/11 12:26 → 03/11 12:54 ( 0.5 h) FONDEADERO               EN MARCHA 4.4–4.7 kn    AIS «navegando» · 4 pos (VAL) · 39.423N -0.265
+    03/11 12:59 → 03/11 13:00 ( 0.0 h) VALENCIA-mar             EN MARCHA 4.6–4.6 kn    AIS «navegando» · 2 pos (VAL) · 39.426N -0.293
+    03/11 13:04 → 03/11 13:25 ( 0.3 h) RECINTO                  EN MARCHA 1.4–4.6 kn    AIS «navegando» · 7 pos (VAL) · 39.435N -0.313
+    03/11 13:26 → 03/11 13:34 ( 0.1 h) T-MSC                    EN MARCHA 1.1–1.4 kn    AIS «navegando» · 3 pos (VAL) · 39.438N -0.325
+    03/11 13:37 → 03/11 13:56 ( 0.3 h) T-MSC                    parado    0.0–0.4 kn    AIS «navegando» · 4 pos (VAL) · 39.439N -0.327
+    03/11 14:09 → 03/11 14:54 ( 0.8 h) T-MSC                    parado    0.0–0.0 kn    AIS «amarrado» · 3 pos (VAL) · 39.439N -0.326
+==============================================================================================================
+MSC ANZIO II (MMSI 636019221) · ETA de la lista 11/11 19:00 · llegada de la lista 13/11 13:03
+  Escalas (escalas-v2):
+    inicio 29/10 19:32 · fondeo 29/10 19:32→29/10 20:05 (FONDEO) · atraque 29/10 21:04 T-MSC · desatraque 30/10 11:59 · salida 30/10 11:59 · espera 0.6 h · DUDOSA: llegada no observada · puntos_aprox 0 · max sin señal 0.95 h
+    inicio 02/11 20:55 · fondeo 02/11 20:55→04/11 19:48 (FONDEO) · atraque 04/11 21:07 T-MSC · desatraque 05/11 09:45 · salida 05/11 10:15 · espera 46.9 h · OK · puntos_aprox 0 · max sin señal 1.3 h
+    inicio 11/11 18:01 · fondeo 11/11 18:01→13/11 01:36 (FONDEO) · atraque — None · desatraque — · salida — · espera 31.6 h · EXCLUIDA: sin atraque · puntos_aprox 19 · max sin señal 1.5 h
+    inicio 13/11 13:39 · fondeo —→— (None) · atraque 13/11 13:39 T-MSC · desatraque 14/11 05:28 · salida 14/11 05:57 · espera 0.0 h · OK · puntos_aprox 0 · max sin señal 1.55 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    29/10 19:34 [VAL] destino «ESVLC» · ETA 10-29 13:00 (29/10 13:00) · calado 6.8
+    30/10 03:14 [VAL] destino «DZORN» · ETA 10-31 08:00 (31/10 08:00) · calado 8.8
+    30/10 11:04 [VAL] destino «DZORN» · ETA 10-31 08:00 (31/10 08:00) · calado 8.9
+    30/10 12:05 [VAL] destino «DZORN» · ETA 10-31 07:00 (31/10 07:00) · calado 8.8
+    02/11 19:54 [VAL] destino «ESVLC» · ETA 11-02 21:00 (02/11 21:00) · calado 6.7
+    02/11 21:04 [VAL] destino «ESVLC» · ETA 11-02 21:00 (02/11 21:00) · calado 6.8
+    04/11 23:18 [VAL] destino «DZORN» · ETA 11-02 21:00 (02/11 21:00) · calado 6.8
+    04/11 23:19 [VAL] destino «DZORN» · ETA 11-02 21:00 (02/11 21:00) · calado 7.7
+    04/11 23:32 [VAL] destino «DZORN» · ETA 11-06 02:00 (06/11 02:00) · calado 7.7
+    05/11 08:58 [VAL] destino «DZORN» · ETA 11-06 06:00 (06/11 06:00) · calado 7.8
+    11/11 00:36 [APR] destino «ESVLC» · ETA 11-11 19:00 (11/11 19:00) · calado 6.7
+    11/11 05:00 [APR] destino «ESVLC» · ETA None (—) · calado 6.7
+    11/11 05:00 [APR] destino «ESVLC» · ETA 11-11 19:00 (11/11 19:00) · calado 6.7
+    11/11 05:06 [APR] destino «ESVLC» · ETA None (—) · calado 6.7
+    11/11 05:06 [APR] destino «ESVLC» · ETA 11-11 19:00 (11/11 19:00) · calado 6.7
+    11/11 23:32 [APR] destino «ESVLC» · ETA 11-11 19:00 (11/11 19:00) · calado 6.8
+    13/11 22:56 [APR] destino «ESAGP» · ETA 11-13 11:00 (13/11 11:00) · calado 6.8
+    13/11 23:09 [APR] destino «ESAGP» · ETA 11-13 11:00 (13/11 11:00) · calado 7.3
+    13/11 23:54 [APR] destino «ESAGP» · ETA 11-15 07:00 (15/11 07:00) · calado 7.3
+    14/11 05:01 [APR] destino «ESAGP» · ETA 11-15 09:00 (15/11 09:00) · calado 7.3
+    14/11 19:19 [APR] destino «ESAGP» · ETA 11-15 13:00 (15/11 13:00) · calado 7.3
+  Primera posición registrada: 29/10 19:32 · última: 14/11 22:10 · total 657
+  Línea temporal 11/11 07:00 → 13/11 21:03 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    11/11 07:29 → 11/11 07:29 ( 0.0 h) lejos 83 NM S            EN MARCHA 11.4–11.4 kn  AIS «navegando» · 1 pos (APR) · 38.070N -0.075
+    11/11 07:29 → 11/11 13:45   ··· SIN SEÑAL 6.3 h ···
+    11/11 13:45 → 11/11 13:45 ( 0.0 h) lejos 37 NM SE           EN MARCHA 7.4–7.4 kn    AIS «navegando» · 1 pos (APR) · 38.982N +0.225
+    11/11 14:17 → 11/11 14:17 ( 0.0 h) lejos 33 NM SE           EN MARCHA 7.2–7.2 kn    AIS «navegando» · 1 pos (APR) · 39.033N +0.176
+    11/11 14:49 → 11/11 14:49 ( 0.0 h) lejos 28 NM SE           EN MARCHA 10.9–10.9 kn  AIS «navegando» · 1 pos (APR) · 39.100N +0.112
+    11/11 15:26 → 11/11 15:26 ( 0.0 h) lejos 22 NM SE           EN MARCHA 11.0–11.0 kn  AIS «navegando» · 1 pos (APR) · 39.192N +0.028
+    11/11 15:53 → 11/11 17:09 ( 1.3 h) VALENCIA-mar             EN MARCHA 7.5–11.1 kn   AIS «navegando» · 14 pos (APR+VAL) · 39.343N -0.149
+    11/11 17:10 → 11/11 17:48 ( 0.6 h) FONDEADERO               EN MARCHA 1.1–7.8 kn    AIS «navegando» · 8 pos (APR+VAL) · 39.385N -0.245
+    11/11 18:01 → 12/11 08:58 (14.9 h) FONDEADERO               parado    0.0–0.5 kn    AIS «fondeado» · 39 pos (APR+VAL) · 39.389N -0.269
+    12/11 09:58 → 12/11 10:42 ( 0.7 h) FONDEADERO               EN MARCHA 1.1–3.1 kn    AIS «fondeado» · 3 pos (APR+VAL) · 39.386N -0.268
+    12/11 10:45 → 12/11 11:38 ( 0.9 h) FONDEADERO               EN MARCHA 5.4–6.6 kn    AIS «navegando» · 9 pos (APR+VAL) · 39.392N -0.194
+    12/11 11:46 → 12/11 13:02 ( 1.3 h) VALENCIA-mar             EN MARCHA 1.9–6.3 kn    AIS «navegando» · 14 pos (APR+VAL) · 39.409N -0.060
+    12/11 13:41 → 12/11 14:13 ( 0.5 h) ESPERA-ampliada(este)    EN MARCHA 1.7–2.2 kn    AIS «navegando» · 2 pos (APR) · 39.419N +0.028
+    12/11 14:49 → 12/11 14:49 ( 0.0 h) VALENCIA-mar             EN MARCHA 5.6–5.6 kn    AIS «navegando» · 1 pos (APR) · 39.427N -0.014
+    12/11 15:05 → 12/11 15:05 ( 0.0 h) VALENCIA-mar             parado    0.7–0.7 kn    AIS «navegando» · 1 pos (VAL) · 39.425N -0.041
+    12/11 15:09 → 12/11 16:10 ( 1.0 h) VALENCIA-mar             EN MARCHA 1.1–2.0 kn    AIS «navegando» · 12 pos (APR+VAL) · 39.425N -0.018
+    12/11 16:38 → 12/11 17:08 ( 0.5 h) ESPERA-ampliada(este)    EN MARCHA 1.5–2.0 kn    AIS «navegando» · 2 pos (APR) · 39.427N +0.019
+    12/11 17:46 → 12/11 17:47 ( 0.0 h) VALENCIA-mar             parado    0.4–0.8 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.432N -0.028
+    12/11 17:51 → 12/11 18:43 ( 0.9 h) VALENCIA-mar             EN MARCHA 1.0–1.6 kn    AIS «navegando» · 12 pos (APR+VAL) · 39.436N -0.016
+    12/11 18:48 → 12/11 19:59 ( 1.2 h) ESPERA-ampliada(este)    EN MARCHA 1.4–1.6 kn    AIS «navegando» · 3 pos (APR) · 39.445N +0.019
+    12/11 20:52 → 12/11 22:09 ( 1.3 h) VALENCIA-mar             EN MARCHA 1.4–5.5 kn    AIS «navegando» · 12 pos (APR+VAL) · 39.429N -0.026
+    12/11 22:43 → 13/11 00:29 ( 1.8 h) ESPERA-ampliada(este)    EN MARCHA 1.8–5.2 kn    AIS «navegando» · 4 pos (APR) · 39.457N +0.022
+    13/11 00:49 → 13/11 01:25 ( 0.6 h) VALENCIA-mar             EN MARCHA 1.7–5.4 kn    AIS «navegando» · 7 pos (APR+VAL) · 39.434N -0.026
+    13/11 01:26 → 13/11 01:26 ( 0.0 h) VALENCIA-mar             parado    0.9–0.9 kn    AIS «navegando» · 1 pos (VAL) · 39.420N -0.048
+    13/11 01:36 → 13/11 02:07 ( 0.5 h) VALENCIA-mar             EN MARCHA 1.8–2.0 kn    AIS «navegando» · 8 pos (APR+VAL) · 39.420N -0.036
+    13/11 02:51 → 13/11 04:25 ( 1.6 h) ESPERA-ampliada(este)    EN MARCHA 2.0–4.1 kn    AIS «navegando» · 3 pos (APR) · 39.414N +0.021
+    13/11 04:37 → 13/11 05:55 ( 1.3 h) VALENCIA-mar             EN MARCHA 1.1–4.4 kn    AIS «navegando» · 10 pos (APR+VAL) · 39.424N -0.018
+    13/11 06:24 → 13/11 08:38 ( 2.2 h) ESPERA-ampliada(este)    EN MARCHA 1.6–5.7 kn    AIS «navegando» · 5 pos (APR) · 39.437N +0.043
+    13/11 09:07 → 13/11 11:23 ( 2.3 h) VALENCIA-mar             EN MARCHA 1.2–6.3 kn    AIS «navegando» · 20 pos (APR+VAL) · 39.412N -0.062
+    13/11 11:39 → 13/11 11:51 ( 0.2 h) FONDEADERO               EN MARCHA 5.8–6.3 kn    AIS «navegando» · 4 pos (APR+VAL) · 39.419N -0.161
+    13/11 11:59 → 13/11 12:54 ( 0.9 h) VALENCIA-mar             EN MARCHA 3.1–7.9 kn    AIS «navegando» · 11 pos (APR+VAL) · 39.429N -0.235
+    13/11 13:03 → 13/11 13:21 ( 0.3 h) RECINTO                  EN MARCHA 3.4–5.9 kn    AIS «navegando» · 4 pos (VAL) · 39.434N -0.309
+    13/11 13:37 → 13/11 13:37 ( 0.0 h) T-MSC                    EN MARCHA 1.1–1.1 kn    AIS «navegando» · 1 pos (APR) · 39.437N -0.328
+    13/11 13:39 → 13/11 13:43 ( 0.1 h) T-MSC                    parado    0.2–0.4 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.437N -0.329
+    13/11 13:47 → 13/11 20:35 ( 6.8 h) T-MSC                    parado    0.0–0.2 kn    AIS «amarrado» · 23 pos (APR+VAL) · 39.437N -0.329
+==============================================================================================================
+CMA CGM HARMONY (MMSI 256849000) · ETA de la lista 11/11 20:00 · llegada de la lista 13/11 06:43
+  Escalas (escalas-v2):
+    inicio 11/11 18:37 · fondeo 11/11 18:37→12/11 14:31 (DERIVA) · atraque — None · desatraque — · salida — · espera 19.9 h · EXCLUIDA: sin atraque · puntos_aprox 48 · max sin señal 1.03 h
+    inicio 13/11 06:43 · fondeo 13/11 06:43→14/11 01:33 (DERIVA) · atraque 14/11 02:56 T-CSP · desatraque — · salida — · espera 18.8 h · EN CURSO · puntos_aprox 26 · max sin señal 1.55 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    10/11 05:59 [APR] destino «ESBCN» · ETA 11-10 09:00 (10/11 09:00) · calado 11.0
+    10/11 06:24 [APR] destino «ESBCN» · ETA 11-10 09:00 (10/11 09:00) · calado 11.3
+    11/11 01:29 [APR] destino «ESVLC» · ETA 11-11 01:27 (11/11 01:27) · calado 11.3
+    11/11 01:59 [APR] destino «ESVLC» · ETA 11-11 20:00 (11/11 20:00) · calado 11.3
+    11/11 02:23 [APR] destino «ESVLC» · ETA 11-11 20:00 (11/11 20:00) · calado 12.0
+    13/11 17:35 [APR] destino «ESVLC» · ETA 11-14 01:00 (14/11 01:00) · calado 12.0
+  Primera posición registrada: 10/11 05:55 · última: 15/11 19:20 · total 336
+  Línea temporal 11/11 08:00 → 13/11 14:43 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    11/11 08:33 → 11/11 08:33 ( 0.0 h) lejos 112 NM NE          EN MARCHA 11.2–11.2 kn  AIS «navegando» · 1 pos (APR) · 40.607N +1.598
+    11/11 09:44 → 11/11 09:44 ( 0.0 h) lejos 100 NM NE          EN MARCHA 10.9–10.9 kn  AIS «navegando» · 1 pos (APR) · 40.432N +1.443
+    11/11 10:25 → 11/11 10:25 ( 0.0 h) lejos 93 NM NE           EN MARCHA 11.2–11.2 kn  AIS «navegando» · 1 pos (APR) · 40.327N +1.352
+    11/11 10:25 → 11/11 14:05   ··· SIN SEÑAL 3.7 h ···
+    11/11 14:05 → 11/11 14:05 ( 0.0 h) lejos 57 NM E            EN MARCHA 10.6–10.6 kn  AIS «navegando» · 1 pos (APR) · 39.771N +0.855
+    11/11 14:53 → 11/11 14:53 ( 0.0 h) lejos 49 NM E            EN MARCHA 11.0–11.0 kn  AIS «navegando» · 1 pos (APR) · 39.687N +0.704
+    11/11 15:24 → 11/11 15:24 ( 0.0 h) lejos 43 NM E            EN MARCHA 11.2–11.2 kn  AIS «navegando» · 1 pos (APR) · 39.638N +0.594
+    11/11 15:55 → 11/11 15:55 ( 0.0 h) lejos 38 NM E            EN MARCHA 11.1–11.1 kn  AIS «navegando» · 1 pos (APR) · 39.588N +0.487
+    11/11 16:26 → 11/11 16:26 ( 0.0 h) lejos 33 NM E            EN MARCHA 10.6–10.6 kn  AIS «navegando» · 1 pos (APR) · 39.541N +0.384
+    11/11 16:57 → 11/11 16:57 ( 0.0 h) lejos 28 NM E            EN MARCHA 10.9–10.9 kn  AIS «navegando» · 1 pos (APR) · 39.495N +0.281
+    11/11 17:35 → 11/11 18:06 ( 0.5 h) ESPERA-ampliada(este)    EN MARCHA 10.7–10.8 kn  AIS «navegando» · 2 pos (APR) · 39.458N +0.077
+    11/11 18:17 → 11/11 18:31 ( 0.2 h) VALENCIA-mar             EN MARCHA 3.1–6.5 kn    AIS «navegando» · 5 pos (VAL) · 39.442N -0.024
+    11/11 18:37 → 11/11 21:24 ( 2.8 h) VALENCIA-mar             parado    0.1–0.3 kn    AIS «navegando» · 14 pos (APR+VAL) · 39.443N -0.043
+    11/11 21:32 → 11/11 22:06 ( 0.6 h) VALENCIA-mar             EN MARCHA 1.9–6.5 kn    AIS «navegando» · 7 pos (APR+VAL) · 39.448N -0.024
+    11/11 22:34 → 11/11 22:34 ( 0.0 h) ESPERA-ampliada(este)    parado    0.6–0.6 kn    AIS «navegando» · 1 pos (APR) · 39.459N +0.018
+    11/11 23:08 → 11/11 23:08 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 1.1–1.1 kn    AIS «navegando» · 1 pos (APR) · 39.464N +0.023
+    11/11 23:46 → 11/11 23:46 ( 0.0 h) ESPERA-ampliada(este)    parado    0.9–0.9 kn    AIS «navegando» · 1 pos (APR) · 39.475N +0.024
+    12/11 00:18 → 12/11 00:18 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 1.0–1.0 kn    AIS «navegando» · 1 pos (APR) · 39.480N +0.020
+    12/11 00:52 → 12/11 01:56 ( 1.1 h) ESPERA-ampliada(este)    parado    0.3–0.5 kn    AIS «navegando» · 3 pos (APR) · 39.485N +0.009
+    12/11 02:32 → 12/11 02:39 ( 0.1 h) VALENCIA-mar             parado    0.5–0.5 kn    AIS «navegando» · 2 pos (APR+VAL) · 39.488N -0.001
+    12/11 03:09 → 12/11 03:09 ( 0.0 h) ESPERA-ampliada(este)    EN MARCHA 3.7–3.7 kn    AIS «navegando» · 1 pos (APR) · 39.466N +0.024
+    12/11 03:20 → 12/11 05:06 ( 1.8 h) ESPERA-ampliada(este)    parado    0.2–0.7 kn    AIS «navegando» · 4 pos (APR) · 39.466N +0.031
+    12/11 05:38 → 12/11 13:17 ( 7.6 h) ESPERA-ampliada(este)    EN MARCHA 1.2–6.1 kn    AIS «navegando» · 14 pos (APR) · 39.462N +0.085
+    12/11 13:59 → 12/11 13:59 ( 0.0 h) ESPERA-ampliada(este)    parado    0.7–0.7 kn    AIS «navegando» · 1 pos (APR) · 39.473N +0.102
+    12/11 14:31 → 13/11 06:29 (16.0 h) ESPERA-ampliada(este)    EN MARCHA 1.2–7.4 kn    AIS «navegando» · 28 pos (APR) · 39.463N +0.083
+    13/11 06:43 → 13/11 07:04 ( 0.4 h) VALENCIA-mar             EN MARCHA 1.0–1.7 kn    AIS «navegando» · 4 pos (APR+VAL) · 39.473N -0.012
+    13/11 07:35 → 13/11 11:06 ( 3.5 h) ESPERA-ampliada(este)    EN MARCHA 2.1–5.0 kn    AIS «navegando» · 7 pos (APR) · 39.460N +0.052
+    13/11 11:59 → 13/11 11:59 ( 0.0 h) ESPERA-ampliada(este)    parado    0.1–0.1 kn    AIS «navegando» · 1 pos (APR) · 39.496N +0.037
+    13/11 12:15 → 13/11 14:23 ( 2.1 h) ESPERA-ampliada(este)    EN MARCHA 1.3–2.6 kn    AIS «navegando» · 5 pos (APR) · 39.473N +0.079
+==============================================================================================================
+ONE MANEUVER (MMSI 431120000) · ETA de la lista 02/11 11:00 · llegada de la lista 01/11 04:37
+  Escalas (escalas-v2):
+    inicio 01/11 04:37 · fondeo 01/11 04:37→02/11 10:21 (FONDEO) · atraque 02/11 11:25 T-CSP · desatraque 03/11 14:49 · salida 03/11 15:14 · espera 29.7 h · OK · puntos_aprox 0 · max sin señal 1.2 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    01/11 03:33 [VAL] destino «ESVLC» · ETA 11-02 11:00 (02/11 11:00) · calado 11.5
+    03/11 11:28 [VAL] destino «ESALG» · ETA 11-02 11:00 (02/11 11:00) · calado 11.5
+    03/11 11:34 [VAL] destino «ESALG» · ETA 11-05 13:30 (05/11 13:30) · calado 11.5
+    03/11 13:31 [VAL] destino «ESALG» · ETA 11-05 13:30 (05/11 13:30) · calado 13.4
+  Primera posición registrada: 01/11 03:08 · última: 03/11 16:28 · total 234
+  Línea temporal 31/10 16:37 → 02/11 19:00 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    01/11 03:08 → 01/11 03:35 ( 0.4 h) VALENCIA-mar             EN MARCHA 10.0–12.3 kn  AIS «navegando» · 8 pos (VAL) · 39.391N -0.097
+    01/11 03:39 → 01/11 04:23 ( 0.7 h) FONDEADERO               EN MARCHA 2.5–8.2 kn    AIS «navegando» · 15 pos (VAL) · 39.384N -0.190
+    01/11 04:37 → 01/11 04:42 ( 0.1 h) FONDEADERO               parado    0.2–0.5 kn    AIS «navegando» · 2 pos (VAL) · 39.400N -0.217
+    01/11 04:44 → 02/11 10:08 (29.4 h) FONDEADERO               parado    0.0–0.5 kn    AIS «fondeado» · 82 pos (VAL) · 39.401N -0.219
+    02/11 10:21 → 02/11 10:52 ( 0.5 h) FONDEADERO               EN MARCHA 2.3–8.4 kn    AIS «navegando» · 10 pos (VAL) · 39.413N -0.247
+    02/11 10:59 → 02/11 10:59 ( 0.0 h) VALENCIA-mar             EN MARCHA 5.7–5.7 kn    AIS «navegando» · 1 pos (VAL) · 39.425N -0.292
+    02/11 11:01 → 02/11 11:22 ( 0.4 h) RECINTO                  EN MARCHA 1.3–5.7 kn    AIS «navegando» · 10 pos (VAL) · 39.434N -0.312
+    02/11 11:25 → 02/11 11:31 ( 0.1 h) RECINTO                  parado    0.4–0.5 kn    AIS «navegando» · 3 pos (VAL) · 39.435N -0.324
+    02/11 11:57 → 02/11 18:30 ( 6.6 h) T-CSP                    parado    0.0–0.0 kn    AIS «amarrado» · 23 pos (VAL) · 39.434N -0.325
+==============================================================================================================
+WEC CORNEILLE (MMSI 255805802) · ETA de la lista 31/10 14:00 · llegada de la lista 01/11 17:04
+  Escalas (escalas-v2):
+    inicio 31/10 13:59 · fondeo 31/10 13:59→01/11 07:17 (FONDEO) · atraque 01/11 10:27 T-MSC · desatraque 01/11 16:22 · salida 01/11 16:35 · espera 17.3 h · DUDOSA: buque sin señal 3 h · puntos_aprox 0 · max sin señal 2.57 h
+    inicio 01/11 17:04 · fondeo 01/11 17:04→02/11 17:56 (FONDEO) · atraque 02/11 18:33 T-MSC · desatraque 03/11 06:00 · salida 03/11 06:21 · espera 24.9 h · OK · puntos_aprox 0 · max sin señal 1.23 h
+    inicio 15/11 00:04 · fondeo —→— (None) · atraque 15/11 00:04 T-MSC · desatraque 15/11 07:49 · salida 15/11 07:59 · espera 0.0 h · OK · puntos_aprox 0 · max sin señal 1.25 h
+    inicio 15/11 08:43 · fondeo 15/11 08:43→15/11 19:01 (FONDEO) · atraque — None · desatraque — · salida — · espera 10.3 h · EN CURSO · puntos_aprox 0 · max sin señal 2.15 h
+  Cambios de destino / ETA / calado (las dos zonas):
+    31/10 13:28 [VAL] destino «ESVLC» · ETA 10-31 14:00 (31/10 14:00) · calado 9.1
+    01/11 10:39 [VAL] destino «ESVLC» · ETA 11-01 09:00 (01/11 09:00) · calado 9.1
+    01/11 15:15 [VAL] destino «ESVLC» · ETA 11-01 09:00 (01/11 09:00) · calado 9.0
+    01/11 15:22 [VAL] destino «ESVLC» · ETA 11-02 04:00 (02/11 04:00) · calado 9.0
+    02/11 07:41 [VAL] destino «ESVLC» · ETA 11-02 08:00 (02/11 08:00) · calado 9.0
+    02/11 11:35 [VAL] destino «ESVLC» · ETA 11-02 16:00 (02/11 16:00) · calado 9.0
+    03/11 04:53 [VAL] destino «ESCAR» · ETA 11-03 18:00 (03/11 18:00) · calado 7.5
+    11/11 09:44 [APR] destino «ESCAR» · ETA 11-11 13:00 (11/11 13:00) · calado 6.3
+    11/11 10:58 [APR] destino «ESCAR» · ETA 11-11 13:00 (11/11 13:00) · calado 7.3
+    11/11 18:37 [APR] destino «ESCAR» · ETA 12-11 01:00 (11/12 01:00) · calado 7.3
+    12/11 15:16 [APR] destino «ESCAR» · ETA 11-14 01:00 (14/11 01:00) · calado 7.3
+    13/11 22:22 [APR] destino «ESCAR» · ETA 11-13 22:30 (13/11 22:30) · calado 7.3
+    14/11 00:37 [APR] destino «ESVLC» · ETA 11-14 20:30 (14/11 20:30) · calado 6.5
+    14/11 11:16 [APR] destino «ESVLC» · ETA 11-15 00:01 (15/11 00:01) · calado 6.5
+    14/11 11:19 [APR] destino «ESVLC» · ETA 11-15 00:01 (15/11 00:01) · calado 8.3
+    14/11 12:02 [APR] destino «ESVLC» · ETA 11-14 23:00 (14/11 23:00) · calado 8.3
+    14/11 22:12 [APR] destino «ESVLC» · ETA 11-14 23:24 (14/11 23:24) · calado 8.2
+    15/11 07:13 [APR] destino «ESVLC» · ETA 11-16 01:00 (16/11 01:00) · calado 8.0
+    15/11 19:12 [APR] destino «ESVLC» · ETA 11-15 20:00 (15/11 20:00) · calado 8.0
+  Primera posición registrada: 31/10 12:25 · última: 15/11 19:19 · total 426
+  Línea temporal 31/10 02:00 → 02/11 01:04 (tramos: lugar, parado/en marcha, estado AIS; huecos > 2 h):
+    31/10 12:25 → 31/10 13:31 ( 1.1 h) VALENCIA-mar             EN MARCHA 9.4–11.0 kn   AIS «navegando» · 13 pos (VAL) · 39.343N -0.150
+    31/10 13:32 → 31/10 13:56 ( 0.4 h) FONDEADERO               EN MARCHA 1.7–9.4 kn    AIS «navegando» · 8 pos (VAL) · 39.383N -0.264
+    31/10 13:59 → 31/10 14:08 ( 0.1 h) FONDEADERO               parado    0.2–0.5 kn    AIS «navegando» · 2 pos (VAL) · 39.387N -0.269
+    31/10 14:13 → 01/11 07:09 (16.9 h) FONDEADERO               parado    0.0–0.5 kn    AIS «fondeado» · 49 pos (VAL) · 39.386N -0.269
+    01/11 07:17 → 01/11 07:53 ( 0.6 h) FONDEADERO               EN MARCHA 1.4–5.4 kn    AIS «fondeado» · 9 pos (VAL) · 39.407N -0.264
+    01/11 07:53 → 01/11 10:27   ··· SIN SEÑAL 2.6 h ···
+    01/11 10:27 → 01/11 16:04 ( 5.6 h) T-MSC                    parado    0.0–0.1 kn    AIS «amarrado» · 15 pos (VAL) · 39.435N -0.329
+    01/11 16:14 → 01/11 16:14 ( 0.0 h) T-MSC                    parado    0.1–0.1 kn    AIS «navegando» · 1 pos (VAL) · 39.435N -0.328
+    01/11 16:22 → 01/11 16:30 ( 0.1 h) RECINTO                  EN MARCHA 5.8–8.6 kn    AIS «navegando» · 6 pos (VAL) · 39.432N -0.306
+    01/11 16:35 → 01/11 16:59 ( 0.4 h) FONDEADERO               EN MARCHA 1.9–7.0 kn    AIS «navegando» · 6 pos (VAL) · 39.409N -0.280
+    01/11 17:04 → 01/11 17:04 ( 0.0 h) FONDEADERO               parado    0.4–0.4 kn    AIS «navegando» · 1 pos (VAL) · 39.393N -0.270
+    01/11 17:18 → 02/11 00:59 ( 7.7 h) FONDEADERO               parado    0.0–0.5 kn    AIS «fondeado» · 26 pos (VAL) · 39.393N -0.270
