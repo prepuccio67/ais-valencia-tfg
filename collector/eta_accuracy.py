@@ -407,7 +407,7 @@ def review_list(rows, params):
         key = (o["mmsi"], o["t_start"], o["eta_utc"])      # la misma ETA reenviada cuenta una vez
         item = out.setdefault(key, {**o, "horizons": [], "check": "", "note": ""})
         if o["eta_ts"] < item["eta_ts"]:
-            item["eta_ts"] = o["eta_ts"]                       # se muestra cuándo la emitió por primera vez
+            item["eta_ts"] = o["eta_ts"]                       # la emisión más antigua de las que se usan
         h = "última" if o["horizon"] == LAST else o["horizon"] + " h"
         if h not in item["horizons"]:
             item["horizons"].append(h)
