@@ -7,7 +7,7 @@ const ETA_DEFS = { ZONA_ESPERA: 'llegada a la zona de espera', RECINTO: 'entrada
 const ETA_STATUS = {
   USABLE: 'utilizable', LLEGADA_NO_VISTA: 'llegada no vista', ANTES_CAPTURA: 'antes de la captura',
   SIN_COBERTURA: 'buque no visto en las 2 h anteriores', SIN_ETA: 'sin ETA', DESTINO_OTRO: 'destino: otro puerto',
-  DESTINO_DUDOSO: 'destino dudoso', ETA_CADUCADA: 'ETA caducada', ETA_IMPOSIBLE: 'ETA imposible (> 30 días)',
+  DESTINO_DUDOSO: 'destino dudoso', ESCALA_ANTERIOR: 'ETA de la escala anterior', ETA_CADUCADA: 'ETA caducada', ETA_IMPOSIBLE: 'ETA imposible (> 30 días)',
   ESCALA_EXCLUIDA: 'escala excluida',
 };
 const num = (v, d = 1) => (v == null ? '—' : v.toFixed(d).replace('.', ','));
@@ -30,16 +30,17 @@ function mainTable(d) {
   const rows = d.stats.filter((s) => s.definition === ETA.def && s.terminal_id === ETA.term);
   const head = '<tr><th>Horizonte</th><th>n</th><th>Mediana</th>' +
     bands.map((b) => `<th>±${num(b, b % 1 ? 1 : 0)} h</th>`).join('') +
-    '<th>P10 a P90</th><th>Antelación</th><th class="sec">Sesgo</th><th class="sec">MAE</th><th class="sec">RMSE</th></tr>';
+    '<th>P10 a P90</th><th>Antelación</th><th>ETA de atraque</th><th class="sec">Sesgo</th><th class="sec">MAE</th><th class="sec">RMSE</th></tr>';
   const body = rows.map((s) => {
     if (!s.n) {
-      return `<tr><td>${hLabel(s.horizon)}</td><td>0</td><td colspan="${7 + bands.length}" class="q">sin casos utilizables</td></tr>`;
+      return `<tr><td>${hLabel(s.horizon)}</td><td>0</td><td colspan="${8 + bands.length}" class="q">sin casos utilizables</td></tr>`;
     }
     const few = s.pocos_datos ? ` class="few" title="Pocos datos: menos de ${d.params.min_n} escalas"` : '';
     return `<tr${few}><td>${hLabel(s.horizon)}</td><td>${s.n}</td><td><b>${num(s.mediana_h)} h</b></td>` +
       bands.map((b) => `<td><b>${num(s[bandKey(b)], 0)} %</b></td>`).join('') +
       `<td>${num(s.p10_h)} a ${num(s.p90_h)} h</td>` +
       `<td>${s.antelacion_mediana_h != null ? num(s.antelacion_mediana_h) + ' h' : ''}</td>` +
+      `<td>${s.n_eta_atraque ? s.n_eta_atraque + ' (' + num(s.pct_eta_atraque, 0) + ' %)' : ''}</td>` +
       `<td class="sec">${num(s.sesgo_h)} h</td><td class="sec">${num(s.mae_h)} h</td><td class="sec">${num(s.rmse_h)} h</td></tr>`;
   }).join('');
   return head + body;
@@ -98,6 +99,8 @@ function renderEta() {
     'medio sin signo; RMSE = como el MAE, pero castiga más los errores grandes. ' +
     '«Última ETA» = la última ETA válida antes de llegar, con su antelación mediana. ' +
     'ETA caducada (regla principal) = ya había pasado más de 1 h cuando el buque la emitió. ' +
+    '«ETA de atraque» = la ETA está más cerca del atraque que de la llegada (escalas con 3 h o más de espera): se cuenta, no se descarta. ' +
+    'Las ETA emitidas durante la escala anterior del mismo buque no se usan. ' +
     `Calculado ${fmtT(d.computed_utc)} UTC.</p>`;
 }
 

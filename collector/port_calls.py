@@ -42,8 +42,18 @@ DEFAULT_METHOD = {"version": "escalas-v1", "ship_types": [70, 79], "min_length_m
                   # escalas-v2 (D-19); con estos tres valores vacíos el método es escalas-v1
                   "fill_zone": None,           # zona con la que se completan los huecos (APROXIMACION)
                   "fill_box_east": None,       # borde este del área de espera ampliada (grados)
-                  "wait_stats_from": None}     # las estadísticas de espera solo usan escalas desde esta hora
-KINDS = ("PORT_AREA", "TERMINAL", "ANCHORAGE")
+                  "wait_stats_from": None,     # las estadísticas de espera solo usan escalas desde esta hora
+                  # escalas-v3 (D-22, método congelado); solo se usan con version = "escalas-v3"
+                  "wait_area_nm": None,        # radio del área de espera desde wait_area_center (NM)
+                  "wait_area_center": None,    # [lat, lon] de la bocana
+                  "wait_area_exclude": [],     # [[lat, lon, radio_nm], ...] puertos vecinos que no cuentan
+                  "wait_start_kn": None,       # la espera EMPIEZA por debajo de esto (o con estado «fondeado»)
+                  "wait_continue_kn": None,    # y CONTINÚA mientras esté en el área por debajo de esto
+                  "join_max_h": None,          # unir una escala «sin atraque» con la siguiente si empieza antes
+                  "min_wait_h": None,          # en las estadísticas, una espera más corta cuenta como «sin espera»
+                  "loiter_window_h": None,     # ventana antes de la llegada para el indicador de merodeo lento
+                  "sensitivity_rules": []}     # [{"name", "start_kn", "continue_kn"}]: sensibilidad del umbral
+KINDS = ("PORT_AREA", "TERMINAL", "ANCHORAGE", "OFFICIAL_ANCHORAGE")
 OBSERVED_S = 3600        # una llegada o salida cuenta como vista si hay un punto en movimiento a menos de 1 h
 MAX_TRACK_GAP_H = 2      # parado se guarda 1 posición cada 10 min: más de 2 h sin datos es pérdida de señal
 OTHER_BERTH = "OTRO"     # atracado dentro del puerto pero fuera de las terminales dibujadas
@@ -83,6 +93,8 @@ def load_config(zone):
                               f"el borde este de la zona ({zone.bbox['east']})")
         if method["fill_zone"] == zone.zone_id:
             raise ConfigError(f"{path.name}: fill_zone no puede ser la propia zona")
+    if method["version"] == "escalas-v3":
+        _check_v3(method, path.name)
     if method["wait_stats_from"] is not None:
         try:
             parse_when(method["wait_stats_from"], "wait_stats_from")
@@ -103,6 +115,24 @@ def load_config(zone):
         raise ConfigError(f"{path.name}: tiene que haber exactamente una subzona PORT_AREA (el recinto portuario)")
     fingerprint = hashlib.sha256(json.dumps({"m": method, "s": subzones}, sort_keys=True).encode()).hexdigest()[:16]
     return {"method": method, "subzones": subzones, "fingerprint": fingerprint}
+
+
+def _check_v3(m, name):
+    """Comprueba los parámetros de escalas-v3 (D-22)."""
+    num = lambda v: not isinstance(v, bool) and isinstance(v, (int, float))   # noqa: E731
+    for k in ("wait_area_nm", "wait_start_kn", "wait_continue_kn", "join_max_h", "min_wait_h", "loiter_window_h"):
+        if not num(m[k]) or m[k] < 0:
+            raise ConfigError(f"{name}: escalas-v3 necesita {k} (un número positivo)")
+    c = m["wait_area_center"]
+    if not (isinstance(c, list) and len(c) == 2 and all(num(x) for x in c)):
+        raise ConfigError(f"{name}: wait_area_center debe ser [lat, lon]")
+    if any(not (isinstance(e, list) and len(e) == 3 and all(num(x) for x in e)) for e in m["wait_area_exclude"]):
+        raise ConfigError(f"{name}: wait_area_exclude debe ser una lista de [lat, lon, radio_nm]")
+    if m["wait_start_kn"] > m["wait_continue_kn"]:
+        raise ConfigError(f"{name}: wait_start_kn no puede ser mayor que wait_continue_kn")
+    for r in m["sensitivity_rules"]:
+        if not (isinstance(r, dict) and r.get("name") and num(r.get("start_kn")) and num(r.get("continue_kn"))):
+            raise ConfigError(f"{name}: cada regla de sensibilidad necesita name, start_kn y continue_kn")
 
 
 def _of_kind(cfg, kind):
@@ -296,6 +326,11 @@ def describe(call, vessel, draughts, cfg, zone_gaps, data_end, fill_ts=frozenset
     terms = Counter(_where(p[1], p[2], _of_kind(cfg, "TERMINAL")) or OTHER_BERTH for p in berth)
     places = Counter(_where(p[1], p[2], _of_kind(cfg, "ANCHORAGE")) or "DERIVA" for p in wait)
     track_gap = max((b[0] - a[0] for a, b in zip(pts, pts[1:])), default=0) / 3600
+    official = _of_kind(cfg, "OFFICIAL_ANCHORAGE")
+    anchor_s = 0
+    if wait and official:                # tiempo dentro de los fondeaderos oficiales durante la espera
+        seg = [p for p in pts if t_anchor_in <= p[0] <= t_anchor_out]
+        anchor_s = sum(min(b[0] - a[0], 3 * 3600) for a, b in zip(seg, seg[1:]) if _where(a[1], a[2], official))
     gap_min = sum(max(0, min(b, t_end) - max(a, t_start)) for a, b in zone_gaps) / 60
     overlaps = gap_min >= GAP_TOLERANCE_MIN
     censored_start = not call["start_observed"]
@@ -336,6 +371,7 @@ def describe(call, vessel, draughts, cfg, zone_gaps, data_end, fill_ts=frozenset
             "overlaps_gap": int(overlaps), "gap_overlap_min": round(gap_min, 1),
             "max_track_gap_h": round(track_gap, 2),
             "fill_points": sum(1 for p in pts if p[0] in fill_ts),
+            "anchor_official_h": round(anchor_s / 3600, 3), "slow_loiter_h": 0.0, "joined_gap_h": None,
             "quality": quality, "method_version": m["version"]}
 
 
@@ -345,6 +381,9 @@ def compute(zone, cfg, now):
     if first is None:
         return [], (None, None)
     zone_gaps = zone_gap_intervals(zone, first, now + 1, now)
+    if cfg["method"]["version"] == "escalas-v3":
+        from . import escalas_v3                 # aquí para no crear una importación circular
+        return escalas_v3.compute(zone, cfg, vessels, points, draughts, zone_gaps, (first, last)), (first, last)
     fill = load_fill(zone, cfg["method"], points.keys())
     out = []
     for mmsi, own in points.items():

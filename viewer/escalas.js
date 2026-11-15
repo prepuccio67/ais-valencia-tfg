@@ -81,6 +81,7 @@ async function load() {
   $('computed').textContent = `Método ${S.data.method.version} · calculado ${fmtT(S.data.computed_utc)} UTC · ` +
     `datos desde ${fmtT(S.data.data_from)}`;
   renderAll();
+  renderDoubleWait();                          // escalas-v3 (viewer/espera.js)
   loadEta();                                   // 7c.1 (viewer/eta.js): si falla, no afecta al resto
 }
 

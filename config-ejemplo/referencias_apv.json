@@ -1,0 +1,52 @@
+{
+  "fuente": "Autoridad Portuaria de Valencia, «Tiempos medios de escala» (panel Power BI), https://www.valenciaport.com/datos/indices/tiempos-medios-escala-puerto-valencia/",
+  "periodo": "1.er semestre de 2026",
+  "consultado": "2026-11-15",
+  "nota": "Medias de la APV. «Con fondeo» = la fase de entrada en aguas portuarias incluye la espera en el fondeadero (Zona II). La espera aproximada es la diferencia entre la fase con y sin fondeo (45,68 − 0,87 h; cálculo propio). La APV clasifica por TEU y el AIS por eslora: la correspondencia por tamaño es aproximada.",
+  "escalas": 1347,
+  "escalas_con_fondeo": 509,
+  "pct_fondeo": 37.8,
+  "espera_fondeo_media_h": 44.8,
+  "por_tamano": [
+    {
+      "clase": "ULCS (15.000–20.000 TEU)",
+      "pct_fondeo": 8,
+      "espera_fondeo_media_h": 49.3
+    },
+    {
+      "clase": "VLCS (10.000–14.999 TEU)",
+      "pct_fondeo": 12,
+      "espera_fondeo_media_h": 25.6
+    },
+    {
+      "clase": "PostPanamax (5.447–9.999 TEU)",
+      "pct_fondeo": 17,
+      "espera_fondeo_media_h": 40.7
+    },
+    {
+      "clase": "Panamax (4.000–5.446 TEU)",
+      "pct_fondeo": 43,
+      "espera_fondeo_media_h": 55.2
+    },
+    {
+      "clase": "SubPanamax (3.000–3.999 TEU)",
+      "pct_fondeo": 25,
+      "espera_fondeo_media_h": 70.1
+    },
+    {
+      "clase": "Feedermax (2.000–2.999 TEU)",
+      "pct_fondeo": 26,
+      "espera_fondeo_media_h": 50.1
+    },
+    {
+      "clase": "Regional Feeder (1.000–1.999 TEU)",
+      "pct_fondeo": 63,
+      "espera_fondeo_media_h": 52.1
+    },
+    {
+      "clase": "Small Feeder (< 1.000 TEU)",
+      "pct_fondeo": 72,
+      "espera_fondeo_media_h": 41.6
+    }
+  ]
+}

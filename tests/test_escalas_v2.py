@@ -139,5 +139,6 @@ class TestWaitPeriod(BaseV2):
         self.assertEqual((c["wait_median_h"], c["wait_mean_waiting_h"]), (6.08, 6.08))
         self.assertIsNotNone(c["stay_median_h"])                                       # la estancia usa las dos
         text = analysis.to_csv(calls)
-        self.assertIn(";puntos_aprox;metodo", text.splitlines()[0])
-        self.assertIn(";8;escalas-v2", text)
+        self.assertIn(";puntos_aprox;espera_fondeadero_oficial_h;merodeo_lento_h;hueco_union_h;metodo", text.splitlines()[0])
+        self.assertIn(";8;", text)
+        self.assertTrue(text.splitlines()[-1].endswith(";escalas-v2"))

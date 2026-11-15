@@ -34,7 +34,7 @@ CALL_COLS = ["mmsi", "imo", "name", "ship_type", "length_m", "terminal_id", "wai
              "t_start", "t_anchor_in", "t_anchor_out", "t_berth", "t_unberth", "t_exit", "t_last_seen",
              "wait_h", "stay_h", "draught_in_m", "draught_out_m", "berth_lat", "berth_lon",
              "censored_start", "censored_end", "overlaps_gap", "gap_overlap_min", "max_track_gap_h",
-             "fill_points", "quality", "method_version"]
+             "fill_points", "anchor_official_h", "slow_loiter_h", "joined_gap_h", "quality", "method_version"]
 TIME_COLS = [c for c in CALL_COLS if c.startswith("t_")]
 SCHEMA = f"""
 CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -44,6 +44,7 @@ CREATE TABLE subzone (
   PRIMARY KEY (subzone_id, valid_from)
 );
 CREATE TABLE port_call (call_id INTEGER PRIMARY KEY, {", ".join(CALL_COLS)}, computed_ts INTEGER NOT NULL);
+CREATE TABLE port_call_sens (rule TEXT NOT NULL, {", ".join(CALL_COLS)});
 CREATE INDEX ix_call_start ON port_call (t_start);
 CREATE TABLE operator (
   imo INTEGER, mmsi INTEGER, operator TEXT NOT NULL, source_url TEXT, checked_on TEXT,
@@ -85,6 +86,7 @@ def recompute(zone, now=None):
         cfg = pc.load_config(zone)
         t0 = time.time()
         calls, (first, last) = pc.compute(zone, cfg, now)
+        sens = sensitivity_calls(zone, cfg, now)
         # 7c.1 (eta-v1): si falla, las escalas se guardan igual y el error queda en meta
         eta_rows, eta_meta = [], {}
         try:
@@ -117,6 +119,9 @@ def recompute(zone, now=None):
                 conn.executemany(f"INSERT INTO port_call ({', '.join(CALL_COLS)}, computed_ts) "
                                  f"VALUES ({', '.join('?' * (len(CALL_COLS) + 1))})",
                                  [[c[k] for k in CALL_COLS] + [now] for c in calls])
+                conn.executemany(f"INSERT INTO port_call_sens (rule, {', '.join(CALL_COLS)}) "
+                                 f"VALUES ({', '.join('?' * (len(CALL_COLS) + 1))})",
+                                 [[rule] + [c[k] for k in CALL_COLS] for rule, cs in sens.items() for c in cs])
                 eta.write(conn, eta_rows)
                 meta = {**eta_meta, "zone_id": zone.zone_id, "computed_ts": now, "fingerprint": cfg["fingerprint"],
                         "method": json.dumps(cfg["method"]), "data_first_ts": first or "", "data_last_ts": last or ""}
@@ -126,6 +131,31 @@ def recompute(zone, now=None):
         os.replace(tmp, path)
         log.info("[%s] %d escalas calculadas en %.2f s", zone.zone_id, len(calls), time.time() - t0)
         return len(calls)
+
+
+def sensitivity_calls(zone, cfg, now):
+    """escalas-v3 (D-22): las escalas con cada regla de sensibilidad del umbral de espera."""
+    m = cfg["method"]
+    out = {}
+    for rule in m.get("sensitivity_rules") or []:
+        alt = dict(cfg, method=dict(m, wait_start_kn=rule["start_kn"], wait_continue_kn=rule["continue_kn"]))
+        out[rule["name"]], _ = pc.compute(zone, alt, now)
+    return out
+
+
+def read_sensitivity(zone, t_from, t_to):
+    """Escalas de las reglas de sensibilidad que se solapan con [t_from, t_to), por regla."""
+    conn = connect(db_path(zone), readonly=True)
+    try:
+        if not conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'port_call_sens'").fetchone():
+            return {}
+        out = {}
+        for row in conn.execute(f"SELECT rule, {', '.join(CALL_COLS)} FROM port_call_sens "
+                                "WHERE t_start < ? AND COALESCE(t_exit, t_last_seen) >= ? ORDER BY t_start", (t_to, t_from)):
+            out.setdefault(row[0], []).append(dict(zip(CALL_COLS, row[1:])))
+        return out
+    finally:
+        conn.close()
 
 
 def ensure_fresh(zone, now=None, max_age=MAX_AGE_S):
@@ -168,14 +198,31 @@ def percentile(values, q):
     return v[i] if i + 1 >= len(v) else v[i] + (v[i + 1] - v[i]) * (k - i)
 
 
-def _stats(calls, wait_from=None):
-    """Cifras de un grupo de escalas OK. Con wait_from (escalas-v2, D-19), las esperas solo usan las
-    escalas que empiezan desde esa hora: las anteriores no veían la espera al este del rectángulo."""
-    waits = [c["wait_h"] for c in calls if wait_from is None or c["t_start"] >= wait_from]
+def _stats(calls, wait_from=None, min_wait=None):
+    """Cifras de un grupo de escalas OK.
+    - Con wait_from (escalas-v2, D-19), las esperas solo usan las escalas que empiezan desde esa hora:
+      las anteriores no veían la espera al este del rectángulo.
+    - Con min_wait (escalas-v3, D-22), una espera más corta cuenta como «sin espera» (0 h).
+    - La espera en fondeadero oficial (escalas-v3) usa todas las escalas: los fondeaderos están dentro
+      del rectángulo de la zona y no dependen de la zona de aproximación.
+    - El merodeo lento (escalas-v3) es descriptivo y no se suma a la espera."""
+    use = [c for c in calls if wait_from is None or c["t_start"] >= wait_from]
+    waits = [c["wait_h"] if not min_wait or c["wait_h"] >= min_wait else 0.0 for c in use]
     stays = [c["stay_h"] for c in calls if c["stay_h"] is not None]
     r = lambda x: None if x is None else round(x, 2)     # noqa: E731
     with_wait = [w for w in waits if w > 0]
+    anchor = [c.get("anchor_official_h") or 0 for c in calls]
+    anchored = [a for a in anchor if a >= (min_wait or 1)]
+    loiter = [c.get("slow_loiter_h") or 0 for c in use]
+    loitered = [x for x in loiter if x >= 1]
+    pct = lambda a, b: round(100 * a / b, 1) if b else None   # noqa: E731
     return {"calls": len(calls), "wait_calls": len(waits), "with_wait": len(with_wait),
+            "pct_wait": pct(len(with_wait), len(waits)), "pct_wait_3h": pct(sum(w >= 3 for w in waits), len(waits)),
+            "anchor_calls": len(anchor), "anchor_n": len(anchored), "pct_anchor": pct(len(anchored), len(anchor)),
+            "anchor_mean_h": r(sum(anchored) / len(anchored)) if anchored else None,
+            "anchor_median_h": r(percentile(anchored, .5)),
+            "pct_loiter": pct(len(loitered), len(loiter)),
+            "loiter_mean_h": r(sum(loitered) / len(loitered)) if loitered else None,
             "wait_mean_waiting_h": r(sum(with_wait) / len(with_wait)) if with_wait else None,
             "wait_median_waiting_h": r(percentile(with_wait, .5)),
             "wait_mean_h": r(sum(waits) / len(waits)) if waits else None,
@@ -191,8 +238,9 @@ def summary(calls, cfg, t_from, t_to, now):
     terminals.append((pc.OTHER_BERTH, "Otros muelles"))
     wait_from = cfg["method"].get("wait_stats_from")
     wait_from = pc.parse_when(wait_from, "wait_stats_from") if wait_from else None
+    mw = cfg["method"].get("min_wait_h")
     by_terminal = [{"terminal_id": tid, "name": name,
-                    **_stats([c for c in ok if c["terminal_id"] == tid], wait_from)}
+                    **_stats([c for c in ok if c["terminal_id"] == tid], wait_from, mw)}
                    for tid, name in terminals]
     containers = [c for c in ok if c["terminal_id"] not in (None, pc.OTHER_BERTH)]
     quality = defaultdict(int)
@@ -214,14 +262,40 @@ def summary(calls, cfg, t_from, t_to, now):
         if c["t_berth"] and not c["quality"].startswith("EXCLUIDA") and t_from <= c["t_berth"] < t_to:
             daily[iso(c["t_berth"])[:10]][c["terminal_id"]] += 1
     ongoing = [c for c in calls if c["quality"] == "EN CURSO"]
-    return {"terminals": by_terminal, "containers": _stats(containers, wait_from),
-            "all_ok": _stats(ok, wait_from), "wait_stats_from": iso(wait_from),
+    sizes = [(name, [c for c in containers if lo <= (c["length_m"] or 0) < hi]) for name, lo, hi in SIZE_BANDS]
+    return {"terminals": by_terminal, "containers": _stats(containers, wait_from, mw),
+            "sizes": [{"band": name, **_stats(cs, wait_from, mw)} for name, cs in sizes],
+            "all_ok": _stats(ok, wait_from, mw), "wait_stats_from": iso(wait_from), "min_wait_h": mw,
             "quality": dict(quality),
             "queue": {"hours": [iso(h) for h in hours], "waiting": waiting,
                       "berthed": {k: v for k, v in berthed.items()}},
             "daily_berths": {d: dict(v) for d, v in sorted(daily.items())},
             "waiting_now": [_short(c) for c in ongoing if not c["t_berth"]],
             "berthed_now": [_short(c) for c in ongoing if c["t_berth"]]}
+
+
+SIZE_BANDS = [("< 150 m", 0, 150), ("150–200 m", 150, 200), ("200–300 m", 200, 300), ("≥ 300 m", 300, 10000)]
+
+
+def sensitivity_summary(sens, cfg):
+    """Cifras de los portacontenedores (escalas OK) con cada regla de sensibilidad del umbral."""
+    wait_from = cfg["method"].get("wait_stats_from")
+    wait_from = pc.parse_when(wait_from, "wait_stats_from") if wait_from else None
+    mw = cfg["method"].get("min_wait_h")
+    out = []
+    for rule in cfg["method"].get("sensitivity_rules") or []:
+        cs = [c for c in sens.get(rule["name"], []) if c["quality"] == "OK"
+              and c["terminal_id"] not in (None, pc.OTHER_BERTH)]
+        out.append({"rule": rule["name"], **_stats(cs, wait_from, mw)})
+    return out
+
+
+def apv_reference():
+    """Referencia oficial de la APV (config-ejemplo/referencias_apv.json), o None si no existe."""
+    path = pc.REPO_ROOT / "config-ejemplo" / "referencias_apv.json"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _count(series, hours, a, b):
@@ -249,7 +323,8 @@ CSV_COLUMNS = [("buque", "name"), ("mmsi", "mmsi"), ("imo", "imo"), ("tipo_ais",
                ("calado_salida_m", "draught_out_m"), ("calidad", "quality"),
                ("llegada_no_vista", "censored_start"), ("salida_no_vista", "censored_end"),
                ("hueco_zona_min", "gap_overlap_min"), ("max_sin_senal_h", "max_track_gap_h"),
-               ("puntos_aprox", "fill_points"),
+               ("puntos_aprox", "fill_points"), ("espera_fondeadero_oficial_h", "anchor_official_h"),
+               ("merodeo_lento_h", "slow_loiter_h"), ("hueco_union_h", "joined_gap_h"),
                ("metodo", "method_version")]
 
 

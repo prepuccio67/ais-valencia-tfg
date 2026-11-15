@@ -288,6 +288,7 @@ MAX_CALLS_RANGE_DAYS = 400
 def _calls_data(z, t_from, t_to, now):
     cfg = analysis.ensure_fresh(z, now)
     calls, meta = analysis.read_calls(z, t_from, t_to)
+    meta["_sens"] = analysis.read_sensitivity(z, t_from, t_to)
     return cfg, calls, meta
 
 
@@ -309,6 +310,7 @@ async def port_calls(request):
         "data_from": iso(int(meta["data_first_ts"])) if meta.get("data_first_ts") else None,
         # la cola se dibuja desde el primer dato, no desde el principio del periodo pedido
         "summary": analysis.summary(calls, cfg, max(t_from, int(meta.get("data_first_ts") or t_from)), t_to, now),
+        "sensitivity": analysis.sensitivity_summary(meta["_sens"], cfg), "apv": analysis.apv_reference(),
         "calls": [analysis.to_json(c) for c in calls]})
 
 

@@ -126,7 +126,7 @@ class TestPortCallsApi(TestApi):
         self.assertIn("attachment", r.headers["Content-Disposition"])
         self.assertTrue((await r.text()).startswith("﻿buque;"))
         sub = await (await self.client.get("/api/subzones?zone=VALENCIA", headers=H)).json()
-        self.assertEqual({f["properties"]["kind"] for f in sub["features"]}, {"PORT_AREA", "TERMINAL", "ANCHORAGE"})
+        self.assertEqual({f["properties"]["kind"] for f in sub["features"]}, {"PORT_AREA", "TERMINAL", "ANCHORAGE", "OFFICIAL_ANCHORAGE"})
         bad = await self.client.get(f"/api/port_calls?zone=VALENCIA&from={self.t}&to={self.t - 10}", headers=H)
         self.assertEqual(bad.status, 400)
         self.assertEqual((await self.client.get("/api/port_calls?zone=VALENCIA")).status, 401)

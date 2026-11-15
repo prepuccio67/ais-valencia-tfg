@@ -32,10 +32,12 @@ from .storage import connect
 CONTAINER_TERMINALS = ("T-MSC", "T-CSP", "T-APM")
 DEFINITIONS = ("ZONA_ESPERA", "RECINTO", "ATRAQUE")
 LAST = "ULTIMA"
-STATUSES = ("USABLE", "LLEGADA_NO_VISTA", "ANTES_CAPTURA", "SIN_COBERTURA", "SIN_ETA", "DESTINO_OTRO",
-            "DESTINO_DUDOSO", "ETA_CADUCADA", "ETA_IMPOSIBLE", "ESCALA_EXCLUIDA")
+STATUSES = ("USABLE", "LLEGADA_NO_VISTA", "ANTES_CAPTURA", "ESCALA_ANTERIOR", "SIN_COBERTURA", "SIN_ETA",
+            "DESTINO_OTRO", "DESTINO_DUDOSO", "ETA_CADUCADA", "ETA_IMPOSIBLE", "ESCALA_EXCLUIDA")
 OBS_COLS = ["rule", "mmsi", "name", "terminal_id", "call_quality", "t_start", "definition", "horizon", "t_arrival",
-            "t_ref", "status", "eta_utc", "eta_raw", "eta_ts", "destination", "error_h", "lead_h", "method_version"]
+            "t_ref", "status", "eta_utc", "eta_raw", "eta_ts", "destination", "error_h", "lead_h", "category",
+            "method_version"]
+ETA_BERTH = "ETA_ATRAQUE"      # categoría (D-21): la ETA está más cerca del atraque que de la llegada; se cuenta
 MAIN, SENS = "principal", "sensibilidad"       # regla de caducidad principal y la del análisis de sensibilidad
 SCHEMA = f"""
 CREATE TABLE eta_obs (obs_id INTEGER PRIMARY KEY, {", ".join(OBS_COLS)});
@@ -50,7 +52,7 @@ AVISO = ("Cifras PROVISIONALES: pocas semanas de datos y método eta-v1 pendient
 REQUIRED = ("version", "horizontes_h", "ultima_eta", "definiciones", "definicion_principal", "ventana_vista_h",
             "caducada_tolerancia_h", "caducada_referencia", "eta_max_dias", "bandas_h", "min_n",
             "destinos_valencia", "bootstrap_remuestreos", "bootstrap_min_n", "llegada_vista_h",
-            "sensibilidad_caducada_referencia", "revision_umbral_h")
+            "sensibilidad_caducada_referencia", "revision_umbral_h", "eta_atraque_min_espera_h")
 
 
 # ------------------------------------------------------------ parámetros
@@ -209,13 +211,23 @@ def compute(zone, calls, cfg, data_first, params):
     una vez con la regla de caducidad principal y otra con la del análisis de sensibilidad."""
     mine = [c for c in calls if c["terminal_id"] in CONTAINER_TERMINALS]
     inputs = load_inputs(zone, cfg["method"], {c["mmsi"] for c in mine})
+    prev_end = previous_call_end(calls)
     rows = []
     for rule, ref in ((MAIN, params["caducada_referencia"]), (SENS, params["sensibilidad_caducada_referencia"])):
-        rows += _compute_rule(mine, inputs, cfg, data_first, dict(params, caducada_referencia=ref), rule)
+        rows += _compute_rule(mine, inputs, cfg, data_first, dict(params, caducada_referencia=ref), rule, prev_end)
     return rows
 
 
-def _compute_rule(mine, inputs, cfg, data_first, params, rule):
+def previous_call_end(calls):
+    """(mmsi, t_start) -> fin de la escala anterior del mismo buque (salida o última posición), o 0."""
+    out, by = {}, {}
+    for c in sorted(calls, key=lambda c: c["t_start"]):
+        out[(c["mmsi"], c["t_start"])] = by.get(c["mmsi"], 0)
+        by[c["mmsi"]] = max(by.get(c["mmsi"], 0), c["t_exit"] or c["t_last_seen"] or 0)
+    return out
+
+
+def _compute_rule(mine, inputs, cfg, data_first, params, rule, prev_end=None):
     port_ring = pc._of_kind(cfg, "PORT_AREA")[0]["ring"]
     own, seen, voy = inputs
     window = params["ventana_vista_h"] * 3600
@@ -225,7 +237,9 @@ def _compute_rule(mine, inputs, cfg, data_first, params, rule):
     rows = []
     for c in mine:
         arr = arrivals(c, own.get(c["mmsi"], []), port_ring, params)
-        rows_v = voy.get(c["mmsi"], [])
+        pe = (prev_end or {}).get((c["mmsi"], c["t_start"]), 0)
+        older = any(r[0] <= pe for r in voy.get(c["mmsi"], []))
+        rows_v = [r for r in voy.get(c["mmsi"], []) if r[0] > pe]      # ESCALA_ANTERIOR (D-21)
         times_v = [r[0] for r in rows_v]
         times_s = seen.get(c["mmsi"], [])
         for d in params["definiciones"]:
@@ -239,6 +253,8 @@ def _compute_rule(mine, inputs, cfg, data_first, params, rule):
                     status = "LLEGADA_NO_VISTA"
                 elif data_first is None or t_ref < data_first:
                     status = "ANTES_CAPTURA"
+                elif t_ref <= pe:
+                    status = "ESCALA_ANTERIOR"                # t_ref cae dentro de la escala anterior
                 elif not _seen_in(times_s, t_ref - window, t_ref):
                     status = "SIN_COBERTURA"
                 elif label == LAST:
@@ -251,12 +267,17 @@ def _compute_rule(mine, inputs, cfg, data_first, params, rule):
                         if s == "USABLE":
                             status, row = s, rows_v[j]
                             break
-                    status = status or "SIN_ETA"
+                    status = status or ("ESCALA_ANTERIOR" if older else "SIN_ETA")
                 else:
                     k = bisect.bisect_right(times_v, t_ref)
                     row = rows_v[k - 1] if k else None
-                    status = classify_eta(row, t_ref, params)
+                    status = classify_eta(row, t_ref, params) if row or not older else "ESCALA_ANTERIOR"
                 usable = status == "USABLE"
+                category = ""
+                if (usable and d == "ZONA_ESPERA" and c["t_anchor_in"] and c["t_berth"]
+                        and c["t_berth"] - c["t_anchor_in"] >= params["eta_atraque_min_espera_h"] * 3600
+                        and abs(row[1] - c["t_berth"]) < abs(row[1] - t_arr)):
+                    category = ETA_BERTH
                 rows.append({
                     "rule": rule, "mmsi": c["mmsi"], "name": c["name"], "terminal_id": c["terminal_id"],
                     "call_quality": c["quality"].split(":")[0], "t_start": c["t_start"], "definition": d,
@@ -265,7 +286,7 @@ def _compute_rule(mine, inputs, cfg, data_first, params, rule):
                     "eta_ts": row[0] if row else None, "destination": row[3] if row else None,
                     "error_h": round((row[1] - t_arr) / 3600, 4) if usable else None,
                     "lead_h": round((t_arr - row[0]) / 3600, 4) if usable else None,
-                    "method_version": params["version"]})
+                    "category": category, "method_version": params["version"]})
     return rows
 
 
@@ -324,7 +345,9 @@ def summary(rows, params, variant="base", rule=MAIN):
         use = [o for o in obs if o["status"] in keep]
         errors = [o["error_h"] if o["error_h"] is not None else (o["eta_utc"] - o["t_arrival"]) / 3600 for o in use]
         with_eta = [o for o in obs if o["status"] in ("USABLE", "ETA_CADUCADA", "ETA_IMPOSIBLE")]
-        stats.append({"definition": d, "horizon": h, "terminal_id": t,
+        n_berth = sum(o.get("category") == ETA_BERTH for o in use)
+        stats.append({"definition": d, "horizon": h, "terminal_id": t, "n_eta_atraque": n_berth,
+                      "pct_eta_atraque": round(100 * n_berth / len(use), 1) if use else None,
                       **indicators(errors, params, [o["eta_raw"] for o in use],
                                    [o["lead_h"] for o in use if o["lead_h"] is not None] if h == LAST else (),
                                    len(with_eta), sum(o["status"] == "ETA_CADUCADA" for o in with_eta))})
@@ -347,7 +370,7 @@ def read(db_path):
         if not conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'eta_obs'").fetchone():
             return []
         cols = {r[1] for r in conn.execute("PRAGMA table_info(eta_obs)")}
-        if "rule" not in cols:                          # analysis.db anterior a la columna: se rehará
+        if "rule" not in cols or "category" not in cols:   # analysis.db anterior a las columnas: se rehará
             return []
         cur = conn.execute(f"SELECT {', '.join(OBS_COLS)} FROM eta_obs ORDER BY rule, t_start, mmsi, definition, obs_id")
         return [dict(zip(OBS_COLS, r)) for r in cur]
@@ -360,7 +383,7 @@ CASE_CSV = [("regla", "rule"), ("buque", "name"), ("mmsi", "mmsi"), ("terminal",
             ("definicion", "definition"), ("horizonte", "horizon"), ("llegada_utc", "t_arrival"),
             ("t_ref_utc", "t_ref"), ("estado", "status"), ("eta_utc", "eta_utc"), ("eta_tal_cual", "eta_raw"),
             ("eta_recibida_utc", "eta_ts"), ("destino", "destination"), ("error_h", "error_h"),
-            ("antelacion_h", "lead_h"), ("metodo", "method_version")]
+            ("antelacion_h", "lead_h"), ("categoria", "category"), ("metodo", "method_version")]
 _TIME = {"t_arrival", "t_ref", "eta_utc", "eta_ts"}
 
 

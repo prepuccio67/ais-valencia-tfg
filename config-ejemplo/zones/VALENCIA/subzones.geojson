@@ -3,7 +3,10 @@
   "_nota": "Subzonas para el análisis de escalas (Fase 7). GeoJSON: [longitud, latitud]. Dibujadas el 01/11/2026 a partir de dónde se pararon de verdad los buques de carga >= 100 m entre el 29/10 y el 01/11/2026; los nombres de las terminales, según los rótulos de OpenStreetMap y las navieras que atracan en cada una. Se pueden abrir y corregir en https://geojson.io",
   "method": {
     "version": "escalas-v1",
-    "ship_types": [70, 79],
+    "ship_types": [
+      70,
+      79
+    ],
     "min_length_m": 100,
     "berth_max_kn": 0.5,
     "anchor_max_kn": 1.0,
@@ -15,50 +18,282 @@
     {
       "type": "Feature",
       "properties": {
-        "subzone_id": "PUERTO", "kind": "PORT_AREA", "name": "Recinto portuario (aguas interiores)",
+        "subzone_id": "PUERTO",
+        "kind": "PORT_AREA",
+        "name": "Recinto portuario (aguas interiores)",
         "notes": "Rectángulo que cubre las dársenas y la bocana. Un buque parado aquí está atracado (o maniobrando)."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[
-        [-0.3360, 39.4230], [-0.2950, 39.4230], [-0.2950, 39.4620], [-0.3360, 39.4620], [-0.3360, 39.4230]]]}
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.336,
+              39.423
+            ],
+            [
+              -0.295,
+              39.423
+            ],
+            [
+              -0.295,
+              39.462
+            ],
+            [
+              -0.336,
+              39.462
+            ],
+            [
+              -0.336,
+              39.423
+            ]
+          ]
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "subzone_id": "T-MSC", "kind": "TERMINAL", "name": "MSC Terminal Valencia",
+        "subzone_id": "T-MSC",
+        "kind": "TERMINAL",
+        "name": "MSC Terminal Valencia",
         "notes": "Lado norte de la dársena sur y su extremo oeste. Del 29/10 al 01/11 solo atracaron buques de MSC (MSC LENI, MSC SARA ELENA, MSC UBERTY VIII...) y feeders. [VERIFICAR] los límites con el plano de la Autoridad Portuaria."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[
-        [-0.3310, 39.4335], [-0.3265, 39.4335], [-0.3265, 39.4368], [-0.3190, 39.4368],
-        [-0.3190, 39.4410], [-0.3310, 39.4410], [-0.3310, 39.4335]]]}
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.331,
+              39.4335
+            ],
+            [
+              -0.3265,
+              39.4335
+            ],
+            [
+              -0.3265,
+              39.4368
+            ],
+            [
+              -0.319,
+              39.4368
+            ],
+            [
+              -0.319,
+              39.441
+            ],
+            [
+              -0.331,
+              39.441
+            ],
+            [
+              -0.331,
+              39.4335
+            ]
+          ]
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "subzone_id": "T-CSP", "kind": "TERMINAL", "name": "CSP Iberian Valencia Terminal",
+        "subzone_id": "T-CSP",
+        "kind": "TERMINAL",
+        "name": "CSP Iberian Valencia Terminal",
         "notes": "Lado sur de la dársena sur. Atracaron CMA CGM, Evergreen, ZIM y feeders (Contship, Boluda, Medkon). [VERIFICAR] los límites con el plano de la Autoridad Portuaria."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[
-        [-0.3265, 39.4300], [-0.3115, 39.4300], [-0.3115, 39.4330], [-0.3265, 39.4352], [-0.3265, 39.4300]]]}
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.3265,
+              39.43
+            ],
+            [
+              -0.3115,
+              39.43
+            ],
+            [
+              -0.3115,
+              39.433
+            ],
+            [
+              -0.3265,
+              39.4352
+            ],
+            [
+              -0.3265,
+              39.43
+            ]
+          ]
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "subzone_id": "T-APM", "kind": "TERMINAL", "name": "APM Terminals Valencia",
+        "subzone_id": "T-APM",
+        "kind": "TERMINAL",
+        "name": "APM Terminals Valencia",
         "notes": "Redibujada el 06/11/2026 sobre imagen de satélite (Esri World Imagery): todo el espigón de contenedores de la dársena norte, con un margen de agua a cada lado para los buques atracados. La ubicación de APM la confirma una infografía aportada por el autor (zona azul claro) y que atracan ahí los buques de Maersk y Hapag-Lloyd (MAERSK CALABAR, BARCELONA MAERSK, MAERSK NORFOLK, NICARAGUA EXPRESS, CHENNAI EXPRESS). [VERIFICAR] con el plano oficial de la Autoridad Portuaria si la cara oeste de la punta es de APM."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[
-        [-0.32386, 39.45831], [-0.31871, 39.45939], [-0.31474, 39.45434], [-0.31313, 39.45085],
-        [-0.31174, 39.44870], [-0.31313, 39.44597], [-0.31620, 39.44590], [-0.31800, 39.44920],
-        [-0.32180, 39.45367], [-0.32386, 39.45831]]]}
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.32386,
+              39.45831
+            ],
+            [
+              -0.31871,
+              39.45939
+            ],
+            [
+              -0.31474,
+              39.45434
+            ],
+            [
+              -0.31313,
+              39.45085
+            ],
+            [
+              -0.31174,
+              39.4487
+            ],
+            [
+              -0.31313,
+              39.44597
+            ],
+            [
+              -0.3162,
+              39.4459
+            ],
+            [
+              -0.318,
+              39.4492
+            ],
+            [
+              -0.3218,
+              39.45367
+            ],
+            [
+              -0.32386,
+              39.45831
+            ]
+          ]
+        ]
+      }
     },
     {
       "type": "Feature",
       "properties": {
-        "subzone_id": "FONDEO", "kind": "ANCHORAGE", "name": "Fondeadero (sureste del puerto)",
+        "subzone_id": "FONDEO",
+        "kind": "ANCHORAGE",
+        "name": "Fondeadero (sureste del puerto)",
         "notes": "Zona donde se concentraron los buques parados fuera del puerto (3-12 km al sureste). [VERIFICAR] con la carta náutica o Capitanía Marítima. Los buques parados fuera del puerto pero fuera de este polígono también cuentan como espera ('a la deriva')."
       },
-      "geometry": {"type": "Polygon", "coordinates": [[
-        [-0.2900, 39.3750], [-0.1400, 39.3750], [-0.1400, 39.4250], [-0.2900, 39.4250], [-0.2900, 39.3750]]]}
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.29,
+              39.375
+            ],
+            [
+              -0.14,
+              39.375
+            ],
+            [
+              -0.14,
+              39.425
+            ],
+            [
+              -0.29,
+              39.425
+            ],
+            [
+              -0.29,
+              39.375
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "FONDEO-OF-NORTE",
+        "kind": "OFFICIAL_ANCHORAGE",
+        "name": "Fondeadero oficial norte (APV 2020)",
+        "notes": "Fondeadero oficial: Resolución de 10/11/2020 de la Autoridad Portuaria de Valencia (BOE-A-2020-15569), punto primero. Se usa solo para medir la espera «en fondeadero oficial» (escalas-v3, D-22). [VERIFICAR vigencia]"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.246733,
+              39.436167
+            ],
+            [
+              -0.2119,
+              39.436167
+            ],
+            [
+              -0.2119,
+              39.454183
+            ],
+            [
+              -0.246733,
+              39.454183
+            ],
+            [
+              -0.246733,
+              39.436167
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "subzone_id": "FONDEO-OF-SUR",
+        "kind": "OFFICIAL_ANCHORAGE",
+        "name": "Fondeadero oficial sur (APV 2020)",
+        "notes": "Fondeadero oficial: Resolución de 10/11/2020 de la Autoridad Portuaria de Valencia (BOE-A-2020-15569), punto primero. Se usa solo para medir la espera «en fondeadero oficial» (escalas-v3, D-22). [VERIFICAR vigencia]"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.283817,
+              39.383333
+            ],
+            [
+              -0.2119,
+              39.383333
+            ],
+            [
+              -0.2119,
+              39.40495
+            ],
+            [
+              -0.283817,
+              39.40495
+            ],
+            [
+              -0.283817,
+              39.383333
+            ]
+          ]
+        ]
+      }
     }
   ]
 }
